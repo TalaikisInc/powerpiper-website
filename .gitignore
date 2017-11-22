@@ -52,5 +52,7 @@ main.js.map
 
 .idea
 npm-debug.log.*
-indicators.py
 *.tsv
+_private
+static/admin
+*.exe
