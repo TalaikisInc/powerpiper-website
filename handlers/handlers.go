@@ -4,7 +4,6 @@ import (
 	"html/template"
 	"log"
 	"net/http"
-	"os"
 
 	"../middleware"
 )
@@ -18,14 +17,8 @@ func init() {
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html")
 
-	aID := os.Getenv("GOOGLE_ANALYTICS")
-	baseUrl := os.Getenv("BASE_URL")
-
-	strings := map[string]string{
-		"SiteTitle":   "Power Piper",
-		"AnalyticsID": aID,
-		"BaseURL":     baseUrl,
-		"PageTitle":   "Main"}
+	strings := middleware.Strings()
+	strings["PageTitle"] = "Main"
 
 	err := tpl.ExecuteTemplate(w, "content.html", middleware.PageStruct{
 		Strings: strings})
@@ -37,14 +30,8 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 func PrivacyPolicyHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html")
 
-	aID := os.Getenv("GOOGLE_ANALYTICS")
-	baseUrl := os.Getenv("BASE_URL")
-
-	strings := map[string]string{
-		"SiteTitle":   "Power Piper",
-		"AnalyticsID": aID,
-		"BaseURL":     baseUrl,
-		"PageTitle":   "Pribacy Policy"}
+	strings := middleware.Strings()
+	strings["PageTitle"] = "Pribacy Policy"
 
 	err := tpl.ExecuteTemplate(w, "privacy_policy.html", middleware.PageStruct{
 		Strings: strings})
