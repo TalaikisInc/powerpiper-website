@@ -22,7 +22,7 @@ func main() {
 	Host := os.Getenv("HOST")
 
 	app := mux.NewRouter()
-	app.PathPrefix("/static/images/").Handler(http.FileServer(http.Dir(".")))
+	app.PathPrefix("/static/").Handler(http.FileServer(http.Dir(".")))
 
 	app.HandleFunc("/", handlers.IndexHandler)
 	app.HandleFunc("/privacy_policy/", handlers.PrivacyPolicyHandler)
