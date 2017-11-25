@@ -20,9 +20,10 @@ func init() {
 
 func main() {
 	Host := os.Getenv("HOST")
+	StaticPath := "/static/" + os.Getenv("TEMPLATE") + "/"
 
 	app := mux.NewRouter()
-	app.PathPrefix("/static/").Handler(http.FileServer(http.Dir(".")))
+	app.PathPrefix(StaticPath).Handler(http.FileServer(http.Dir(".")))
 
 	app.HandleFunc("/", handlers.IndexHandler)
 	app.HandleFunc("/privacy_policy/", handlers.PrivacyPolicyHandler)
