@@ -1,5 +1,6 @@
 from os.path import dirname, join
 from os import environ
+import logging
 
 from psycopg2 import extensions
 from dotenv import load_dotenv
@@ -14,7 +15,7 @@ assert isinstance(SECRET_KEY, str), "Check environment variables!"
 
 DEBUG = int(environ.get("DEV"))
 
-ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
+ALLOWED_HOSTS = ["127.0.0.1", "localhost", "admin.powerpiper.com"]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -105,3 +106,28 @@ USE_L10N = False
 USE_TZ = False
 
 STATIC_URL = '/static/'
+STATIC_ROOT = join(BASE_DIR, "static")
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'mail_admins': {
+        'class': 'django.utils.log.AdminEmailHandler',
+        'level': 'ERROR',
+        'include_html': True,
+    },
+    'handlers': {
+        'file': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': join(BASE_DIR, 'logs', 'django.log'),
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+    },
+}
