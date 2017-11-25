@@ -26,6 +26,7 @@ func main() {
 
 	app.HandleFunc("/", handlers.IndexHandler)
 	app.HandleFunc("/privacy_policy/", handlers.PrivacyPolicyHandler)
+	app.NotFoundHandler = http.HandlerFunc(handlers.NotFound)
 
 	server := &http.Server{
 		Handler:      app,
