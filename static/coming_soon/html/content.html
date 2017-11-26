@@ -1,14 +1,8 @@
 {{ template "header" . }}
 
-<div class="main" style="background-image: url('images/default.jpg')">
+<div class="main" style="background-image: url('{{ .Strings.BaseURL }}/static/{{ .Strings.Template }}/images/default.jpg')">
 	<div class="cover black" data-color="black"></div>
 		<div class="container">
-			<div id="cookie-message">
-				<p class="text-center">This site uses cookies. If you continue to use this site we will assume that you agreed to it.</p>
-				<hr />
-				<h1>&nbsp;</h1>
-			</div>
-
 			<h1 class="logo">
 				Power Piper
 			</h1>
@@ -25,8 +19,8 @@
 								<label class="sr-only" for="mce-EMAIL">Email address</label>
 								<input type="email" value="" name="EMAIL" class="required email form-control transparent" id="mce-EMAIL" placeholder="Your email here...">
 								<div id="mce-responses">
-									<span class="secondary" id="mce-error-response" style="display:none"></span>
-									<span class="secondary" id="mce-success-response" style="display:none"></span>
+									<p class="secondary" id="mce-error-response" style="display:none"></p>
+									<p class="secondary" id="mce-success-response" style="display:none"></p>
 								</div>
 							  </div>
 							  <div style="position: absolute; left: -5000px;" aria-hidden="true">

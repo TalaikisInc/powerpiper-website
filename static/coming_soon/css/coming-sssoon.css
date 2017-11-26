@@ -16,6 +16,9 @@
 body{
     
 }
+.secondary {
+    color: #DDDDDD;
+}
 .form-control::-moz-placeholder{
    color: #DDDDDD;
    opacity: 1;

@@ -56,3 +56,5 @@ npm-debug.log.*
 _private
 static/admin
 *.exe
+*.jpg
+*.png
