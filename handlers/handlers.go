@@ -26,6 +26,7 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 
 	strings := middleware.Strings()
 	strings["PageTitle"] = "Main"
+	strings["UA"] = middleware.GetUserAgent(r)
 
 	err := tpl.ExecuteTemplate(w, "content.html", middleware.PageStruct{
 		Strings: strings})
@@ -40,6 +41,7 @@ func PrivacyPolicyHandler(w http.ResponseWriter, r *http.Request) {
 
 	strings := middleware.Strings()
 	strings["PageTitle"] = "Privacy Policy"
+	strings["UA"] = middleware.GetUserAgent(r)
 
 	err := tpl.ExecuteTemplate(w, "privacy_policy.html", middleware.PageStruct{
 		Strings: strings})
@@ -54,6 +56,7 @@ func NotFound(w http.ResponseWriter, r *http.Request) {
 
 	strings := middleware.Strings()
 	strings["PageTitle"] = "Not Found"
+	strings["UA"] = middleware.GetUserAgent(r)
 
 	err := tpl.ExecuteTemplate(w, "404.html", middleware.PageStruct{
 		Strings: strings})
