@@ -36,6 +36,7 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 
 func PrivacyPolicyHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html")
+	w.Header().Set("Cache-Control", "max-age=2592000")
 
 	strings := middleware.Strings()
 	strings["PageTitle"] = "Privacy Policy"
@@ -49,6 +50,7 @@ func PrivacyPolicyHandler(w http.ResponseWriter, r *http.Request) {
 
 func NotFound(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html")
+	w.Header().Set("Cache-Control", "max-age=2592000")
 
 	strings := middleware.Strings()
 	strings["PageTitle"] = "Not Found"
