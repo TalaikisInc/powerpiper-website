@@ -3,6 +3,8 @@ from django.utils.translation import ugettext as T
 from django.db import IntegrityError
 from django.template.defaultfilters import slugify
 
+from ckeditor_uploader.fields import RichTextUploadingField
+
 
 class AutoSlugifyOnSaveModel(models.Model):
     def save(self, *args, **kwargs):
@@ -69,10 +71,9 @@ class Post(AutoSlugifyOnSaveModel):
     title = models.CharField(max_length=250, verbose_name=T("Title"), db_index=True, unique=True)
     slug = models.CharField(max_length=250, blank=True, null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name=T("Categoery"))
-    content = models.TextField(verbose_name=T("Content"))
+    content = RichTextUploadingField("contents")
     date = models.DateTimeField(verbose_name=T("Date"))
     image = models.ImageField(upload_to="uploads/", blank=True, null=True, verbose_name=T("Image"))
-    url = models.URLField(verbose_name=T("URL"))
 
     class Meta:
         ordering = ('date',)

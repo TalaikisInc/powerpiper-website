@@ -58,3 +58,4 @@ static/admin
 *.exe
 *.jpg
 *.png
+migrations/

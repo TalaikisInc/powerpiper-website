@@ -138,6 +138,12 @@ LOGGING = {
     },
 }
 
+CKEDITOR_JQUERY_URL = "https://cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.min.js"
+CKEDITOR_IMAGE_BACKEND = "pillow"
+CKEDITOR_UPLOAD_SLUGIFY_FILENAME = True
+CKEDITOR_UPLOAD_PATH = "uploads/"
+CKEDITOR_ALLOW_NONIMAGE_FILES = False
+
 CKEDITOR_CONFIGS = {
     'default': {
         'skin': 'moono',
@@ -145,7 +151,7 @@ CKEDITOR_CONFIGS = {
             {'name': 'basic', 'items': [
                 'Styles','Format','Font','FontSize' '-', 'Bold', 'Italic', 'Underline', 'Superscript',
                 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'Table',
-                'Link', 'Unlink', 'SpellChecker',
+                'Link', 'Unlink', 'SpellChecker', 'Image',
                 'RemoveFormat', 'Source', 'CodeSnippet'
             ]}
         ],
