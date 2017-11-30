@@ -111,8 +111,10 @@ USE_L10N = False
 
 USE_TZ = False
 
-STATIC_URL = '/static/'
+STATIC_URL = "/static/"
 STATIC_ROOT = join(BASE_DIR, "static")
+MEDIA_URL = "/uploads/"
+MEDIA_ROOT = join(BASE_DIR, "uploads")
 
 LOGGING = {
     'version': 1,

@@ -1,6 +1,8 @@
+from os.path import join
 from datetime import datetime
 
-from django.test import TestCase
+from django.test import TestCase, Client
+from django.conf import settings
 
 from .models import Post, Category
 
@@ -12,8 +14,6 @@ class PostTestCase(TestCase):
         Post.objects.create(title="Ąpost", category=cat_id2, content="<h1>^&$^*Į</h1>Ėff", date=datetime.now())
 
     def test_unicode(self):
-        """Animals that can speak are correctly identified"""
-
         post = Post.objects.get(title="Ąpost")
         self.assertEqual(post.title, "Ąpost")
         self.assertEqual(post.content, "<h1>^&$^*Į</h1>Ėff")
@@ -29,10 +29,3 @@ class PostTestCase(TestCase):
         posts = Post.objects.filter(category=cat)
         for post in posts:
             self.assertEqual(post.category, cat.id)
-
-    def test_image(self):
-        #ensure image is shown correctly publicly
-        pass
-
-    def test_date(self):
-        pass
