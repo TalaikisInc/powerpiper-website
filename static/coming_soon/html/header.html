@@ -3,22 +3,27 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <base href="{{ .Strings.BaseURL }}/">
+    <link rel="canonical" href="{{ .Strings.BaseURL }}/" />
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
     <title>{{ .Strings.PageTitle }} | {{ .Strings.SiteTitle }} </title>
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" rel="stylesheet" media="none" onload="if(media!='all')media='all'" />
-	<link href="{{ .Strings.BaseURL }}/static/{{ .Strings.Template }}/css/coming-sssoon.css" rel="stylesheet" media="none" onload="if(media!='all')media='all'" />
-    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.css" rel="stylesheet" media="none" onload="if(media!='all')media='all'" />
+	<link href="static/{{ .Strings.Template }}/css/coming-sssoon.css" rel="stylesheet" media="none" onload="if(media!='all')media='all'" />
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" media="none" onload="if(media!='all')media='all'" />
     <link href="//fonts.googleapis.com/css?family=Grand+Hotel' rel='stylesheet" media="none" onload="if(media!='all')media='all'">
+    <!--[if lt IE 9]>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+    <meta property="og:site_name" content="{{ .Strings.SiteTitle }}" />
+    <meta property="og:title" content="{{ .Strings.PageTitle }}" />
     <meta property="og:locale" content="en_US" />
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Power Piper"/>
+    <meta property="og:url" content="{{ .Strings.BaseURL }}" />
+    <meta property="og:image" content="{{ .Strings.BaseURL }}/static/{{ .Strings.Template }}/images/default.jpg" />
     <meta name="twitter:site" content="@ThePowerPiper" />
-    <meta property="og:locale" content="en_US" />
-    <meta property="og:type" content="website" />
 </head>
 
 <body>

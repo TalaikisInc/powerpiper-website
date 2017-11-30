@@ -10,8 +10,6 @@ from .models import Post, Category
 
 
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('title', 'parsed')
-    list_filter = ('parsed', 'parsed')
     search_fields = ('title', 'slug')
 
 
@@ -24,10 +22,6 @@ class PostAdminForm(forms.ModelForm):
 
 
 class PostAdmin(admin.ModelAdmin):
-    #list_display = ('title', 'category', 'date', 'image')
-    #list_filter = ('category', 'date')
-    #search_fields = ('title', 'content')
-    #date_hierarchy = 'date'
     form = PostAdminForm
 
 
