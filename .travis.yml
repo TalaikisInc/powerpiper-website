@@ -38,4 +38,4 @@ notifications:
   slack: powerpiper:fDpG2QMxg9NRjGuW8HsJJHF0
 
 script:
-    - echo "TODO"
+    - python tests.py
