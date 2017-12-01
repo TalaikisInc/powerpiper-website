@@ -49,4 +49,6 @@ notifications:
   slack: powerpiper:fDpG2QMxg9NRjGuW8HsJJHF0
 
 script:
-    - python tests.py
+    - python manage.py makemigrations
+    - python manage.py migrate
+    - python manage.py test
