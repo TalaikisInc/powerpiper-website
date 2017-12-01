@@ -1,6 +1,4 @@
 *.pyc
-# Logs
-logs
 *.log
 
 # Runtime data
