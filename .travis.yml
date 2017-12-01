@@ -35,6 +35,7 @@ notifications:
   email:
     on_success: never
     on_failure: always
+  slack: powerpiper:fDpG2QMxg9NRjGuW8HsJJHF0
 
 script:
     - echo "TODO"
