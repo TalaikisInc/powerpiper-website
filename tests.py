@@ -23,10 +23,10 @@ def process_output(proc):
 
 if __name__ == "__main__":
     environ['DJANGO_SETTINGS_MODULE'] = "backend.settings"
-    django.setup()
 
     f = open(join(settings.BASE_DIR, "logs", "django.log"), "w+")
     f.close()
+    django.setup()
 
     #proc = Popen("chown -R www-data:www-data .")
     #outs, errs = process_output(proc=proc)
