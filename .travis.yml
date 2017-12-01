@@ -23,9 +23,20 @@ addons:
     packages:
       - gcc
       - postgresql-client-9.6
+  postgresql: "9.6"
+
+services:
+  - postgresql
 
 env:
   - DJANGO_VERSION=1.11.7
+
+before_script:
+  - psql -c "CREATE DATABASE test_db ENCODING = 'UTF8';" -U postgres
+
+test:
+  adapter: postgresql
+  database: travis_ci_test
 
 install:
   - pip install -q Django==$DJANGO_VERSION

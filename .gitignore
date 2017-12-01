@@ -1,5 +1,4 @@
 *.pyc
-.env
 # Logs
 logs
 *.log
@@ -58,4 +57,4 @@ static/admin
 *.exe
 *.jpg
 *.png
-migrations/
+migrations
