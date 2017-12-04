@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"html/template"
 	"net/http"
 	"os"
 	"strings"
@@ -8,6 +9,7 @@ import (
 
 type PageStruct struct {
 	Strings map[string]string
+	Body    template.HTML
 }
 
 func Strings() map[string]string {
