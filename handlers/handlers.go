@@ -6,7 +6,9 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"net/url"
 	"os"
+	"strings"
 
 	"github.com/die-net/lrucache"
 	"github.com/joho/godotenv"
@@ -43,29 +45,35 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func PrivacyPolicyHandler(w http.ResponseWriter, r *http.Request) {
+func FlatPagesHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html")
 	w.Header().Set("Cache-Control", "max-age=2592000")
 
+	page := url.QueryEscape(strings.Split(r.RequestURI, "/")[2])
+	if len(page) == 0 {
+		return
+	}
+
 	strings := middleware.Strings()
-	strings["PageTitle"] = "Privacy Policy"
 	strings["UA"] = middleware.GetUserAgent(r)
 
-	cached, isCached := cache.Get("privacy_policy")
+	title, isCached := cache.Get("flat_title" + page)
+	body, _ := cache.Get("flat_body" + page)
 	if isCached == false {
 		db := database.Connect()
 		defer db.Close()
 
-		query := `SELECT 
+		query := fmt.Sprintf(`SELECT 
 			url, 
+			title, 
 			content 
 			FROM django_flatpage 
-			WHERE url = '/privacy_policy/';`
+			WHERE url = '/%s/';`, page)
 
 		row := db.QueryRow(query)
 
 		post := models.FlatPage{}
-		err := row.Scan(&post.URL, &post.Content)
+		err := row.Scan(&post.URL, &post.Title, &post.Content)
 		switch {
 		case err == sql.ErrNoRows:
 			http.NotFound(w, r)
@@ -76,9 +84,11 @@ func PrivacyPolicyHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		cache.Set("privacy_policy", []byte(post.Content))
+		cache.Set("flat_title"+page, []byte(post.Title))
+		cache.Set("flat_body"+page, []byte(post.Content))
+		strings["PageTitle"] = post.Title
 
-		err = tpl.ExecuteTemplate(w, "privacy_policy.html", middleware.PageStruct{
+		err = tpl.ExecuteTemplate(w, "flat.html", middleware.PageStruct{
 			Strings: strings,
 			Body:    template.HTML(post.Content)})
 		if err != nil {
@@ -86,9 +96,10 @@ func PrivacyPolicyHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	strings["PageTitle"] = string(title)
 	err := tpl.ExecuteTemplate(w, "privacy_policy.html", middleware.PageStruct{
 		Strings: strings,
-		Body:    template.HTML(cached)})
+		Body:    template.HTML(body)})
 	if err != nil {
 		log.Fatal(err)
 	}
