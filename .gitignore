@@ -31,3 +31,4 @@ static/admin
 *.jpg
 *.png
 migrations
+.next

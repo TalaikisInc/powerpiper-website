@@ -8,6 +8,7 @@
   "license": "LGPL-3.0",
   "dependencies": {
     "axios": "^0.16.2",
+    "babel-core": "^6.26.0",
     "dotenv": "^4.0.0",
     "express": "^4.16.2",
     "grommet": "^1.0.1",
@@ -21,9 +22,9 @@
     "react-dom": "^16.2.0",
     "react-ga": "^2.2.0",
     "react-helmet": "^5.2.0",
-    "react-particles-js": "^2.1.0",
     "react-scripts": "0.4.1",
     "react-social-login": "^3.4.1",
+    "react-typekit": "^1.1.0",
     "styled-components": "^2.3.0"
   },
   "scripts": {
