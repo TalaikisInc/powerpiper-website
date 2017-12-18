@@ -1,0 +1,52 @@
+{
+  "name": "powerpiper-frontend-react-grommet",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Tadas Talaikis <info@talaikis.com> (https://talaikis.com/)",
+  "homepage": "https://powerpiper.com",
+  "repository": "https://github.com/powerpiper/website/frontend/",
+  "license": "LGPL-3.0",
+  "dependencies": {
+    "axios": "^0.16.2",
+    "dotenv": "^4.0.0",
+    "express": "^4.16.2",
+    "grommet": "^1.0.1",
+    "jsonp": "^0.2.1",
+    "lodash": "^4.17.4",
+    "next": "^4.2.1",
+    "next-routes": "^1.1.0",
+    "prop-types": "^15.6.0",
+    "react": "^16.2.0",
+    "react-animations": "^1.0.0",
+    "react-dom": "^16.2.0",
+    "react-ga": "^2.2.0",
+    "react-helmet": "^5.2.0",
+    "react-particles-js": "^2.1.0",
+    "react-scripts": "0.4.1",
+    "react-social-login": "^3.4.1",
+    "styled-components": "^2.3.0"
+  },
+  "scripts": {
+    "dev": "node server.js",
+    "build": "next build",
+    "start": "next build; NODE_ENV=production node server.js"
+  },
+  "now": {
+    "alias": "next-grommet-example.now.sh"
+  },
+  "devDependencies": {
+    "css-loader": "^0.28.7",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "html-webpack-plugin": "^2.30.1",
+    "node-sass": "^4.7.2",
+    "npm-sass": "^2.2.1",
+    "sass-loader": "^6.0.6",
+    "ts-loader": "^3.2.0",
+    "ts-node": "^4.0.2",
+    "typescript": "^2.6.2",
+    "webpack": "^3.10.0",
+    "webpack-bundle-analyzer": "^2.9.1",
+    "webpack-config": "^7.5.0",
+    "webpack-dev-server": "^2.9.7"
+  }
+}

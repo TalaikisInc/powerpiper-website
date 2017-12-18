@@ -65,11 +65,28 @@ class Category(AutoSlugifyOnSaveModel):
         return '%s' %(self.title)
 
 
+class Author(AutoSlugifyOnSaveModel):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=160, verbose_name=T("Author"), db_index=True, unique=True)
+    slug = models.CharField(max_length=160, blank=True, null=True)
+    image = models.ImageField(upload_to="uploads/author/", blank=True, null=True, verbose_name=T("Author photo"))
+
+    class Meta:
+        ordering = ('title',)
+
+    def __unicode__(self):
+        return '%s' %(self.name)
+
+    def __str__(self):
+        return '%s' %(self.name)
+
+
 class Post(AutoSlugifyOnSaveModel):
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=250, verbose_name=T("Title"), db_index=True, unique=True)
     slug = models.CharField(max_length=250, blank=True, null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name=T("Categoery"))
+    author = models.ForeignKey(Author, on_delete=models.CASCADE, verbose_name=T("Author"), blank=True, null=True)
     content = RichTextUploadingField("contents")
     date = models.DateTimeField(verbose_name=T("Date"))
     image = models.ImageField(upload_to="uploads/", blank=True, null=True, verbose_name=T("Image"))

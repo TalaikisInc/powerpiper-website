@@ -1,14 +1,15 @@
-package main
+ppackage main
 
 import (
 	"log"
 	"net/http"
 	"os"
-	"time"
 
-	"./handlers"
-	"github.com/gorilla/mux"
+	"../api"
 	"github.com/joho/godotenv"
+	"github.com/labstack/echo"
+	"github.com/labstack/echo/middleware"
+	"golang.org/x/crypto/acme/autocert"
 )
 
 func init() {
@@ -20,22 +21,59 @@ func init() {
 
 func main() {
 	Host := os.Getenv("HOST")
-	StaticPath := "/static/" // + os.Getenv("TEMPLATE") + "/"
 
-	app := mux.NewRouter()
-	app.PathPrefix(StaticPath).Handler(http.FileServer(http.Dir(".")))
+	app := echo.New()
+	app.AutoTLSManager.HostPolicy = autocert.HostWhitelist(os.Getenv("DOMAIN"))
+	app.AutoTLSManager.Cache = autocert.DirCache("/var/www/.cache")
+	app.Use(middleware.Logger())
+	app.Use(middleware.Recover())
+	app.Use(middleware.Gzip())
 
-	app.HandleFunc("/", handlers.IndexHandler)
-	app.HandleFunc("/page/{page}/", handlers.FlatPagesHandler).Methods("GET")
-	app.NotFoundHandler = http.HandlerFunc(handlers.NotFound)
+	app.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{os.Getenv("BASE_URL")},
+		AllowMethods: []string{echo.GET, echo.PUT, echo.POST, echo.DELETE},
+	}))
 
-	server := &http.Server{
-		Handler:      app,
-		Addr:         Host + ":" + os.Getenv("WEB_PORT"),
-		WriteTimeout: 1 * time.Second,
-		ReadTimeout:  1 * time.Second,
-	}
+	app.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
+		return func(c echo.Context) error {
+			// Extract the credentials from HTTP request header and perform a security
+			// check
 
-	log.Fatal(server.ListenAndServe())
+			// For invalid credentials
+			return echo.NewHTTPError(http.StatusUnauthorized, "Please provide valid credentials")
 
+			// For valid credentials call next
+			// return next(c)
+		}
+	})
+
+	/* Stats */
+	s := api.NewStats()
+	app.Use(s.Process)
+	app.GET("/stats", s.StatsHandler)
+	app.Use(api.ServerHeader)
+
+	/* Auth */
+	app.GET("/", api.Accessible)
+	r := app.Group("/members")
+	r.Use(middleware.JWT([]byte("secret")))
+	r.GET("", api.Restricted)
+
+	/* Handles */
+	app.GET("/api/v1.0/page/:page", api.Page)
+	app.POST("/api/v1.0/users", api.CreateUser)
+	app.GET("/api/v1.0/users/:id", api.GetUser)
+	app.PUT("/api/v1.0/users/:id", api.UpdateUser)
+	app.DELETE("/api/v1.0/users/:id", api.DeleteUser)
+	app.POST("/api/v1.0/login", api.Login)
+
+	/* Server */
+	s := &http.Server{
+		Addr:         ":" + os.Getenv("WEB_PORT"),
+		ReadTimeout:  5 * time.Seconds,
+		WriteTimeout: 5 * time.Seconds,
+	  }
+
+	  app.Logger.Fatal(app.StartServer(s))
+	  //app.Logger.Fatal(app.StartAutoTLS(s))
 }

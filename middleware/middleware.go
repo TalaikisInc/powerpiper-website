@@ -17,7 +17,8 @@ func Strings() map[string]string {
 		"SiteTitle":   "Power Piper",
 		"AnalyticsID": os.Getenv("GOOGLE_ANALYTICS"),
 		"BaseURL":     os.Getenv("BASE_URL"),
-		"Template":    os.Getenv("TEMPLATE")}
+		"Template":    os.Getenv("TEMPLATE"),
+		"IntergramID": os.Getenv("CHAT_ID")}
 	return strings
 }
 
