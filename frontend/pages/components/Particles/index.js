@@ -1,6 +1,8 @@
 /* FIXME */
 import { Component } from 'react';
 
+import Wrapper from './wrapper';
+
 const isBrowser = typeof window !== 'undefined';
 const P = isBrowser ? require('../../assets/js/particles.js') : undefined;
 
@@ -13,7 +15,9 @@ class _Particles extends Component {
     }
     render () {
         return (
-            <div id='particles-js'></div>
+            <Wrapper>
+                <div id='particles-js'></div>
+            </Wrapper>
         )
     }
 }

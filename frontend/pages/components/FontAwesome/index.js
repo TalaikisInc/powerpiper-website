@@ -1,13 +1,7 @@
-import { Component } from 'react';
 import PropTypes from 'prop-types';
 
-class FontAwesome extends Component {
-  render () {
-    const {props} = this.props;
-    return (
-      <i className={`fa fa-${this.props.name} ${this.props.className} fa-${this.props.size}`} alt={this.props.ariaLabel} style={{ padding: '0.5em'}}></i>
-    );
-  }
+const FontAwesome = (props) => {
+  return <i className={`fa fa-${props.name} ${props.className} fa-${props.size}`} alt={props.ariaLabel} style={{ padding: '0.5em'}}></i>
 }
 
 FontAwesome.propTypes = {

@@ -1,5 +1,3 @@
-/* Modified version from https://github.com/revolunet/react-mailchimp-subscribe */
-
 import { Component } from "react";
 import jsonp from "jsonp"
 import Form from 'grommet/components/Form';
@@ -76,7 +74,7 @@ class Subscribe extends Component {
               disabled={this.state.status === "sending" || this.state.status === "success"}
               onClick={this.onSubmit}
               type="submit"
-              className="grommetux-button"
+              className="grommetux-button grommetux-button-invert"
             >
               {messages.btnLabel}
             </button>
