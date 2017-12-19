@@ -13,7 +13,7 @@ const port = process.env.FRONTEND_PORT
 
 i18n.use(Backend).use(i18nextMiddleware.LanguageDetector).init({
   preload: ['en', 'de', 'es', 'fr', 'ru', 'ko'],
-  ns: ['common', 'index'],
+  ns: ['index'],
   backend: {
     loadPath: path.join(__dirname, '/locales/{{lng}}/{{ns}}.json'),
     addPath: path.join(__dirname, '/locales/{{lng}}/{{ns}}.missing.json')

@@ -65,7 +65,7 @@ class Index extends Component {
   }
 }
 
-const Extended = translate(['index', 'common'], { i18n, wait: process.browser })(Index)
+const Extended = translate(['index'], { i18n, wait: process.browser })(Index)
 
 Extended.getInitialProps = async ({ req }) => {
   if (req && !process.browser) return i18n.getInitialProps(req, ['index'])
