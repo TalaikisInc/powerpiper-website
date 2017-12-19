@@ -32,3 +32,4 @@ static/admin
 *.png
 migrations
 .next
+stats.txt

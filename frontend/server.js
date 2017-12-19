@@ -1,9 +1,5 @@
-require('dotenv').config({ path: '../.env' })
-
 const next = require('next')
 const routes = require('./routes')
-//const scss = require('./pages/assets/scss/theme.scss')
-//npm-sass ./pages/assets/scss/theme.scss > ./dist/grommet.css
 const app = next({dev: process.env.NODE_ENV !== 'production'})
 const handler = routes.getRequestHandler(app)
 

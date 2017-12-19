@@ -9,7 +9,9 @@
   "dependencies": {
     "axios": "^0.16.2",
     "babel-core": "^6.26.0",
-    "dotenv": "^4.0.0",
+    "babel-plugin-inline-dotenv": "^1.1.1",
+    "babel-plugin-transform-inline-environment-variables": "^0.2.0",
+    "cross-env": "^5.1.1",
     "express": "^4.16.2",
     "grommet": "^1.0.1",
     "jsonp": "^0.2.1",
@@ -30,7 +32,8 @@
   "scripts": {
     "dev": "node server.js",
     "build": "next build",
-    "start": "next build; NODE_ENV=production node server.js"
+    "start": "next build; NODE_ENV=production node server.js",
+    "analyze": "cross-env ANALYZE=1 next build"
   },
   "now": {
     "alias": "next-grommet-example.now.sh"
@@ -51,6 +54,7 @@
     "typescript": "^2.6.2",
     "webpack": "^3.10.0",
     "webpack-bundle-analyzer": "^2.9.1",
+    "webpack-bundle-size-analyzer": "^2.7.0",
     "webpack-config": "^7.5.0",
     "webpack-dev-server": "^2.9.7"
   }
