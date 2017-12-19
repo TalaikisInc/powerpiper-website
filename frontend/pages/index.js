@@ -1,16 +1,16 @@
 //FIXME
 //import 'assets/scss/theme.css'
 
-import { Component } from 'react';
-import Article from 'grommet/components/Article';
-import Section from 'grommet/components/Section';
-import Heading from 'grommet/components/Heading';
-import Animate from 'grommet/components/Animate';
+import { Component } from 'react'
+import Article from 'grommet/components/Article'
+import Section from 'grommet/components/Section'
+import Heading from 'grommet/components/Heading'
+import Animate from 'grommet/components/Animate'
 
-import Layout from './layout';
-import _Header from './components/Header';
-import _Footer from './components/Footer';
-import Subscribe from './components/Subscribe';
+import Layout from './layout'
+import _Header from './components/Header'
+import _Footer from './components/Footer'
+import Subscribe from './components/Subscribe'
 
 class Index extends Component {
   constructor(props) {
@@ -25,26 +25,20 @@ class Index extends Component {
     this.setState({
       ...this.state,
       selected
-    })
+    });
   }
   
   render () {
     this.title = 'Decentralized Energy Marketplace'
-    this.siteTitle = 'PowerPiper' //make this defualt
-    this.author = 'PowerPiper' //make this defualt
     this.description = 'Decentralized Energy Marketplace'
-    this.baseURL = process.env.BASE_URL || 'http://localhost:3010' //make this defualt
+    this.siteTitle = 'PowerPiper' //make default
     this.image = ''
+    this.baseURL = process.env.BASE_URL || '' //make default
+    this.author = 'PowerPiper' //make default
 
     return (
-        <Layout 
-            title={this.title} 
-            description={this.description}
-            siteTitle={this.siteTitle}
-            image ={this.image}
-            baseURL={this.baseURL}
-            author={this.author}>
-        <_Header />
+      <Layout>
+        {_Header({props: this.props})}
         <Article onSelect={this._onSelect} scrollStep={true} controls={true} selected={this.state.selected}>
           <Section full={true} pad='none' align='center' justify='center'>
             <Subscribe />
