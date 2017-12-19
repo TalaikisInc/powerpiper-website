@@ -1,3 +1,5 @@
+import scss from '../../assets/scss/theme.scss'
+
 import Header from 'grommet/components/Header'
 import PropTypes from 'prop-types'
 import Head from 'next/head'
@@ -31,11 +33,11 @@ const _Header = (props) => {
         <link rel='canonical' href={baseURL} />
         {Title({title: props.title, siteTitle: siteTitle})}
         <link href='//fonts.googleapis.com/css?family=Grand+Hotel' rel='stylesheet' type='text/css' />
-        <link href='//cdnjs.cloudflare.com/ajax/libs/grommet/1.0.1/grommet.min.css' rel='stylesheet' type='text/css' />
         <script src="//cdnjs.cloudflare.com/ajax/libs/react/16.2.0/umd/react.production.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/react-dom/16.2.0/umd/react-dom.production.min.js"></script>
         <link href='//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' rel='stylesheet' type='text/css' />
         <link rel='stylesheet' type='text/css' href='../../assets/css/progress.css' />
+        <style dangerouslySetInnerHTML={{ __html: scss }} />
         {Meta({props: props, baseURL: baseURL, siteTitle: siteTitle, author: author})}
       </Head>
       <Header size='small' fixed={true} direction='row' pad='small' align='center'>

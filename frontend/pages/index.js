@@ -1,6 +1,3 @@
-//FIXME
-//import 'assets/scss/theme.css'
-
 import { Component } from 'react'
 import Article from 'grommet/components/Article'
 import Section from 'grommet/components/Section'
@@ -40,10 +37,10 @@ class Index extends Component {
           <Section full={true} pad='none' align='center' justify='center'>
             <Subscribe />
           </Section>
-          <Section full={true} pad='none' colorIndex='ascent-1'>
+          <Section full={true} pad='none' colorIndex='ascent-1' colorIndex='neutral-1'>
           <Animate enter={{'animation': 'slide-up', 'duration': 1000, 'delay': 0}} keep={true}>
             <Heading align='center' justify='center'>
-            Section2
+            Testing theme color
             </Heading>
           </Animate>
           </Section>
