@@ -1,45 +1,24 @@
-import { Component } from 'react';
-import ReactGa from 'react-ga';
+import ReactGA from 'react-ga';
 
-import config from './config';
-
-function GAInitialize() {
-  const { trackerId, ...configObject } = config;
-  ReactGA.initialize(trackerId, {
-    ...configObject
-  });
+export const initGA = () => {
+  console.log('GA init');
+  ReactGA.initialize(process.env.GA);
 }
 
-function LogPageView () {
-  GAInitialize();
-  if (typeof window !== undefined) {
-    ReactGa.set({
-      page: window.location.pathname
-    });
-    ReactGa.pageview(window.location.pathname);
+export const logPageView = () => {
+  //console.log(`Logging pageview for ${window.location.pathname}`);
+  ReactGA.set({ page: window.location.pathname });
+  ReactGA.pageview(window.location.pathname);
+}
+
+export const logEvent = (category = '', action = '') => {
+  if (category && action) {
+    ReactGA.event({ category, action });
   }
 }
 
-function LogEvent (cat, action) {
-  GAInitialize();
-  ReactGA.event({
-    category: cat,
-    action: action
-  });
-}
-
-class GA extends Component {
-  constructor(props) {
-    super();
-    //props.log == 'pageview' ? LogPageView() : undefined
-    //props.log == 'evevt' ? LogEvent(props.cat, props.action) : undefined
-  }
-
-  render () {
-    return (
-      <div></div>
-    )
+export const logException = (description = '', fatal = false) => {
+  if (description) {
+    ReactGA.exception({ description, fatal });
   }
 }
-
-export default GA;

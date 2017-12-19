@@ -8,11 +8,11 @@ import Section from 'grommet/components/Section';
 import Heading from 'grommet/components/Heading';
 import Animate from 'grommet/components/Animate';
 
+import Layout from './layout';
 import _Header from './components/Header';
 import Meta from './components/Meta';
 import Title from './components/Title';
 import _Footer from './components/Footer';
-import GA from './components/GA';
 import Subscribe from './components/Subscribe';
 
 class Index extends Component {
@@ -40,7 +40,7 @@ class Index extends Component {
     this.author = 'PowerPiper';
 
     return (
-      <div>
+      <Layout>
         <Head>
           <link rel='canonical' href={this.baseURL} />
           <Title title={this.title} siteTitle={this.siteTitle} />
@@ -53,7 +53,7 @@ class Index extends Component {
         </Head>
         <_Header />
         <Article onSelect={this._onSelect} scrollStep={true} controls={true} selected={this.state.selected}>
-          <Section full={true} pad='none' align='center' justify='center' colorIndex='neutral-3'>
+          <Section full={true} pad='none' align='center' justify='center'>
             <Subscribe />
           </Section>
           <Section full={true} pad='none' colorIndex='ascent-1'>
@@ -75,8 +75,7 @@ class Index extends Component {
           </Section>
         </Article>
         <_Footer title={this.siteTitle} scrollStep={false} controls={false} />
-        <GA log='pageview' />
-      </div>
+      </Layout>
     )
   }
 }
