@@ -1,4 +1,5 @@
 import scss from '../../assets/scss/theme.scss'
+import nprogress from '../../assets/css/progress.css'
 
 import Header from 'grommet/components/Header'
 import PropTypes from 'prop-types'
@@ -36,7 +37,7 @@ const _Header = (props) => {
         <script src="//cdnjs.cloudflare.com/ajax/libs/react/16.2.0/umd/react.production.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/react-dom/16.2.0/umd/react-dom.production.min.js"></script>
         <link href='//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' rel='stylesheet' type='text/css' />
-        <link rel='stylesheet' type='text/css' href='../../assets/css/progress.css' />
+        <style dangerouslySetInnerHTML={{ __html: nprogress }} />
         <style dangerouslySetInnerHTML={{ __html: scss }} />
         {Meta({props: props, baseURL: baseURL, siteTitle: siteTitle, author: author})}
       </Head>

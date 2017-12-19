@@ -3,14 +3,17 @@ import Article from 'grommet/components/Article'
 import Section from 'grommet/components/Section'
 import Heading from 'grommet/components/Heading'
 import Animate from 'grommet/components/Animate'
+import { translate } from 'react-i18next'
 
 import Layout from './layout'
 import _Header from './components/Header'
 import _Footer from './components/Footer'
 import Subscribe from './components/Subscribe'
+import i18n, {initialI18nStore} from '../i18n'
+let t = i18n.t.bind(i18n)
 
 class Index extends Component {
-  constructor(props) {
+  constructor() {
     super();
     this.state = {
       selected: 0
@@ -35,6 +38,7 @@ class Index extends Component {
         {_Header({title: this.title, description: this. description, image: this.image})}
         <Article onSelect={this._onSelect} scrollStep={true} controls={true} selected={this.state.selected}>
           <Section full={true} pad='none' align='center' justify='center'>
+          <h1>{t('welcome')}</h1>
             <Subscribe />
           </Section>
           <Section full={true} pad='none' colorIndex='ascent-1' colorIndex='neutral-1'>
@@ -61,4 +65,11 @@ class Index extends Component {
   }
 }
 
-export default Index;
+const Extended = translate(['index', 'common'], { i18n, wait: process.browser })(Index)
+
+Extended.getInitialProps = async ({ req }) => {
+  if (req && !process.browser) return i18n.getInitialProps(req, ['index'])
+  return {}
+}
+
+export default Extended
