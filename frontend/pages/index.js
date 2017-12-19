@@ -31,14 +31,11 @@ class Index extends Component {
   render () {
     this.title = 'Decentralized Energy Marketplace'
     this.description = 'Decentralized Energy Marketplace'
-    this.siteTitle = 'PowerPiper' //make default
     this.image = ''
-    this.baseURL = process.env.BASE_URL || '' //make default
-    this.author = 'PowerPiper' //make default
 
     return (
       <Layout>
-        {_Header({props: this.props})}
+        {_Header({title: this.title, description: this. description, image: this.image})}
         <Article onSelect={this._onSelect} scrollStep={true} controls={true} selected={this.state.selected}>
           <Section full={true} pad='none' align='center' justify='center'>
             <Subscribe />

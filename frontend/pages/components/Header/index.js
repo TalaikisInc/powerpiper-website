@@ -1,4 +1,5 @@
 import Header from 'grommet/components/Header'
+import PropTypes from 'prop-types'
 import Head from 'next/head'
 import Link from 'next/link'
 import Router from 'next/router'
@@ -19,19 +20,23 @@ Router.onRouteChangeStart = (url) => {
 Router.onRouteChangeComplete = () => NProgress.done()
 Router.onRouteChangeError = () => NProgress.done()
 
+const siteTitle = 'PowerPiper'
+const baseURL = process.env.BASE_URL || ''
+const author = 'PowerPiper'
+
 const _Header = (props) => {
   return (
     <div>
       <Head>
-        <link rel='canonical' href={props.baseURL} />
-        {Title({title: props.title, siteTitle: props.siteTitle})}
+        <link rel='canonical' href={baseURL} />
+        {Title({title: props.title, siteTitle: siteTitle})}
         <link href='//fonts.googleapis.com/css?family=Grand+Hotel' rel='stylesheet' type='text/css' />
         <link href='//cdnjs.cloudflare.com/ajax/libs/grommet/1.0.1/grommet.min.css' rel='stylesheet' type='text/css' />
         <script src="//cdnjs.cloudflare.com/ajax/libs/react/16.2.0/umd/react.production.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/react-dom/16.2.0/umd/react-dom.production.min.js"></script>
         <link href='//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' rel='stylesheet' type='text/css' />
         <link rel='stylesheet' type='text/css' href='../../assets/css/progress.css' />
-        {Meta({props: props})}
+        {Meta({props: props, baseURL: baseURL, siteTitle: siteTitle, author: author})}
       </Head>
       <Header size='small' fixed={true} direction='row' pad='small' align='center'>
         <SVGIcon viewBox='0 0 130 108'
@@ -50,11 +55,14 @@ const _Header = (props) => {
           <Link href='/'><a className='grommetux-anchor'>Home</a></Link>
           <Link href='/register'><a className='grommetux-anchor'>Login/ Register</a></Link>
         </Menu>
-        
       </Box>
       </Header>
     </div>
   )
 }
+
+_Header.propTypes = {
+  title: PropTypes.string.isRequired,
+};
 
 export default _Header;

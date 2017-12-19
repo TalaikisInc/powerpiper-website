@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 
 const Copy = (props) => {
   return <div>&copy; {(new Date().getFullYear())} {props.title}</div>
@@ -6,7 +6,7 @@ const Copy = (props) => {
   
   Copy.propTypes = {
     title: PropTypes.string.isRequired,
-  };
+  }
 
-  export default Copy;
+  export default Copy
   
