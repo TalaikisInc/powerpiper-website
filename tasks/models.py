@@ -2,8 +2,23 @@ from django.db import models
 from django.utils.translation import ugettext as T
 from django.db import IntegrityError
 from django.template.defaultfilters import slugify
+from django.contrib.auth.models import AbstractUser
 
 from ckeditor_uploader.fields import RichTextUploadingField
+
+
+PROVIDERS = (
+    (0, 'Facebook'),
+    (1, 'Google'),
+    (2, 'LinkedIn'),
+)
+
+
+class Users(AbstractUser):
+    provider = models.SmallIntegerField(choices=PROVIDERS, null=True, blank=True, verbose_name=T("Social provider"))
+    access_token = models.TextField(blank=True, null=True, verbose_name=T("Social access token"))
+    expiration = models.DateTimeField(verbose_name=T("Date"))
+    avatar = models.URLField(max_length=255, verbose_name=T("Avatar URL"))
 
 
 class AutoSlugifyOnSaveModel(models.Model):

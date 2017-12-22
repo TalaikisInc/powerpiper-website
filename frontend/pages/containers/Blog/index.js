@@ -2,10 +2,10 @@ import { Component } from 'react'
 import Link from 'next/link'
 import 'isomorphic-unfetch'
 
-export default class Post extends Component {
+export default class Blog extends Component {
   static async getInitialProps () {
     // eslint-disable-next-line no-undef
-    const res = await fetch(process.env.API_URL + '/post/' + props.id)
+    const res = await fetch(process.env.API_URL + '/latest/')
     const json = await res.json()
     return { title: json.title,
         slug: json.slug,
