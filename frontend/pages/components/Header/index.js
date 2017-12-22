@@ -41,7 +41,7 @@ const _Header = (props) => {
         <style dangerouslySetInnerHTML={{ __html: scss }} />
         {Meta({props: props, baseURL: baseURL, siteTitle: siteTitle, author: author})}
       </Head>
-      <Header size='small' fixed={true} direction='row' pad='small' align='center'>
+      <Header size='small' fixed={true} direction='row' pad={{horizontal: 'medium'}} align='center'>
         <SVGIcon viewBox='0 0 130 108'
           version='1.1'
           type='logo'

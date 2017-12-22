@@ -11,7 +11,7 @@
     "cross-env": "^5.1.1",
     "dotenv": "^4.0.0",
     "express": "^4.16.2",
-    "grommet": "^1.0.1",
+    "grommet": "^1.8.3",
     "i18next": "^10.2.1",
     "i18next-browser-languagedetector": "^2.1.0",
     "i18next-express-middleware": "^1.0.9",
@@ -36,9 +36,6 @@
     "build": "next build",
     "start": "next build; NODE_ENV=production node server.js",
     "analyze": "cross-env ANALYZE=1 next build"
-  },
-  "now": {
-    "alias": "next-grommet-example.now.sh"
   },
   "devDependencies": {
     "autoprefixer": "^7.2.3",

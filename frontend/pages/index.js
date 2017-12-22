@@ -2,6 +2,7 @@ import { Component } from 'react'
 import Article from 'grommet/components/Article'
 import Section from 'grommet/components/Section'
 import Heading from 'grommet/components/Heading'
+import App from 'grommet/components/App'
 import Animate from 'grommet/components/Animate'
 import { translate } from 'react-i18next'
 
@@ -34,9 +35,10 @@ class Index extends Component {
     this.image = ''
 
     return (
+      <App centered={false}>
       <Layout>
         {_Header({title: this.title, description: this. description, image: this.image})}
-        <Article onSelect={this._onSelect} scrollStep={true} controls={true} selected={this.state.selected}>
+        <Article responsive={true} margin='none' flex={false} primary={true}>
           <Section full={true} pad='none' align='center' justify='center'>
           <h1>{t('welcome')}</h1>
             <Subscribe />
@@ -61,6 +63,7 @@ class Index extends Component {
         </Article>
         {_Footer({title: this.siteTitle, scrollStep: false, controls: false})}
       </Layout>
+      </App>
     )
   }
 }
