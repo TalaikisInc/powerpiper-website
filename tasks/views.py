@@ -4,14 +4,14 @@ from json import dumps
 from rest_framework import views, status, exceptions
 from rest_framework.authentication import get_authorization_header, BaseAuthentication
 from rest_framework.response import Response
-from models import User
 
 from django.http import HttpResponse
 from django.shortcuts import render
 
+from models import Users
+
 
 class Login(views.APIView):
-
     def post(self, request, *args, **kwargs):
         if not request.data:
             return Response({'Error': "Please provide username/password"}, status="400")
@@ -20,8 +20,8 @@ class Login(views.APIView):
         password = request.data['password']
 
         try:
-            user = User.objects.get(username=username, password=password)
-        except User.DoesNotExist:
+            user = Users.objects.get(username=username, password=password)
+        except Users.DoesNotExist:
             return Response({'Error': "Invalid username/password"}, status="400")
 
         if user:
@@ -82,7 +82,7 @@ class TokenAuthentication(BaseAuthentication):
 
         try:
             
-            user = User.objects.get(
+            user = Users.objects.get(
                 email=email,
                 id=userid,
                 is_active=True
@@ -93,7 +93,7 @@ class TokenAuthentication(BaseAuthentication):
                
         except ExpiredSignature or DecodeError or InvalidTokenError:
             return HttpResponse({'Error': "Token is invalid"}, status="403")
-        except User.DoesNotExist:
+        except Users.DoesNotExist:
             return HttpResponse({'Error': "Internal server error"}, status="500")
 
         return (user, token)

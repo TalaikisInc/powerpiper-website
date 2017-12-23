@@ -33,3 +33,4 @@ static/admin
 migrations
 .next
 stats.txt
+.env

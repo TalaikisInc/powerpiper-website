@@ -1,10 +1,11 @@
+from ckeditor_uploader.fields import RichTextUploadingField
+
 from django.db import models
 from django.utils.translation import ugettext as T
 from django.db import IntegrityError
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import AbstractUser
-
-from ckeditor_uploader.fields import RichTextUploadingField
+from django.conf import settings
 
 
 PROVIDERS = (
@@ -14,11 +15,11 @@ PROVIDERS = (
 )
 
 
-class Users(AbstractUser):
+class Author(AbstractUser):
     provider = models.SmallIntegerField(choices=PROVIDERS, null=True, blank=True, verbose_name=T("Social provider"))
-    access_token = models.TextField(blank=True, null=True, verbose_name=T("Social access token"))
-    expiration = models.DateTimeField(verbose_name=T("Date"))
-    avatar = models.URLField(max_length=255, verbose_name=T("Avatar URL"))
+    access_token = models.TextField(verbose_name=T("Social access token"), null=True, blank=True)
+    expiration = models.DateTimeField(verbose_name=T("Date"), null=True, blank=True)
+    avatar = models.URLField(max_length=255, verbose_name=T("Avatar URL"), null=True, blank=True)
 
 
 class AutoSlugifyOnSaveModel(models.Model):
@@ -80,28 +81,12 @@ class Category(AutoSlugifyOnSaveModel):
         return '%s' %(self.title)
 
 
-class Author(AutoSlugifyOnSaveModel):
-    id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=160, verbose_name=T("Author"), db_index=True, unique=True)
-    slug = models.CharField(max_length=160, blank=True, null=True)
-    image = models.ImageField(upload_to="uploads/author/", blank=True, null=True, verbose_name=T("Author photo"))
-
-    class Meta:
-        ordering = ('title',)
-
-    def __unicode__(self):
-        return '%s' %(self.name)
-
-    def __str__(self):
-        return '%s' %(self.name)
-
-
 class Post(AutoSlugifyOnSaveModel):
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=250, verbose_name=T("Title"), db_index=True, unique=True)
     slug = models.CharField(max_length=250, blank=True, null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name=T("Categoery"))
-    author = models.ForeignKey(Author, on_delete=models.CASCADE, verbose_name=T("Author"), blank=True, null=True)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=T("Author"), default=1)
     content = RichTextUploadingField("contents")
     date = models.DateTimeField(verbose_name=T("Date"))
     image = models.ImageField(upload_to="uploads/", blank=True, null=True, verbose_name=T("Image"))

@@ -87,6 +87,8 @@ DATABASES = {
     },
 }
 
+AUTH_USER_MODEL = 'tasks.Author'
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -102,6 +104,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+)
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'

@@ -38,7 +38,7 @@ func (p *Author) UnmarshalJSON(b []byte) error {
 	}
 
 	p.ID = temp.ID
-	p.Name = temp.name
+	p.Name = temp.Name
 	p.Slug = temp.Slug
 	p.Image = temp.Image
 	p.PostCnt = temp.PostCnt

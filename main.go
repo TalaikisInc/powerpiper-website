@@ -1,11 +1,11 @@
-ppackage main
+package main
 
 import (
 	"log"
 	"net/http"
 	"os"
 
-	"../api"
+	"./api"
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
@@ -74,11 +74,12 @@ func main() {
 
 	/* Server */
 	s := &http.Server{
-		Addr:         ":" + os.Getenv("WEB_PORT"),
+		//Addr:         ":" + os.Getenv("WEB_PORT"),
+		Addr:         ":" + os.Getenv("API_PORT"),
 		ReadTimeout:  5 * time.Seconds,
 		WriteTimeout: 5 * time.Seconds,
-	  }
+	}
 
-	  app.Logger.Fatal(app.StartServer(s))
-	  //app.Logger.Fatal(app.StartAutoTLS(s))
+	app.Logger.Fatal(app.StartServer(s))
+	//app.Logger.Fatal(app.StartAutoTLS(s))
 }
