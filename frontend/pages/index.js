@@ -38,9 +38,9 @@ class Index extends Component {
       <App centered={false}>
       <Layout>
         {_Header({title: this.title, description: this. description, image: this.image})}
-        <Article responsive={true} margin='none' flex={false} primary={true}>
+        <Article responsive={true} margin='none' flex={false} primary={true} alignContent='center'>
           <Section full={true} pad='none' align='center' justify='center'>
-          <h1>{t('welcome')}</h1>
+            <h1>{t('welcome')}</h1>
             <Subscribe />
           </Section>
           <Section full={true} pad='none' colorIndex='ascent-1' colorIndex='neutral-1'>
@@ -61,7 +61,7 @@ class Index extends Component {
             Section4
           </Section>
         </Article>
-        {_Footer({title: this.siteTitle, scrollStep: false, controls: false})}
+        {_Footer()}
       </Layout>
       </App>
     )

@@ -22,7 +22,7 @@ const _Footer = (props) => {
           <A href='//www.reddit.com/user/powerpiper'>{FontAwesome({name: 'reddit', ariaLabel: 'Reddit', size: '2x'})}</A>
           <A href='#'>{FontAwesome({name: 'btc', ariaLabel: 'Bitcoin Talk', size: '2x'})}</A>
           <A href='//www.youtube.com/channel/UCJ1NtquKbzr0Naw31aiIzyg'>{FontAwesome({name: 'youtube', ariaLabel: 'Youtube', size: '2x'})}</A>
-          {Copy({title: props.title})}
+          {Copy({title: process.env.SITE_TITLE})}
         </Wrapper>
       </Footer>
     </div>

@@ -23,9 +23,9 @@ Router.onRouteChangeStart = (url) => {
 Router.onRouteChangeComplete = () => NProgress.done()
 Router.onRouteChangeError = () => NProgress.done()
 
-const siteTitle = 'PowerPiper'
+const siteTitle = process.env.SITE_TITLE
 const baseURL = process.env.BASE_URL || ''
-const author = 'PowerPiper'
+const author = process.env.SITE_TITLE
 
 const _Header = (props) => {
   return (
@@ -54,7 +54,7 @@ const _Header = (props) => {
           </g>
         </SVGIcon>
         <Box flex={true} justify='end' direction='row' responsive={false} pad='none'>
-        <Menu direction='row' label='Menu' align='start' justify='between' size='small'>
+        <Menu icon={<MenuIcon />} direction='row' label='Menu' align='start' justify='between' size='small'>
           <Link href='/'><a className='grommetux-anchor'>Home</a></Link>
           <Link href='/register'><a className='grommetux-anchor'>Login/ Register</a></Link>
         </Menu>
