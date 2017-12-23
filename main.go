@@ -60,7 +60,12 @@ func main() {
 	r.GET("", api.Restricted)
 
 	/* Handles */
-	app.GET("/api/v1.0/page/:page", api.Page)
+	app.GET("/api/v1.0/post/:post", api.Posthandler)
+	app.GET("/api/v1.0/posts/:page", api.PostsHandler)
+	app.GET("/api/v1.0/categories/:page", api.CategoriesHandler)
+	app.GET("/api/v1.0/authors/:page", api.AuthorsHandler)
+	app.GET("/api/v1.0/byauthor/:author/:page", api.PostsAuthorHandler)
+	app.GET("/api/v1.0/bycategory/:category/:page", api.PostsCategoryHandler)
 	app.POST("/api/v1.0/users", api.CreateUser)
 	app.GET("/api/v1.0/users/:id", api.GetUser)
 	app.PUT("/api/v1.0/users/:id", api.UpdateUser)

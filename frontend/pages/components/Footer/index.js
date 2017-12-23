@@ -6,7 +6,7 @@ import A from '../A';
 import Wrapper from './wrapper';
 import Copy from '../Copy';
 
-const _Footer = (props) => {
+const _Footer = () => {
   return (
     <div>
       <Footer primary={true} appCentered={true} direction="column" align="center" pad="medium" colorIndex="grey-1">
@@ -22,7 +22,7 @@ const _Footer = (props) => {
           <A href='//www.reddit.com/user/powerpiper'>{FontAwesome({name: 'reddit', ariaLabel: 'Reddit', size: '2x'})}</A>
           <A href='#'>{FontAwesome({name: 'btc', ariaLabel: 'Bitcoin Talk', size: '2x'})}</A>
           <A href='//www.youtube.com/channel/UCJ1NtquKbzr0Naw31aiIzyg'>{FontAwesome({name: 'youtube', ariaLabel: 'Youtube', size: '2x'})}</A>
-          {Copy({title: process.env.SITE_TITLE})}
+          {Copy()}
         </Wrapper>
       </Footer>
     </div>

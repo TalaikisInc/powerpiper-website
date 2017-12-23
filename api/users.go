@@ -9,8 +9,12 @@ import (
 
 type (
 	User struct {
-		ID   int    `json:"id"`
-		Name string `json:"name"`
+		ID          int    `json:"id"`
+		FirstName   string `json:"first_name"`
+		LastName    string `json:"last_name"`
+		Email       string `json:"email"`
+		Provider    string `json:"provider"`
+		AccessToken string `json:"acess_token`
 	}
 )
 

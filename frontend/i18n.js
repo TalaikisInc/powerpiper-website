@@ -10,7 +10,7 @@ const options = {
   ns: ['common'],
   defaultNS: 'common',
 
-  debug: true,
+  debug: false,
   saveMissing: true,
 
   interpolation: {

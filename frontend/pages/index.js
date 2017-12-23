@@ -38,7 +38,7 @@ class Index extends Component {
       <App centered={false}>
       <Layout>
         {_Header({title: this.title, description: this. description, image: this.image})}
-        <Article responsive={true} margin='none' flex={false} primary={true} alignContent='center'>
+        <Article responsive={true} margin='none' flex={false} primary={true}>
           <Section full={true} pad='none' align='center' justify='center'>
             <h1>{t('welcome')}</h1>
             <Subscribe />
