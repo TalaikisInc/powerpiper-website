@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"./api"
 	"github.com/joho/godotenv"
@@ -60,7 +61,7 @@ func main() {
 	r.GET("", api.Restricted)
 
 	/* Handles */
-	app.GET("/api/v1.0/post/:post", api.Posthandler)
+	app.GET("/api/v1.0/post/:post", api.PostHandler)
 	app.GET("/api/v1.0/posts/:page", api.PostsHandler)
 	app.GET("/api/v1.0/categories/:page", api.CategoriesHandler)
 	app.GET("/api/v1.0/authors/:page", api.AuthorsHandler)
@@ -73,13 +74,13 @@ func main() {
 	app.POST("/api/v1.0/login", api.Login)
 
 	/* Server */
-	s := &http.Server{
+	server := &http.Server{
 		//Addr:         ":" + os.Getenv("WEB_PORT"),
-		Addr:         ":" + os.Getenv("API_PORT"),
-		ReadTimeout:  5 * time.Seconds,
-		WriteTimeout: 5 * time.Seconds,
+		Addr:         Host + ":" + os.Getenv("API_PORT"),
+		ReadTimeout:  5 * time.Second,
+		WriteTimeout: 5 * time.Second,
 	}
 
-	app.Logger.Fatal(app.StartServer(s))
+	app.Logger.Fatal(app.StartServer(server))
 	//app.Logger.Fatal(app.StartAutoTLS(s))
 }

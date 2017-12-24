@@ -10,11 +10,12 @@ import (
 type (
 	User struct {
 		ID          int    `json:"id"`
+		UserName    string `json:"username`
 		FirstName   string `json:"first_name"`
 		LastName    string `json:"last_name"`
 		Email       string `json:"email"`
 		Provider    string `json:"provider"`
-		AccessToken string `json:"acess_token`
+		AccessToken string `json:"access_token`
 	}
 )
 
@@ -46,7 +47,7 @@ func UpdateUser(c echo.Context) error {
 		return err
 	}
 	id, _ := strconv.Atoi(c.Param("id"))
-	users[id].Name = u.Name
+	users[id].UserName = u.UserName
 	return c.JSON(http.StatusOK, users[id])
 }
 

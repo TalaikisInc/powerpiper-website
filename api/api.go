@@ -15,7 +15,7 @@ import (
 var postsPerPage = 10
 var cache = lrucache.New(104857600*3, 60*60*24) //300 Mb, 24 hours
 
-func PostHandler(c echo.Context) {
+func PostHandler(c echo.Context) error {
 	_post := c.Param("post")
 
 	cached, isCached := cache.Get("post_" + _post)
@@ -48,27 +48,27 @@ func PostHandler(c echo.Context) {
 			&post.CategoryID.ID, &post.CategoryID.Title, &post.CategoryID.Slug, &post.AuthorID.ID,
 			&post.AuthorID.Name, &post.AuthorID.Slug, &post.AuthorID.Image)
 		if err != nil {
-			return
+			return err
 		}
 
 		j, err := json.Marshal(post)
 		if err != nil {
-			return
+			return err
 		}
 
 		cache.Set("post_"+_post, j)
-		c.JSON(http.StatusOK, j)
+		return c.JSON(http.StatusOK, j)
 	}
-	c.JSON(http.StatusOK, cached)
+	return c.JSON(http.StatusOK, cached)
 }
 
-func PostsCategoryHandler(c echo.Context) {
+func PostsCategoryHandler(c echo.Context) error {
 	category := c.Param("category")
 	page := c.Param("page")
 
 	p, err := strconv.Atoi(page)
 	if err != nil {
-		return
+		return err
 	}
 
 	cached, isCached := cache.Get("posts_cat_" + category + "_" + page)
@@ -103,7 +103,7 @@ func PostsCategoryHandler(c echo.Context) {
 			LIMIT %[2]d OFFSET %[3]d;`, category, postsPerPage, postsPerPage*p)
 		rows, err := db.Query(query)
 		if err != nil {
-			return
+			return err
 		}
 		defer rows.Close()
 
@@ -114,31 +114,31 @@ func PostsCategoryHandler(c echo.Context) {
 				&post.CategoryID.Title, &post.CategoryID.ID, &post.CategoryID.Slug, &post.TotalPosts, &post.AuthorID.ID,
 				&post.AuthorID.Name, &post.AuthorID.Slug, &post.AuthorID.Image)
 			if err != nil {
-				return
+				return err
 			}
 			posts = append(posts, post)
 		}
 		if err = rows.Err(); err != nil {
-			return
+			return err
 		}
 
 		j, err := json.Marshal(posts)
 		if err != nil {
-			return
+			return err
 		}
 
 		cache.Set("posts_cat_"+category+"_"+page, j)
-		c.JSON(http.StatusOK, j)
+		return c.JSON(http.StatusOK, j)
 	}
-	c.JSON(http.StatusOK, cached)
+	return c.JSON(http.StatusOK, cached)
 }
 
-func PostsAuthorHandler(c echo.Context) {
+func PostsAuthorHandler(c echo.Context) error {
 	author := c.Param("author")
 	page := c.Param("page")
 	p, err := strconv.Atoi(page)
 	if err != nil {
-		return
+		return err
 	}
 
 	cached, isCached := cache.Get("posts_author_" + author + "_" + page)
@@ -174,7 +174,7 @@ func PostsAuthorHandler(c echo.Context) {
 			LIMIT %[2]d OFFSET %[3]d;`, author, postsPerPage, postsPerPage*p)
 		rows, err := db.Query(query)
 		if err != nil {
-			return
+			return err
 		}
 		defer rows.Close()
 
@@ -185,30 +185,30 @@ func PostsAuthorHandler(c echo.Context) {
 				&post.CategoryID.Title, &post.CategoryID.ID, &post.CategoryID.Slug, &post.TotalPosts, &post.AuthorID.ID,
 				&post.AuthorID.Name, &post.AuthorID.Slug, &post.AuthorID.Image)
 			if err != nil {
-				return
+				return err
 			}
 			posts = append(posts, post)
 		}
 		if err = rows.Err(); err != nil {
-			return
+			return err
 		}
 
 		j, err := json.Marshal(posts)
 		if err != nil {
-			return
+			return err
 		}
 
 		cache.Set("posts_author_"+author+"_"+page, j)
-		c.JSON(http.StatusOK, j)
+		return c.JSON(http.StatusOK, j)
 	}
-	c.JSON(http.StatusOK, cached)
+	return c.JSON(http.StatusOK, cached)
 }
 
-func PostsHandler(c echo.Context) {
+func PostsHandler(c echo.Context) error {
 	page := c.Param("page")
 	p, err := strconv.Atoi(page)
 	if err != nil {
-		return
+		return err
 	}
 
 	cached, isCached := cache.Get("posts_" + page)
@@ -241,7 +241,7 @@ func PostsHandler(c echo.Context) {
 
 		rows, err := db.Query(query)
 		if err != nil {
-			return
+			return err
 		}
 		defer rows.Close()
 
@@ -252,30 +252,30 @@ func PostsHandler(c echo.Context) {
 				&post.CategoryID.Title, &post.CategoryID.ID, &post.CategoryID.Slug, &post.TotalPosts, &post.AuthorID.ID,
 				&post.AuthorID.Name, &post.AuthorID.Slug, &post.AuthorID.Image)
 			if err != nil {
-				return
+				return err
 			}
 			posts = append(posts, post)
 		}
 		if err = rows.Err(); err != nil {
-			return
+			return err
 		}
 
 		j, err := json.Marshal(posts)
 		if err != nil {
-			return
+			return err
 		}
 
 		cache.Set("posts_"+page, j)
-		c.JSON(http.StatusOK, j)
+		return c.JSON(http.StatusOK, j)
 	}
-	c.JSON(http.StatusOK, cached)
+	return c.JSON(http.StatusOK, cached)
 }
 
-func CategoriesHandler(c echo.Context) {
+func CategoriesHandler(c echo.Context) error {
 	page := c.Param("page")
 	p, err := strconv.Atoi(page)
 	if err != nil {
-		return
+		return err
 	}
 
 	cached, isCached := cache.Get("cats_" + page)
@@ -296,7 +296,7 @@ func CategoriesHandler(c echo.Context) {
 
 		rows, err := db.Query(query)
 		if err != nil {
-			return
+			return err
 		}
 		defer rows.Close()
 
@@ -305,31 +305,31 @@ func CategoriesHandler(c echo.Context) {
 			category := models.Category{}
 			err := rows.Scan(&category.ID, &category.Title, &category.Slug, &category.PostCnt)
 			if err != nil {
-				return
+				return err
 			}
 
 			categories = append(categories, category)
 		}
 		if err = rows.Err(); err != nil {
-			return
+			return err
 		}
 
 		j, err := json.Marshal(categories)
 		if err != nil {
-			return
+			return err
 		}
 
 		cache.Set("cats_"+page, j)
-		c.JSON(http.StatusOK, j)
+		return c.JSON(http.StatusOK, j)
 	}
-	c.JSON(http.StatusOK, cached)
+	return c.JSON(http.StatusOK, cached)
 }
 
-func AuthorsHandler(c echo.Context) {
+func AuthorsHandler(c echo.Context) error {
 	page := c.Param("page")
 	p, err := strconv.Atoi(page)
 	if err != nil {
-		return
+		return err
 	}
 
 	cached, isCached := cache.Get("authors_" + page)
@@ -354,7 +354,7 @@ func AuthorsHandler(c echo.Context) {
 
 		rows, err := db.Query(query)
 		if err != nil {
-			return
+			return err
 		}
 		defer rows.Close()
 
@@ -364,21 +364,21 @@ func AuthorsHandler(c echo.Context) {
 
 			err := rows.Scan(&author.ID, &author.Name, &author.Slug, &author.Image, &author.PostCnt)
 			if err != nil {
-				return
+				return err
 			}
 			authors = append(authors, author)
 		}
 		if err = rows.Err(); err != nil {
-			return
+			return err
 		}
 
 		j, err := json.Marshal(authors)
 		if err != nil {
-			return
+			return err
 		}
 
 		cache.Set("authors_"+page, j)
-		c.JSON(http.StatusOK, j)
+		return c.JSON(http.StatusOK, j)
 	}
-	c.JSON(http.StatusOK, cached)
+	return c.JSON(http.StatusOK, cached)
 }
