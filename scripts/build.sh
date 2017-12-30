@@ -22,12 +22,12 @@ wget https://storage.googleapis.com/golang/go1.8.2.linux-amd64.tar.gz
 sudo tar -C /usr/bin -xzf go1.8.2.linux-amd64.tar.gz
 export PATH=$PATH:/usr/bin/go/bin
 export GOROOT=/usr/bin/go
-/usr/local/go/bin/go get github.com/lib/pq
-/usr/local/go/bin/go get github.com/labstack/echo
-/usr/local/go/bin/go get github.com/labstack/echo/...
-/usr/local/go/bin/go get github.com/joho/godotenv
-/usr/local/go/bin/go get github.com/die-net/lrucache
-/usr/local/go/bin/go build
+go get github.com/lib/pq
+go get github.com/labstack/echo
+go get github.com/labstack/echo/...
+go get github.com/joho/godotenv
+go get github.com/die-net/lrucache
+go build
 
 #############################################################
 # CONFIGURE SERVICES
@@ -41,7 +41,7 @@ echo """description 'Go server Init'\nstart on runlevel [2345]\nstop on runlevel
 #############################################################
 
 wget https://nodejs.org/dist/v8.6.0/node-v8.6.0-linux-x64.tar.xz
-tar -C /usr/local --strip-components 1 -xJf node-v8.6.0-linux-x64.tar.xz
+sudo tar -C /usr/local --strip-components 1 -xJf node-v8.6.0-linux-x64.tar.xz
 ls -l /usr/local/bin/node
 ls -l /usr/local/bin/npm
 cd $FOLDER/frontend

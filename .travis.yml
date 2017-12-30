@@ -49,9 +49,9 @@ notifications:
   slack: powerpiper:fEBF3prSwdbMzHrmXs6Pd4ut
 
 script:
-    - python manage.py makemigrations
-    - python manage.py migrate
+    - python $TRAVIS_BUILD_DIR/manage.py makemigrations
+    - python $TRAVIS_BUILD_DIR/manage.py migrate
     - python $TRAVIS_BUILD_DIR/scripts/superuser.py --user=testuser --password=testpassword --email=test@email.com
-    - python manage.py collectstatic --noinput
-    - python tests.py
-    - bash scripts/build.sh powerpiper $TRAVIS_BUILD_DIR 3010
+    - python $TRAVIS_BUILD_DIR/manage.py collectstatic --noinput
+    - python $TRAVIS_BUILD_DIR/tests.py
+    - bash $TRAVIS_BUILD_DIR/scripts/build.sh powerpiper $TRAVIS_BUILD_DIR 3010
