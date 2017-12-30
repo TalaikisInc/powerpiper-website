@@ -17,8 +17,13 @@ var cache = lrucache.New(104857600*3, 60*60*24) //300 Mb, 24 hours
 
 func PostHandler(c echo.Context) error {
 	_post := c.Param("post")
+	p, err := strconv.Atoi(_post)
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
 
-	cached, isCached := cache.Get("post_" + _post)
+	cached, isCached := cache.Get("post_" + string(p))
 	if isCached == false {
 		db := database.Connect()
 		defer db.Close()
@@ -34,44 +39,53 @@ func PostHandler(c echo.Context) error {
 			cats.title, 
 			cats.slug,  
 			authors.id, 
-			authors.name, 
-			authors.slug, 
-			authors.image 
+			authors.first_name, 
+			authors.last_name, 
+			authors.username, 
+			COALESCE(authors.avatar, '') 
 			FROM tasks_post as posts 
 			INNER JOIN tasks_category as cats ON posts.category_id = cats.id 
 			INNER JOIN tasks_author as authors ON posts.author_id = authors.id 
-			WHERE posts.id='%d';`, _post)
+			WHERE posts.id='%d';`, p)
 		row := db.QueryRow(query)
 
 		post := models.Post{}
 		err := row.Scan(&post.ID, &post.Title, &post.Slug, &post.Content, &post.Date, &post.Image,
 			&post.CategoryID.ID, &post.CategoryID.Title, &post.CategoryID.Slug, &post.AuthorID.ID,
-			&post.AuthorID.Name, &post.AuthorID.Slug, &post.AuthorID.Image)
+			&post.AuthorID.FirstName, &post.AuthorID.LastName, &post.AuthorID.Username, &post.AuthorID.Avatar)
 		if err != nil {
+			fmt.Println(err)
 			return err
 		}
 
 		j, err := json.Marshal(post)
 		if err != nil {
+			fmt.Println(err)
 			return err
 		}
 
 		cache.Set("post_"+_post, j)
-		return c.JSON(http.StatusOK, j)
+		return c.JSON(http.StatusOK, post)
 	}
-	return c.JSON(http.StatusOK, cached)
+	return c.String(http.StatusOK, string(cached))
 }
 
 func PostsCategoryHandler(c echo.Context) error {
 	category := c.Param("category")
-	page := c.Param("page")
-
-	p, err := strconv.Atoi(page)
+	cat, err := strconv.Atoi(category)
 	if err != nil {
+		fmt.Println(err)
 		return err
 	}
 
-	cached, isCached := cache.Get("posts_cat_" + category + "_" + page)
+	page := c.Param("page")
+	p, err := strconv.Atoi(page)
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+
+	cached, isCached := cache.Get("posts_cat_" + string(cat) + "_" + string(p))
 	if isCached == false {
 		db := database.Connect()
 		defer db.Close()
@@ -92,17 +106,19 @@ func PostsCategoryHandler(c echo.Context) error {
 				INNER JOIN tasks_category AS cats ON posts.category_id = cats.id 
 				WHERE cats.id='%[1]d'), 
 			authors.id, 
-			authors.name, 
-			authors.slug, 
-			authors.image
+			authors.first_name, 
+			authors.last_name, 
+			authors.username, 
+			COALESCE(authors.avatar, '') 
 			FROM tasks_post AS posts 
 			INNER JOIN tasks_category AS cats ON posts.category_id = cats.id 
 			INNER JOIN tasks_author as authors ON posts.author_id = authors.id 
 			WHERE cats.id='%[1]d' 
 			ORDER BY dt DESC 
-			LIMIT %[2]d OFFSET %[3]d;`, category, postsPerPage, postsPerPage*p)
+			LIMIT %[2]d OFFSET %[3]d;`, cat, postsPerPage, postsPerPage*p)
 		rows, err := db.Query(query)
 		if err != nil {
+			fmt.Println(err)
 			return err
 		}
 		defer rows.Close()
@@ -111,37 +127,46 @@ func PostsCategoryHandler(c echo.Context) error {
 		for rows.Next() {
 			post := models.Post{}
 			err := rows.Scan(&post.ID, &post.Title, &post.Slug, &post.Content, &post.Date, &post.Image,
-				&post.CategoryID.Title, &post.CategoryID.ID, &post.CategoryID.Slug, &post.TotalPosts, &post.AuthorID.ID,
-				&post.AuthorID.Name, &post.AuthorID.Slug, &post.AuthorID.Image)
+				&post.CategoryID.ID, &post.CategoryID.Title, &post.CategoryID.Slug, &post.TotalPosts, &post.AuthorID.ID,
+				&post.AuthorID.FirstName, &post.AuthorID.LastName, &post.AuthorID.Username, &post.AuthorID.Avatar)
 			if err != nil {
 				return err
 			}
 			posts = append(posts, post)
 		}
 		if err = rows.Err(); err != nil {
+			fmt.Println(err)
 			return err
 		}
 
 		j, err := json.Marshal(posts)
 		if err != nil {
+			fmt.Println(err)
 			return err
 		}
 
 		cache.Set("posts_cat_"+category+"_"+page, j)
-		return c.JSON(http.StatusOK, j)
+		return c.JSON(http.StatusOK, posts)
 	}
-	return c.JSON(http.StatusOK, cached)
+	return c.String(http.StatusOK, string(cached))
 }
 
 func PostsAuthorHandler(c echo.Context) error {
 	author := c.Param("author")
-	page := c.Param("page")
-	p, err := strconv.Atoi(page)
+	a, err := strconv.Atoi(author)
 	if err != nil {
+		fmt.Println(err)
 		return err
 	}
 
-	cached, isCached := cache.Get("posts_author_" + author + "_" + page)
+	page := c.Param("page")
+	p, err := strconv.Atoi(page)
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+
+	cached, isCached := cache.Get("posts_author_" + string(a) + "_" + string(p))
 	if isCached == false {
 		db := database.Connect()
 		defer db.Close()
@@ -150,7 +175,6 @@ func PostsAuthorHandler(c echo.Context) error {
 			posts.id, 
 			posts.title, 
 			posts.slug, 
-			posts.url, 
 			posts.content, 
 			posts.date AS dt, 
 			COALESCE(posts.image, ''), 
@@ -161,19 +185,21 @@ func PostsAuthorHandler(c echo.Context) error {
 				COUNT(*) 
 				FROM tasks_post AS posts 
 				INNER JOIN tasks_author AS authors ON posts.author_id = authors.id 
-				WHERE author.id='%[1]d'), 
+				WHERE authors.id='%[1]d'), 
 			authors.id, 
-			authors.name, 
-			authors.slug, 
-			authors.image 
+			authors.first_name, 
+			authors.last_name, 
+			authors.username, 
+			COALESCE(authors.avatar, '') 
 			FROM tasks_post AS posts 
 			INNER JOIN tasks_category as cats ON posts.category_id = cats.id 
 			INNER JOIN tasks_author AS authors ON posts.author_id = authors.id 
-			WHERE cats.slug='%[1]s' 
+			WHERE authors.id='%[1]d' 
 			ORDER BY dt DESC 
-			LIMIT %[2]d OFFSET %[3]d;`, author, postsPerPage, postsPerPage*p)
+			LIMIT %[2]d OFFSET %[3]d;`, a, postsPerPage, postsPerPage*p)
 		rows, err := db.Query(query)
 		if err != nil {
+			fmt.Println(err)
 			return err
 		}
 		defer rows.Close()
@@ -182,36 +208,40 @@ func PostsAuthorHandler(c echo.Context) error {
 		for rows.Next() {
 			post := models.Post{}
 			err := rows.Scan(&post.ID, &post.Title, &post.Slug, &post.Content, &post.Date, &post.Image,
-				&post.CategoryID.Title, &post.CategoryID.ID, &post.CategoryID.Slug, &post.TotalPosts, &post.AuthorID.ID,
-				&post.AuthorID.Name, &post.AuthorID.Slug, &post.AuthorID.Image)
+				&post.CategoryID.ID, &post.CategoryID.Title, &post.CategoryID.Slug, &post.TotalPosts, &post.AuthorID.ID,
+				&post.AuthorID.FirstName, &post.AuthorID.LastName, &post.AuthorID.Username, &post.AuthorID.Avatar)
 			if err != nil {
+				fmt.Println(err)
 				return err
 			}
 			posts = append(posts, post)
 		}
 		if err = rows.Err(); err != nil {
+			fmt.Println(err)
 			return err
 		}
 
 		j, err := json.Marshal(posts)
 		if err != nil {
+			fmt.Println(err)
 			return err
 		}
 
 		cache.Set("posts_author_"+author+"_"+page, j)
-		return c.JSON(http.StatusOK, j)
+		return c.JSON(http.StatusOK, posts)
 	}
-	return c.JSON(http.StatusOK, cached)
+	return c.String(http.StatusOK, string(cached))
 }
 
 func PostsHandler(c echo.Context) error {
 	page := c.Param("page")
 	p, err := strconv.Atoi(page)
 	if err != nil {
+		fmt.Println(err)
 		return err
 	}
 
-	cached, isCached := cache.Get("posts_" + page)
+	cached, isCached := cache.Get("posts_" + string(p))
 	if isCached == false {
 		db := database.Connect()
 		defer db.Close()
@@ -230,9 +260,10 @@ func PostsHandler(c echo.Context) error {
 				COUNT(*) 
 				FROM tasks_post), 
 			authors.id, 
-			authors.name, 
-			authors.slug, 
-			authors.image, 
+			authors.first_name, 
+			authors.last_name, 
+			authors.username, 
+			COALESCE(authors.avatar, '') 
 			FROM tasks_post as posts 
 			INNER JOIN tasks_category AS cats ON posts.category_id = cats.id 
 			INNER JOIN tasks_author as authors ON posts.author_id = authors.id 
@@ -241,6 +272,7 @@ func PostsHandler(c echo.Context) error {
 
 		rows, err := db.Query(query)
 		if err != nil {
+			fmt.Println(err)
 			return err
 		}
 		defer rows.Close()
@@ -249,36 +281,40 @@ func PostsHandler(c echo.Context) error {
 		for rows.Next() {
 			post := models.Post{}
 			err := rows.Scan(&post.ID, &post.Title, &post.Slug, &post.Content, &post.Date, &post.Image,
-				&post.CategoryID.Title, &post.CategoryID.ID, &post.CategoryID.Slug, &post.TotalPosts, &post.AuthorID.ID,
-				&post.AuthorID.Name, &post.AuthorID.Slug, &post.AuthorID.Image)
+				&post.CategoryID.ID, &post.CategoryID.Title, &post.CategoryID.Slug, &post.TotalPosts, &post.AuthorID.ID,
+				&post.AuthorID.FirstName, &post.AuthorID.LastName, &post.AuthorID.Username, &post.AuthorID.Avatar)
 			if err != nil {
+				fmt.Println(err)
 				return err
 			}
 			posts = append(posts, post)
 		}
 		if err = rows.Err(); err != nil {
+			fmt.Println(err)
 			return err
 		}
 
 		j, err := json.Marshal(posts)
 		if err != nil {
+			fmt.Println(err)
 			return err
 		}
 
 		cache.Set("posts_"+page, j)
-		return c.JSON(http.StatusOK, j)
+		return c.JSON(http.StatusOK, posts)
 	}
-	return c.JSON(http.StatusOK, cached)
+	return c.String(http.StatusOK, string(cached))
 }
 
 func CategoriesHandler(c echo.Context) error {
 	page := c.Param("page")
 	p, err := strconv.Atoi(page)
 	if err != nil {
+		fmt.Println(err)
 		return err
 	}
 
-	cached, isCached := cache.Get("cats_" + page)
+	cached, isCached := cache.Get("cats_" + string(p))
 	if isCached == false {
 		db := database.Connect()
 		defer db.Close()
@@ -290,12 +326,13 @@ func CategoriesHandler(c echo.Context) error {
 			COUNT(posts.title) AS cnt 
 			FROM tasks_category AS cats 
 			INNER JOIN tasks_post AS posts ON posts.category_id = cats.id 
-			GROUP BY (cats.title, cats.slug) 
+			GROUP BY (cats.id, cats.title, cats.slug) 
 			ORDER BY cats.title 
 			LIMIT %[1]d OFFSET %[2]d;`, postsPerPage, postsPerPage*p)
 
 		rows, err := db.Query(query)
 		if err != nil {
+			fmt.Println(err)
 			return err
 		}
 		defer rows.Close()
@@ -305,55 +342,59 @@ func CategoriesHandler(c echo.Context) error {
 			category := models.Category{}
 			err := rows.Scan(&category.ID, &category.Title, &category.Slug, &category.PostCnt)
 			if err != nil {
+				fmt.Println(err)
 				return err
 			}
 
 			categories = append(categories, category)
 		}
 		if err = rows.Err(); err != nil {
+			fmt.Println(err)
 			return err
 		}
 
 		j, err := json.Marshal(categories)
 		if err != nil {
+			fmt.Println(err)
 			return err
 		}
 
 		cache.Set("cats_"+page, j)
-		return c.JSON(http.StatusOK, j)
+		return c.JSON(http.StatusOK, categories)
 	}
-	return c.JSON(http.StatusOK, cached)
+	return c.String(http.StatusOK, string(cached))
 }
 
 func AuthorsHandler(c echo.Context) error {
 	page := c.Param("page")
 	p, err := strconv.Atoi(page)
 	if err != nil {
+		fmt.Println(err)
 		return err
 	}
 
-	cached, isCached := cache.Get("authors_" + page)
+	cached, isCached := cache.Get("authors_" + string(p))
 	if isCached == false {
 		db := database.Connect()
 		defer db.Close()
 
 		query := fmt.Sprintf(`SELECT 
 			authors.id, 
-			authors.name, 
-			authors.slug, 
-			authors.image, 
-			COUNT(posts.title) AS cnt, 
-			(SELECT 
-				COUNT(*) 
-				FROM tasks_author) 
+			authors.first_name, 
+			authors.last_name, 
+			authors.username, 
+			COALESCE(authors.avatar, ''), 
+			COUNT(posts.title) AS cnt 
 			FROM tasks_author AS authors  
 			INNER JOIN tasks_post AS posts ON posts.author_id = authors.id 
-			GROUP BY (authors.name, authors.slug) 
-			ORDER BY authors.name 
+			WHERE authors.is_staff = 'TRUE' 
+			GROUP BY (authors.id, authors.last_name, authors.username) 
+			ORDER BY authors.last_name 
 			LIMIT %[1]d OFFSET %[2]d;`, postsPerPage, postsPerPage*p)
 
 		rows, err := db.Query(query)
 		if err != nil {
+			fmt.Println(err)
 			return err
 		}
 		defer rows.Close()
@@ -362,23 +403,26 @@ func AuthorsHandler(c echo.Context) error {
 		for rows.Next() {
 			author := models.Author{}
 
-			err := rows.Scan(&author.ID, &author.Name, &author.Slug, &author.Image, &author.PostCnt)
+			err := rows.Scan(&author.ID, &author.FirstName, &author.LastName, &author.Username, &author.Avatar, &author.PostCnt)
 			if err != nil {
+				fmt.Println(err)
 				return err
 			}
 			authors = append(authors, author)
 		}
 		if err = rows.Err(); err != nil {
+			fmt.Println(err)
 			return err
 		}
 
 		j, err := json.Marshal(authors)
 		if err != nil {
+			fmt.Println(err)
 			return err
 		}
 
 		cache.Set("authors_"+page, j)
-		return c.JSON(http.StatusOK, j)
+		return c.JSON(http.StatusOK, authors)
 	}
-	return c.JSON(http.StatusOK, cached)
+	return c.String(http.StatusOK, string(cached))
 }

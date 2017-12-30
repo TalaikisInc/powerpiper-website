@@ -35,7 +35,7 @@ func main() {
 		AllowMethods: []string{echo.GET, echo.PUT, echo.POST, echo.DELETE},
 	}))
 
-	app.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
+	/*app.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
 			// Extract the credentials from HTTP request header and perform a security
 			// check
@@ -46,7 +46,7 @@ func main() {
 			// For valid credentials call next
 			// return next(c)
 		}
-	})
+	})*/
 
 	/* Stats */
 	s := api.NewStats()
