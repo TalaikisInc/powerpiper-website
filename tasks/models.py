@@ -86,7 +86,7 @@ class Post(AutoSlugifyOnSaveModel):
     title = models.CharField(max_length=250, verbose_name=T("Title"), db_index=True, unique=True)
     slug = models.CharField(max_length=250, blank=True, null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name=T("Categoery"))
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=T("Author"), default=1)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name=T("Author"), default=1)
     content = RichTextUploadingField("contents")
     date = models.DateTimeField(verbose_name=T("Date"))
     image = models.ImageField(upload_to="uploads/", blank=True, null=True, verbose_name=T("Image"))

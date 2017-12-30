@@ -30,7 +30,7 @@ static/admin
 *.exe
 *.jpg
 *.png
-migrations
+migrations/
 .next
 stats.txt
 .env
