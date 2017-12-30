@@ -11,4 +11,6 @@ In development.
 
 - Python 3.6
 - Golang
-- ReactJS
+- ReactJS/ NextJS
+- Grommet UI
+

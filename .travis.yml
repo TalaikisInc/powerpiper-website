@@ -1,5 +1,5 @@
 language: python
-sudo: false
+sudo: true
 python:
  - 3.6
 
@@ -51,4 +51,7 @@ notifications:
 script:
     - python manage.py makemigrations
     - python manage.py migrate
+    - python $TRAVIS_BUILD_DIR/scripts/superuser.py --user=testuser --password=testpassword --email=test@email.com
+    - python manage.py collectstatic --noinput
     - python tests.py
+    - bash scripts/build.sh powerpiper $TRAVIS_BUILD_DIR 3010
