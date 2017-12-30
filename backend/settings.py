@@ -1,4 +1,4 @@
-from os.path import dirname, join
+from os.path import dirname, join, isfile
 from os import environ
 import logging
 
@@ -7,8 +7,12 @@ from dotenv import load_dotenv
 
 
 BASE_DIR = dirname(dirname(__file__))
+ENV = join(BASE_DIR, '.env')
 
-load_dotenv(join(BASE_DIR, '.env'))
+if isfile(ENV):
+    load_dotenv(ENV)
+else:
+    load_dotenv(join(BASE_DIR, '.env.sample'))
 
 SECRET_KEY = environ.get("SECRET_KEY")
 assert isinstance(SECRET_KEY, str), "Check environment variables!"

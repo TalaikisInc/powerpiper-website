@@ -64,7 +64,7 @@ func PostHandler(c echo.Context) error {
 			return err
 		}
 
-		cache.Set("post_"+_post, j)
+		cache.Set("post_"+string(p), j)
 		return c.JSON(http.StatusOK, post)
 	}
 	return c.String(http.StatusOK, string(cached))
@@ -145,7 +145,7 @@ func PostsCategoryHandler(c echo.Context) error {
 			return err
 		}
 
-		cache.Set("posts_cat_"+category+"_"+page, j)
+		cache.Set("posts_cat_"+string(cat)+"_"+string(p), j)
 		return c.JSON(http.StatusOK, posts)
 	}
 	return c.String(http.StatusOK, string(cached))
@@ -227,7 +227,7 @@ func PostsAuthorHandler(c echo.Context) error {
 			return err
 		}
 
-		cache.Set("posts_author_"+author+"_"+page, j)
+		cache.Set("posts_author_"+string(a)+"_"+string(p), j)
 		return c.JSON(http.StatusOK, posts)
 	}
 	return c.String(http.StatusOK, string(cached))
@@ -300,7 +300,7 @@ func PostsHandler(c echo.Context) error {
 			return err
 		}
 
-		cache.Set("posts_"+page, j)
+		cache.Set("posts_"+string(p), j)
 		return c.JSON(http.StatusOK, posts)
 	}
 	return c.String(http.StatusOK, string(cached))
@@ -359,7 +359,7 @@ func CategoriesHandler(c echo.Context) error {
 			return err
 		}
 
-		cache.Set("cats_"+page, j)
+		cache.Set("cats_"+string(p), j)
 		return c.JSON(http.StatusOK, categories)
 	}
 	return c.String(http.StatusOK, string(cached))
@@ -421,8 +421,47 @@ func AuthorsHandler(c echo.Context) error {
 			return err
 		}
 
-		cache.Set("authors_"+page, j)
+		cache.Set("authors_"+string(p), j)
 		return c.JSON(http.StatusOK, authors)
+	}
+	return c.String(http.StatusOK, string(cached))
+}
+
+func FlatPageHandler(c echo.Context) error {
+	title := c.Param("title")
+	if len(title) < 5 {
+		return nil
+	}
+
+	cached, isCached := cache.Get("page_" + title)
+	if isCached == false {
+		db := database.Connect()
+		defer db.Close()
+
+		query := fmt.Sprintf(`SELECT 
+			flats.id, 
+			flats.url, 
+			flats.title, 
+			flats.content 
+			FROM django_flatpage as flats 
+			WHERE flats.title='%s';`, title)
+		row := db.QueryRow(query)
+
+		post := models.FlatPage{}
+		err := row.Scan(&post.ID, &post.URL, &post.Title, &post.Content)
+		if err != nil {
+			fmt.Println(err)
+			return err
+		}
+
+		j, err := json.Marshal(post)
+		if err != nil {
+			fmt.Println(err)
+			return err
+		}
+
+		cache.Set("page_"+title, j)
+		return c.JSON(http.StatusOK, post)
 	}
 	return c.String(http.StatusOK, string(cached))
 }

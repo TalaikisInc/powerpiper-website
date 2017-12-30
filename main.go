@@ -62,6 +62,7 @@ func main() {
 
 	/* Handles */
 	app.GET("/api/v1.0/post/:post", api.PostHandler)
+	app.GET("/api/v1.0/flatpage/:title", api.FlatPageHandler)
 	app.GET("/api/v1.0/posts/:page", api.PostsHandler)
 	app.GET("/api/v1.0/categories/:page", api.CategoriesHandler)
 	app.GET("/api/v1.0/authors/:page", api.AuthorsHandler)
