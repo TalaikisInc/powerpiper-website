@@ -6,7 +6,7 @@ from django.db import models
 
 from ckeditor.widgets import CKEditorWidget
 
-from .models import Post, Category
+from .models import Post, Category, Author
 
 
 class CategoryAdmin(admin.ModelAdmin):
@@ -33,5 +33,6 @@ class FlatPageCustom(FlatPageAdmin):
 
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Post, PostAdmin)
+admin.site.register(Author)
 admin.site.unregister(FlatPage)
 admin.site.register(FlatPage, FlatPageCustom)

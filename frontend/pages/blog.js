@@ -27,7 +27,7 @@ export default class Blog extends Component {
         <Layout>
       <Article responsive={true} margin='none' flex={false} primary={true}>
         {_Header({title: this.title, description: this. description, image: this.image})}
-        {this.props.posts.map(item => <Block key={item.id} title={item.title} author={item.author_id} image={item.image} content={item.content} />)}
+        {this.props.posts.map(item => <Block key={item.id} title={item.title} author={item.author_id} image={item.image} content={item.content} date={item.date} />)}
         {_Footer()}
       </Article>
       </Layout>

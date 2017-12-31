@@ -55,8 +55,12 @@ const _Header = (props) => {
         </SVGIcon>
         <Box flex={true} justify='end' direction='row' responsive={false} pad='none'>
         <Menu icon={<MenuIcon />} direction='row' label='Menu' align='start' justify='between' size='small'>
-          <Link href='/'><a className='grommetux-anchor'>Home</a></Link>
-          <Link href='/register'><a className='grommetux-anchor'>Login/ Register</a></Link>
+          <Link href='/'>
+            <a className='grommetux-anchor' onMouseEnter={() => {Router.prefetch('/')}}>Home</a>
+          </Link>
+          <Link href='/register'>
+            <a className='grommetux-anchor' onMouseEnter={() => {Router.prefetch('/login')}}>Login/ Register</a>
+          </Link>
         </Menu>
       </Box>
       </Header>

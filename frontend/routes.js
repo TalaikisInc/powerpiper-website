@@ -7,3 +7,5 @@ routes
 .add('/blog/author/:username', 'blog')
 .add('/blog/category/:category', 'blog')
 .add('/blog/:slug', 'blog')
+.add('/login', 'login')
+.add('/board/:user', 'dashboard')
