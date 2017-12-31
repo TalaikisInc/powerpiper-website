@@ -123,7 +123,7 @@ USE_TZ = False
 
 STATIC_URL = "/static/"
 STATIC_ROOT = join(BASE_DIR, "static")
-MEDIA_URL = "/uploads/"
+MEDIA_URL = "/"
 MEDIA_ROOT = join(BASE_DIR, "uploads")
 
 LOGGING = {

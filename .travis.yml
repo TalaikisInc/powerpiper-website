@@ -1,5 +1,5 @@
 language: python
-sudo: true
+sudo: required
 python:
  - 3.6
 
@@ -29,18 +29,41 @@ services:
   - postgresql
 
 env:
-  - DJANGO_VERSION=1.11.7
+  - DJANGO_VERSION=2.0
+  - FRONTEND_PORT=3010
+  - PATH=$PATH:/usr/bin/go/bin
+  - GOROOT=/usr/bin/go
 
 before_script:
+  - sudo apt-get update -q
+  - sudo apt-get install -y nginx
+  - sudo rm -rf /etc/nginx/sites-enabled/default
+  - sudo apt-get install -y xz-utils
   - psql -c "CREATE DATABASE test_db ENCODING = 'UTF8';" -U postgres
+  - wget https://storage.googleapis.com/golang/go1.8.2.linux-amd64.tar.gz
+  - sudo tar -C /usr/bin -xzf go1.8.2.linux-amd64.tar.gz
+  - go get github.com/lib/pq
+  - go get github.com/labstack/echo
+  - go get github.com/labstack/echo/...
+  - go get github.com/joho/godotenv
+  - go get github.com/die-net/lrucache
+  - go build
+  - wget https://nodejs.org/dist/v8.6.0/node-v8.6.0-linux-x64.tar.xz
+  - sudo tar -C /usr/local --strip-components 1 -xJf node-v8.6.0-linux-x64.tar.xz
+  - ls -l /usr/local/bin/node
+  - ls -l /usr/local/bin/npm
+  - cd frontend
+  - npm i
+  - npm i -g pm2
+  - pm2 start npm --name "node" -- start
 
 test:
   adapter: postgresql
   database: travis_ci_test
 
 install:
-  - pip install -q Django==$DJANGO_VERSION
   - travis_wait 240 pip install -r requirements.txt
+  - pip install -q Django==$DJANGO_VERSION
 
 notifications:
   email:
@@ -49,9 +72,9 @@ notifications:
   slack: powerpiper:fEBF3prSwdbMzHrmXs6Pd4ut
 
 script:
-    - python $TRAVIS_BUILD_DIR/manage.py makemigrations
-    - python $TRAVIS_BUILD_DIR/manage.py migrate
-    - python $TRAVIS_BUILD_DIR/scripts/superuser.py --user=testuser --password=testpassword --email=test@email.com
-    - python $TRAVIS_BUILD_DIR/manage.py collectstatic --noinput
-    - python $TRAVIS_BUILD_DIR/tests.py
-    - bash $TRAVIS_BUILD_DIR/scripts/build.sh powerpiper $TRAVIS_BUILD_DIR 3010
+    - python manage.py makemigrations
+    - python manage.py migrate
+    - python scripts/superuser.py --user=testuser --password=testpassword --email=test@email.com
+    - python manage.py collectstatic --noinput
+    - python tests.py
+    - travis_wait 360 bash scripts/build.sh powerpiper $TRAVIS_BUILD_DIR

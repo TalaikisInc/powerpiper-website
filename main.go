@@ -29,7 +29,10 @@ func main() {
 	app.Use(middleware.Logger())
 	app.Use(middleware.Recover())
 	app.Use(middleware.Gzip())
-
+	app.Use(middleware.StaticWithConfig(middleware.StaticConfig{
+		Root:   "uploads",
+		Browse: true,
+	}))
 	app.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins: []string{os.Getenv("BASE_URL")},
 		AllowMethods: []string{echo.GET, echo.PUT, echo.POST, echo.DELETE},

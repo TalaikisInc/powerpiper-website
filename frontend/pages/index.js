@@ -22,6 +22,15 @@ class Index extends Component {
     this._onSelect = this._onSelect.bind(this);
   }
 
+  componentDidMount = () => {
+    if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("../sw.js")
+            .catch(err => console.error('Service worker registration failed', err))
+    } else {
+        console.log('Service worker not supported')
+    }
+  }
+
   _onSelect(selected) {
     this.setState({
       ...this.state,
@@ -36,33 +45,33 @@ class Index extends Component {
 
     return (
       <App centered={false}>
-      <Layout>
-        {_Header({title: this.title, description: this. description, image: this.image})}
-        <Article responsive={true} margin='none' flex={false} primary={true}>
-          <Section full={true} pad='none' align='center' justify='center'>
-            <h1>{t('welcome')}</h1>
-            <Subscribe />
-          </Section>
-          <Section full={true} pad='none' colorIndex='ascent-1' colorIndex='neutral-1'>
-          <Animate enter={{'animation': 'slide-up', 'duration': 1000, 'delay': 0}} keep={true}>
-            <Heading align='center' justify='center'>
-            Testing theme color
-            </Heading>
-          </Animate>
-          </Section>
-          <Section full={true} pad='none'  colorIndex='neutral-1'>
-          <Animate enter={{'animation': 'slide-up', 'duration': 1000, 'delay': 0}} keep={true}>
-            <Heading>
-            Section3
-            </Heading>
-          </Animate>
-          </Section>
-          <Section full={true} pad='none' colorIndex='ascent-1'>
-            Section4
-          </Section>
-        </Article>
-        {_Footer()}
-      </Layout>
+        <Layout>
+          {_Header({title: this.title, description: this. description, image: this.image})}
+          <Article responsive={true} margin='none' flex={false} primary={true}>
+            <Section full={true} pad='none' align='center' justify='center'>
+              <h1>{t('welcome')}</h1>
+              <Subscribe />
+            </Section>
+            <Section full={true} pad='none' colorIndex='ascent-1' colorIndex='neutral-1'>
+            <Animate enter={{'animation': 'slide-up', 'duration': 1000, 'delay': 0}} keep={true}>
+              <Heading align='center' justify='center'>
+              Testing theme color
+              </Heading>
+            </Animate>
+            </Section>
+            <Section full={true} pad='none'  colorIndex='neutral-1'>
+            <Animate enter={{'animation': 'slide-up', 'duration': 1000, 'delay': 0}} keep={true}>
+              <Heading>
+              Section3
+              </Heading>
+            </Animate>
+            </Section>
+            <Section full={true} pad='none' colorIndex='ascent-1'>
+              Section4
+            </Section>
+          </Article>
+          {_Footer()}
+        </Layout>
       </App>
     )
   }
