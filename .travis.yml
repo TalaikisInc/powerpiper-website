@@ -30,9 +30,6 @@ services:
 
 env:
   - DJANGO_VERSION=2.0
-  - FRONTEND_PORT=3010
-  - PATH=$PATH:/usr/bin/go/bin
-  - GOROOT=/usr/bin/go
 
 before_script:
   - sudo apt-get update -q
@@ -47,6 +44,8 @@ before_script:
   - go get github.com/labstack/echo/...
   - go get github.com/joho/godotenv
   - go get github.com/die-net/lrucache
+  - export PATH=$PATH:/usr/bin/go/bin
+  - export GOROOT=/usr/bin/go
   - go build
   - wget https://nodejs.org/dist/v8.6.0/node-v8.6.0-linux-x64.tar.xz
   - sudo tar -C /usr/local --strip-components 1 -xJf node-v8.6.0-linux-x64.tar.xz
@@ -55,7 +54,14 @@ before_script:
   - cd frontend
   - npm i
   - npm i -g pm2
+  - export FRONTEND_PORT=3010
   - pm2 start npm --name "node" -- start
+  - cd ../
+  - export PROJECT=website
+  - echo """description 'Go API Server'\nstart on runlevel [2345]\nstop on runlevel [!2345]\n\nrespawn\n\nexec /usr/bin/sudo -u www-data $TRAVIS_BUILD_DIR/scripts/api.sh $TRAVIS_BUILD_DIR $PROJECT >> $TRAVIS_BUILD_DIR/logs/api.log 2>&1""" >> nano /etc/init/$PROJECT.conf
+  - echo """description 'Admin Server'\nstart on runlevel [2345]\nstop on runlevel [!2345]\n\nrespawn\n\nexec /bin/bash $TRAVIS_BUILD_DIR/scripts/uwsgi/uwsgi.sh $TRAVIS_BUILD_DIR >> $TRAVIS_BUILD_DIR/logs/admin.log 2>&1""" >> nano /etc/init/$PROJECT_admin.conf
+  - service $PROJECT start
+  - service $PROJECT_admin start
 
 test:
   adapter: postgresql
@@ -77,4 +83,4 @@ script:
     - python scripts/superuser.py --user=testuser --password=testpassword --email=test@email.com
     - python manage.py collectstatic --noinput
     - python tests.py
-    - travis_wait 360 bash scripts/build.sh powerpiper $TRAVIS_BUILD_DIR
+    - travis_wait 360 bash scripts/build.sh 3010 8010

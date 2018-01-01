@@ -1,5 +1,3 @@
-import { Component } from 'react'
-import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 
 const Meta = (props) => {
@@ -26,7 +24,7 @@ Meta.propTypes = {
   title: PropTypes.string.isRequired,
   siteTitle: PropTypes.string.isRequired,
   baseURL: PropTypes.string.isRequired,
-  image: PropTypes.string.isRequired,
+  image: PropTypes.string.isRequired
 }
 
-export default Meta;
+export default Meta

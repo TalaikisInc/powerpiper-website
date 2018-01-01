@@ -1,24 +1,8 @@
 #!/bin/bash
 
-PROJECT=$1
-FOLDER=$2
-FRONTEND_PORT=$3
-API_PORT=8010
+FRONTEND_PORT=$1
+API_PORT=$2
 HOST=127.0.0.1
-
-#############################################################
-# CONFIGURE SERVICES
-#############################################################
-
-echo """description 'Go server Init'\nstart on runlevel [2345]\nstop on runlevel [!2345]\n\nrespawn\n\nexec /usr/bin/sudo -u www-data $FOLDER/scripts/api.sh $FOLDER >> $FOLDER/logs/api.log 2>&1""" >> nano /etc/init/$PROJECT.conf
-# !!! admin server here!!!!
-
-#############################################################
-# SERVICES
-#############################################################
-
-service $PROJECT restart
-service admin$PROJECT restart
 
 #############################################################
 # SERVICE TESTS

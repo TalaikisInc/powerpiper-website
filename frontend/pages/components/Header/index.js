@@ -15,8 +15,7 @@ import NProgress from 'nprogress'
 import Meta from '../Meta'
 import Title from '../Title'
 
-Router.onRouteChangeStart = (url) => {
-  //console.log(`Loading: ${url}`)
+Router.onRouteChangeStart = () => {
   NProgress.start()
 }
 
@@ -54,22 +53,22 @@ const _Header = (props) => {
           </g>
         </SVGIcon>
         <Box flex={true} justify='end' direction='row' responsive={false} pad='none'>
-        <Menu icon={<MenuIcon />} direction='row' label='Menu' align='start' justify='between' size='small'>
-          <Link href='/'>
-            <a className='grommetux-anchor' onMouseEnter={() => {Router.prefetch('/')}}>Home</a>
-          </Link>
-          <Link href='/register'>
-            <a className='grommetux-anchor' onMouseEnter={() => {Router.prefetch('/login')}}>Login/ Register</a>
-          </Link>
-        </Menu>
-      </Box>
+          <Menu icon={<MenuIcon />} direction='row' label='Menu' align='start' justify='between' size='small'>
+            <Link href='/'>
+              <a className='grommetux-anchor' onMouseEnter={() => {Router.prefetch('/')}}>Home</a>
+            </Link>
+            <Link href='/register'>
+              <a className='grommetux-anchor' onMouseEnter={() => {Router.prefetch('/login')}}>Login/ Register</a>
+            </Link>
+          </Menu>
+        </Box>
       </Header>
     </div>
   )
 }
 
 _Header.propTypes = {
-  title: PropTypes.string.isRequired,
-};
+  title: PropTypes.string.isRequired
+}
 
-export default _Header;
+export default _Header

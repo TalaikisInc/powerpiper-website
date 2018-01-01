@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 
 const Title = (props) => {
   return <title>{props.title} | {props.siteTitle}</title>
@@ -6,7 +6,7 @@ const Title = (props) => {
 
 Title.propTypes = {
   title: PropTypes.string.isRequired,
-  siteTitle: PropTypes.string,
-};
+  siteTitle: PropTypes.string.isRequired
+}
 
-export default Title;
+export default Title

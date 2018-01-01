@@ -1,5 +1,4 @@
 import { Component } from 'react'
-import Link from 'next/link'
 import 'isomorphic-unfetch'
 import Article from 'grommet/components/Article'
 import App from 'grommet/components/App'
