@@ -1,5 +1,5 @@
 import { Component } from 'react'
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 import Router from 'next/router'
 import Section from 'grommet/components/Section'
 import Heading from 'grommet/components/Heading'

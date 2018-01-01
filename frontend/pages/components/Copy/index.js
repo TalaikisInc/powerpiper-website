@@ -1,6 +1,5 @@
 const Copy = () => {
-  const siteTitle = process.env.SITE_TITLE
-  return <div>&copy; {(new Date().getFullYear())} {siteTitle}</div>
+  return <div>&copy; {(new Date().getFullYear())} { process.env.SITE_TITLE }</div>
 }
 
 export default Copy

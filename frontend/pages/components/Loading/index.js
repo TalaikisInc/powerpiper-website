@@ -1,6 +1,6 @@
-import { Component } from 'react';
-import Box from 'grommet/components/Box';
-import Spinning from 'grommet/components/Spinning';
+import { Component } from 'react'
+import Box from 'grommet/components/Box'
+import Spinning from 'grommet/components/Spinning'
 
 const WithLoading = ({ children }) => {
     if (!children) {
@@ -25,7 +25,7 @@ const WithLoading = ({ children }) => {
         this.setState({
           asyncContent: (this.props.content)
         })
-      }, 1000);
+      }, 1000)
     }
     render () {
       return (
@@ -34,4 +34,4 @@ const WithLoading = ({ children }) => {
     }
   };
   
-  export default Loading;
+  export default Loading

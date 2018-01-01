@@ -16,7 +16,6 @@ export default class Blog extends Component {
     // eslint-disable-next-line no-undef
     const res = await fetch(process.env.API_URL + '/api/v1.0/flatpage/Cookie Policy/')
     const json = await res.json()
-    console.log(json)
     return { post: json }
   }
 

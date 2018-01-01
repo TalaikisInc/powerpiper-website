@@ -88,6 +88,10 @@ class Subscribe extends Component {
       </div>
     )
   }
+
+  componentDidMount () {
+    this.input.focus()
+  }
 }
 
 Subscribe.defaultProps = {
