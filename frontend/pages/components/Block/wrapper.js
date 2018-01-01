@@ -1,7 +1,7 @@
 import styled, { keyframes } from 'styled-components';
-import { fadeInUp } from 'react-animations';
+import { bounceIn } from 'react-animations';
 
-const animation = keyframes`${fadeInUp}`;
+const animation = keyframes`${bounceIn}`;
 
 const Wrapper = styled.div`
     textShadow: '0 1px 0 rgba(255, 255, 255, 0.1)';

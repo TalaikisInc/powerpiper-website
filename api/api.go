@@ -17,6 +17,7 @@ var cache = lrucache.New(104857600*3, 60*60*24) //300 Mb, 24 hours
 
 func PostHandler(c echo.Context) error {
 	_post := c.Param("post")
+	fmt.Println(_post)
 	if len(_post) < 4 {
 		return nil
 	}
@@ -381,7 +382,7 @@ func AuthorsHandler(c echo.Context) error {
 			COUNT(posts.title) AS cnt 
 			FROM tasks_author AS authors  
 			INNER JOIN tasks_post AS posts ON posts.author_id = authors.id 
-			WHERE authors.is_staff = 'TRUE' 
+			WHERE authors.is_staff = TRUE 
 			GROUP BY (authors.id, authors.last_name, authors.username) 
 			ORDER BY authors.last_name 
 			LIMIT %[1]d OFFSET %[2]d;`, postsPerPage, postsPerPage*p)

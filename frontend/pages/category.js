@@ -20,7 +20,7 @@ export default class Blog extends Component {
   render () {
     this.title = this.props.posts[0].author_id.LastName + ' ' + this.props.posts[0].author_id.FirstName + ' Blog'
     this.description = this.title
-    this.image = process.env.BASE_URL + '/' + this.props.posts[0].image //change to author's avatar, should require img on database
+    this.image = process.env.BASE_URL + '/' + this.props.posts[0].image //change to category image and modify poage for category look, should implement it into db
     this.total = this.props.posts[0].id
 
     return (

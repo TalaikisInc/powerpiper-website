@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 
 const FontAwesome = (props) => {
   return <i className={`fa fa-${props.name} ${props.className} fa-${props.size}`} alt={props.ariaLabel} style={{ padding: '0.5em'}}></i>
@@ -9,6 +9,6 @@ FontAwesome.propTypes = {
   className: PropTypes.string,
   ariaLabel: PropTypes.string,
   size: PropTypes.string,
-};
+}
 
-export default FontAwesome;
+export default FontAwesome

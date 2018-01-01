@@ -89,7 +89,7 @@ class Post(AutoSlugifyOnSaveModel):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name=T("Author"), default=1)
     content = RichTextUploadingField("contents")
     date = models.DateTimeField(verbose_name=T("Date"))
-    image = models.ImageField(upload_to="", blank=True, null=True, verbose_name=T("Image"))
+    image = models.ImageField(upload_to="", verbose_name=T("Image"))
 
     class Meta:
         ordering = ('date',)

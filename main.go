@@ -64,18 +64,18 @@ func main() {
 	r.GET("", api.Restricted)
 
 	/* Handles */
-	app.GET("/api/v1.0/post/:post", api.PostHandler)
-	app.GET("/api/v1.0/flatpage/:title", api.FlatPageHandler)
-	app.GET("/api/v1.0/posts/:page", api.PostsHandler)
-	app.GET("/api/v1.0/categories/:page", api.CategoriesHandler)
-	app.GET("/api/v1.0/authors/:page", api.AuthorsHandler)
-	app.GET("/api/v1.0/byauthor/:author/:page", api.PostsAuthorHandler)
-	app.GET("/api/v1.0/bycategory/:category/:page", api.PostsCategoryHandler)
+	app.GET("/api/v1.0/post/:post/", api.PostHandler)
+	app.GET("/api/v1.0/flatpage/:title/", api.FlatPageHandler)
+	app.GET("/api/v1.0/posts/:page/", api.PostsHandler)
+	app.GET("/api/v1.0/categories/:page/", api.CategoriesHandler)
+	app.GET("/api/v1.0/authors/:page/", api.AuthorsHandler)
+	app.GET("/api/v1.0/author/:author/:page/", api.PostsAuthorHandler)
+	app.GET("/api/v1.0/category/:category/:page/", api.PostsCategoryHandler)
 	app.POST("/api/v1.0/users", api.CreateUser)
 	app.GET("/api/v1.0/users/:id", api.GetUser)
 	app.PUT("/api/v1.0/users/:id", api.UpdateUser)
 	app.DELETE("/api/v1.0/users/:id", api.DeleteUser)
-	app.POST("/api/v1.0/login", api.Login)
+	app.POST("/api/v1.0/login/", api.Login)
 
 	/* Server */
 	server := &http.Server{

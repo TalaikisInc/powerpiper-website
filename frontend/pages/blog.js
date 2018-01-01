@@ -12,7 +12,7 @@ import _Footer from './components/Footer'
 export default class Blog extends Component {
   static async getInitialProps (props) {
     // eslint-disable-next-line no-undef
-    const res = await fetch(process.env.API_URL + '/api/v1.0/posts/' + (props.page || '0'))
+    const res = await fetch(process.env.API_URL + '/api/v1.0/posts/' + (props.page || '0') + '/')
     const json = await res.json()
     return { posts: json }
   }
@@ -20,7 +20,7 @@ export default class Blog extends Component {
   render () {
     this.title = 'Decentralized Energy Blog'
     this.description = 'Decentralized Energy Blog'
-    this.image = ''
+    this.image = process.env.BASE_URL + '/' + this.props.posts[0].image
     this.total = Object.keys(this.props.posts).length
 
     return (
@@ -28,7 +28,7 @@ export default class Blog extends Component {
         <Layout>
       <Article responsive={true} margin='none' flex={false} primary={true}>
         {_Header({title: this.title, description: this. description, image: this.image})}
-        {this.props.posts.map(item => <Block key={item.id} id={item.id} title={item.title} author={item.author_id} image={item.image} content={item.content} date={item.date} total={this.total} />)}
+        {this.props.posts.map(item => <Block post={item} total={this.total} />)}
         {_Footer()}
       </Article>
       </Layout>
