@@ -9,3 +9,5 @@ routes
 .add('/post/:slug/', 'post')
 .add('/login/', 'login')
 .add('/board/:user/', 'dashboard')
+.add('/privacy_policy/', 'privacy_policy')
+.add('/cookie_policy/', 'cookie_policy')

@@ -11,7 +11,6 @@ import Image from 'grommet/components/Image'
 import Animate from 'grommet/components/Animate'
 
 import Layout from './layout'
-import Block from './components/Block'
 import _Header from './components/Header'
 import _Footer from './components/Footer'
 import Date from './utils/helpers'
@@ -59,8 +58,8 @@ export default class Post extends Component {
                 </Paragraph>
             </Animate>
         </Section>
-        {_Footer()}
       </Article>
+      {_Footer()}
       </Layout>
       </App>
     )
