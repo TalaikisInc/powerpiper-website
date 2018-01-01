@@ -21,13 +21,14 @@ export default class Blog extends Component {
     this.title = 'Decentralized Energy Blog'
     this.description = 'Decentralized Energy Blog'
     this.image = ''
+    this.total = Object.keys(this.props.posts).length
 
     return (
       <App centered={false}>
         <Layout>
       <Article responsive={true} margin='none' flex={false} primary={true}>
         {_Header({title: this.title, description: this. description, image: this.image})}
-        {this.props.posts.map(item => <Block key={item.id} title={item.title} author={item.author_id} image={item.image} content={item.content} date={item.date} />)}
+        {this.props.posts.map(item => <Block key={item.id} id={item.id} title={item.title} author={item.author_id} image={item.image} content={item.content} date={item.date} total={this.total} />)}
         {_Footer()}
       </Article>
       </Layout>

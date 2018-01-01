@@ -17,13 +17,11 @@ var cache = lrucache.New(104857600*3, 60*60*24) //300 Mb, 24 hours
 
 func PostHandler(c echo.Context) error {
 	_post := c.Param("post")
-	p, err := strconv.Atoi(_post)
-	if err != nil {
-		fmt.Println(err)
-		return err
+	if len(_post) < 4 {
+		return nil
 	}
 
-	cached, isCached := cache.Get("post_" + string(p))
+	cached, isCached := cache.Get("post_" + _post)
 	if isCached == false {
 		db := database.Connect()
 		defer db.Close()
@@ -46,7 +44,7 @@ func PostHandler(c echo.Context) error {
 			FROM tasks_post as posts 
 			INNER JOIN tasks_category as cats ON posts.category_id = cats.id 
 			INNER JOIN tasks_author as authors ON posts.author_id = authors.id 
-			WHERE posts.id='%d';`, p)
+			WHERE posts.slug='%s';`, _post)
 		row := db.QueryRow(query)
 
 		post := models.Post{}
@@ -64,7 +62,7 @@ func PostHandler(c echo.Context) error {
 			return err
 		}
 
-		cache.Set("post_"+string(p), j)
+		cache.Set("post_"+_post, j)
 		return c.JSON(http.StatusOK, post)
 	}
 	return c.String(http.StatusOK, string(cached))
@@ -72,10 +70,8 @@ func PostHandler(c echo.Context) error {
 
 func PostsCategoryHandler(c echo.Context) error {
 	category := c.Param("category")
-	cat, err := strconv.Atoi(category)
-	if err != nil {
-		fmt.Println(err)
-		return err
+	if len(category) < 4 {
+		return nil
 	}
 
 	page := c.Param("page")
@@ -85,7 +81,7 @@ func PostsCategoryHandler(c echo.Context) error {
 		return err
 	}
 
-	cached, isCached := cache.Get("posts_cat_" + string(cat) + "_" + string(p))
+	cached, isCached := cache.Get("posts_cat_" + category + "_" + string(p))
 	if isCached == false {
 		db := database.Connect()
 		defer db.Close()
@@ -104,7 +100,7 @@ func PostsCategoryHandler(c echo.Context) error {
 				COUNT(*) 
 				FROM tasks_post AS posts 
 				INNER JOIN tasks_category AS cats ON posts.category_id = cats.id 
-				WHERE cats.id='%[1]d'), 
+				WHERE cats.slug='%[1]s'), 
 			authors.id, 
 			authors.first_name, 
 			authors.last_name, 
@@ -113,9 +109,9 @@ func PostsCategoryHandler(c echo.Context) error {
 			FROM tasks_post AS posts 
 			INNER JOIN tasks_category AS cats ON posts.category_id = cats.id 
 			INNER JOIN tasks_author as authors ON posts.author_id = authors.id 
-			WHERE cats.id='%[1]d' 
+			WHERE cats.slug='%[1]s' 
 			ORDER BY dt DESC 
-			LIMIT %[2]d OFFSET %[3]d;`, cat, postsPerPage, postsPerPage*p)
+			LIMIT %[2]d OFFSET %[3]d;`, category, postsPerPage, postsPerPage*p)
 		rows, err := db.Query(query)
 		if err != nil {
 			fmt.Println(err)
@@ -145,7 +141,7 @@ func PostsCategoryHandler(c echo.Context) error {
 			return err
 		}
 
-		cache.Set("posts_cat_"+string(cat)+"_"+string(p), j)
+		cache.Set("posts_cat_"+category+"_"+string(p), j)
 		return c.JSON(http.StatusOK, posts)
 	}
 	return c.String(http.StatusOK, string(cached))
@@ -153,10 +149,8 @@ func PostsCategoryHandler(c echo.Context) error {
 
 func PostsAuthorHandler(c echo.Context) error {
 	author := c.Param("author")
-	a, err := strconv.Atoi(author)
-	if err != nil {
-		fmt.Println(err)
-		return err
+	if len(author) < 4 {
+		return nil
 	}
 
 	page := c.Param("page")
@@ -166,7 +160,7 @@ func PostsAuthorHandler(c echo.Context) error {
 		return err
 	}
 
-	cached, isCached := cache.Get("posts_author_" + string(a) + "_" + string(p))
+	cached, isCached := cache.Get("posts_author_" + author + "_" + string(p))
 	if isCached == false {
 		db := database.Connect()
 		defer db.Close()
@@ -185,7 +179,7 @@ func PostsAuthorHandler(c echo.Context) error {
 				COUNT(*) 
 				FROM tasks_post AS posts 
 				INNER JOIN tasks_author AS authors ON posts.author_id = authors.id 
-				WHERE authors.id='%[1]d'), 
+				WHERE authors.username='%[1]s'), 
 			authors.id, 
 			authors.first_name, 
 			authors.last_name, 
@@ -194,9 +188,9 @@ func PostsAuthorHandler(c echo.Context) error {
 			FROM tasks_post AS posts 
 			INNER JOIN tasks_category as cats ON posts.category_id = cats.id 
 			INNER JOIN tasks_author AS authors ON posts.author_id = authors.id 
-			WHERE authors.id='%[1]d' 
+			WHERE authors.username='%[1]s' 
 			ORDER BY dt DESC 
-			LIMIT %[2]d OFFSET %[3]d;`, a, postsPerPage, postsPerPage*p)
+			LIMIT %[2]d OFFSET %[3]d;`, author, postsPerPage, postsPerPage*p)
 		rows, err := db.Query(query)
 		if err != nil {
 			fmt.Println(err)
@@ -227,7 +221,7 @@ func PostsAuthorHandler(c echo.Context) error {
 			return err
 		}
 
-		cache.Set("posts_author_"+string(a)+"_"+string(p), j)
+		cache.Set("posts_author_"+author+"_"+string(p), j)
 		return c.JSON(http.StatusOK, posts)
 	}
 	return c.String(http.StatusOK, string(cached))

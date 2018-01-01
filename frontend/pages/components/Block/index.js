@@ -14,9 +14,11 @@ export default class Block extends Component {
   render () {
     this.image = process.env.BASE_URL + '/' + this.props.image
     this.authorUrl = '/blog/author/' + this.props.author.Username
+    this.visibility = this.props.id == this.props.total ? undefined : 'scroll'
+
     return (
         <Section full={false} pad='medium' align='center' justify='center'>
-            <Animate enter={{'animation': 'slide-up', 'duration': 1000, 'delay': 0}} keep={true} visible='scroll'>
+            <Animate enter={{'animation': 'slide-up', 'duration': 1000, 'delay': 0}} keep={true} visible={this.visibility}>
                 <Heading align='center'>
                     {this.props.title} 
                 </Heading>
@@ -25,8 +27,8 @@ export default class Block extends Component {
                     &nbsp;|&nbsp;
                     {Date(this.props.date)}
                 </p>
-                <Image align='top' alt={this.props.title} src={this.image} size='large' />
-                <Paragraph align='start' align='large'>
+                <Image alt={this.props.title} src={this.image} size='large' />
+                <Paragraph align='start' size='large'>
                     <div dangerouslySetInnerHTML={{ __html: this.props.content.split('</p>', 1)}} />
                 </Paragraph>
             </Animate>
