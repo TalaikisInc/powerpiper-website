@@ -10,8 +10,8 @@ import Layout from './layout'
 import _Header from './components/Header'
 import _Footer from './components/Footer'
 import Subscribe from './components/Subscribe'
-import i18n, { initialI18nStore } from '../i18n'
-let t = i18n.t.bind(i18n)
+import i18n from '../i18n'
+const t = i18n.t.bind(i18n)
 
 class Index extends Component {
   constructor() {
@@ -50,7 +50,7 @@ class Index extends Component {
               <Subscribe />
             </Section>
             <Section full={true} pad='none' colorIndex='ascent-1'>
-              <Animate enter={{ animation: 'slide-up', duration: 1000, delay: 0 }} keep={1}>
+              <Animate enter={{ animation: 'slide-up', duration: 1000, delay: 0 }} keep={true}>
                 <Heading align='center' justify='center'>
                 Testing theme color
                 </Heading>
