@@ -28,21 +28,21 @@ export default class Blog extends Component {
     return (
       <App centered={false}>
         <Layout>
-      <Article responsive={true} margin='none' flex={false} primary={true}>
-        {_Header({title: this.title, description: this. description, image: this.image})}
-        <Section full={false} pad='medium' align='center' justify='center'>
-            <Animate enter={{'animation': 'slide-up', 'duration': 1000, 'delay': 0}} keep={true} visible={this.visibility}>
+          <Article responsive={true} margin='none' flex={false} primary={true}>
+            <_Header title={this.title} description={this. description} image={this.image} />
+            <Section full={false} pad='medium' align='center' justify='center'>
+              <Animate enter={{'animation': 'slide-up', 'duration': 1000, 'delay': 0}} keep={true} visible={this.visibility}>
                 <Heading align='center'>
-                    {this.props.post.Title} 
+                  {this.props.post.Title} 
                 </Heading>
                 <Paragraph align='start' size='large'>
-                    <div dangerouslySetInnerHTML={{ __html: this.props.post.Content}} />
+                  <div dangerouslySetInnerHTML={{ __html: this.props.post.Content}} />
                 </Paragraph>
-            </Animate>
-        </Section>
-      </Article>
-      {_Footer()}
-      </Layout>
+              </Animate>
+            </Section>
+          </Article>
+          {_Footer()}
+        </Layout>
       </App>
     )
   }

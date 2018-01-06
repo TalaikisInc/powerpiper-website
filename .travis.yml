@@ -36,8 +36,7 @@ before_script:
   - sudo apt-get install -y nginx
   - sudo rm -rf /etc/nginx/sites-enabled/default
   - sudo apt-get install -y xz-utils
-  - psql -c "CREATE DATABASE test_db ENCODING = 'UTF8';" -U postgres
-  - wget https://storage.googleapis.com/golang/go1.8.2.linux-amd64.tar.gz
+    - wget https://storage.googleapis.com/golang/go1.8.2.linux-amd64.tar.gz
   - sudo tar -C /usr/bin -xzf go1.8.2.linux-amd64.tar.gz
   - go get github.com/lib/pq
   - go get github.com/labstack/echo
@@ -56,8 +55,10 @@ before_script:
   - npm i -g pm2
   - export FRONTEND_PORT=3010
   - pm2 start npm --name "node" -- start
-  - pm2 start $TRAVIS_BUILD_DIR/$PROJECT --name "api" --interpreter=bash
+  - pm2 start $PROJECT --interpreter=bash
   - cd ../
+  - sudo service postgresql restart
+  - psql -c "CREATE DATABASE test_db ENCODING = 'UTF8';" -U postgres
 
 test:
   adapter: postgresql

@@ -28,6 +28,7 @@
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
     "react-animations": "^1.0.0",
+    "react-cookies": "^0.1.0",
     "react-dom": "^16.2.0",
     "react-ga": "^2.2.0",
     "react-i18next": "^7.3.0",

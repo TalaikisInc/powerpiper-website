@@ -13,4 +13,4 @@ args = parser.parse_args()
 user = User.objects.filter(email='info@powerpiper.com')
 
 if user.count() == 0:
-    User.objects.create_superuser(args.user, args.email, args.password')
+    User.objects.create_superuser(args.user, args.email, args.password)

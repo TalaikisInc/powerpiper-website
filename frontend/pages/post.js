@@ -33,39 +33,36 @@ export default class Post extends Component {
     return (
       <App centered={false}>
         <Layout>
-      <Article responsive={true} margin='none' flex={false} primary={true}>
-        {_Header({title: this.title, description: this. description, image: this.image})}
-        <Section full={false} pad='medium' align='center' justify='center'>
-            <Animate enter={{'animation': 'slide-up', 'duration': 1000, 'delay': 0}} keep={true}>
+          <Article responsive={true} margin='none' flex={false} primary={true}>
+            {_Header({title: this.title, description: this. description, image: this.image})}
+            <Section full={false} pad='medium' align='center' justify='center'>
+              <Animate enter={{ animation: 'slide-up', duration: 1000, delay: 0 }} keep={true}>
                 <Heading align='center'>
                   <a href={this.categoryUrl} className='grommetux-anchor' onMouseEnter={() => {Router.prefetch(this.categoryUrl)}}>
                     {this.props.post.CategoryID.Title}
                   </a>  >> {this.props.post.Title} 
                 </Heading>
                 <p>
-                    By <a 
-                        href={this.authorUrl} 
-                        className='grommetux-anchor' 
-                        onMouseEnter={() => {Router.prefetch(this.authorUrl)}}>
-                          {this.props.post.AuthorID.FirstName} {this.props.post.AuthorID.LastName}
-                       </a>
-                    &nbsp;|&nbsp;
-                    {Date(this.props.post.Date)}
+                  By <a href={this.authorUrl} className='grommetux-anchor' onMouseEnter={() => {Router.prefetch(this.authorUrl)}}>
+                    {this.props.post.AuthorID.FirstName} {this.props.post.AuthorID.LastName}
+                  </a>
+                  &nbsp;|&nbsp;
+                  {Date(this.props.post.Date)}
                 </p>
                 <Image alt={this.props.post.Title} src={this.image} size='large' />
                 <Paragraph align='start' size='large'>
-                    <div dangerouslySetInnerHTML={{ __html: this.props.post.Content}} />
+                  <div dangerouslySetInnerHTML={{ __html: this.props.post.Content}} />
                 </Paragraph>
-            </Animate>
-        </Section>
-      </Article>
-      {_Footer()}
-      </Layout>
+              </Animate>
+            </Section>
+          </Article>
+          {_Footer()}
+        </Layout>
       </App>
     )
   }
 }
 
 Post.propTypes = {
-  post: PropTypes.object.isRequired,
+  post: PropTypes.object.isRequired
 }
