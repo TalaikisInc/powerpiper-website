@@ -1,15 +1,12 @@
-import { Component } from 'react'
-import Link from 'next/link'
 import 'isomorphic-unfetch'
 import Article from 'grommet/components/Article'
-import App from 'grommet/components/App'
 
 import Layout from '../layout'
+import Page from '../components/Page'
 import Block from '../components/Block'
-import _Header from '../components/Header'
 import _Footer from '../components/Footer'
 
-export default class Blog extends Component {
+export default class Blog extends Page {
   static async getInitialProps ({ req }) {
     // eslint-disable-next-line no-undef
     const res = await fetch(process.env.API_URL + '/api/v1.0' + req.url)
@@ -18,21 +15,18 @@ export default class Blog extends Component {
   }
 
   render () {
-    this.title = this.props.posts[0].author_id.LastName + ' ' + this.props.posts[0].author_id.FirstName + ' Blog'
-    this.description = this.title
-    this.image = process.env.BASE_URL + '/' + this.props.posts[0].image //change to category image and modify poage for category look, should implement it into db
-    this.total = this.props.posts[0].id
+    const title = this.props.posts[0].author_id.LastName + ' ' + this.props.posts[0].author_id.FirstName + ' Blog'
+    const description = this.title
+    const image = process.env.BASE_URL + '/' + this.props.posts[0].image
+    const total = this.props.posts[0].id
 
     return (
-      <App centered={false}>
-        <Layout>
-          <Article responsive={true} margin='none' flex={false} primary={true}>
-            <_Header title={this.title} description={this. description} image={this.image} />
-            {this.props.posts.map(item => <Block key={item.id} post={item} total={this.total} />)}
-          </Article>
-          {_Footer()}
-        </Layout>
-      </App>
+      <Layout title={title} description={description} image={image}>
+        <Article responsive={true} margin='none' flex={false} primary={true}>
+          {this.props.posts.map(item => <Block key={item.id} post={item} total={total} />)}
+        </Article>
+        {_Footer()}
+      </Layout>
     )
   }
 }

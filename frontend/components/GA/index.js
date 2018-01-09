@@ -4,9 +4,11 @@ export const initGA = () => {
   ReactGA.initialize(process.env.GA)
 }
 
-export const logPageView = () => {
-  ReactGA.set({ page: window.location.pathname })
-  ReactGA.pageview(window.location.pathname)
+export const logPageView = (documentPath) => {
+  if (documentPath) {
+    ReactGA.set({ page: documentPath })
+    ReactGA.pageview(documentPath)
+  }
 }
 
 export const logEvent = (category = '', action = '') => {

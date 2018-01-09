@@ -18,6 +18,9 @@ const NeDB = require('nedb')
 const routes = require('./routes/index')
 const auth = require('./routes/auth')
 const handler = routes.getRequestHandler(app)
+const assert = require('assert')
+
+assert.notEqual(null, process.env.SESSION_SECRET, 'Session secret is required!')
 
 process.on('uncaughtException', (err) => {
   console.error('Uncaught Exception: ', err)
@@ -58,10 +61,11 @@ i18n.use(Backend).use(i18nextMiddleware.LanguageDetector).init({
   app.prepare()
     .then(() => {
       return new Promise((resolve, reject) => {
-        if (process.env.USER_DB_CONNECTION_STRING) {
+        if (process.env.MONGO_DB) {
           // Example connection string: mongodb://localhost:27017/my-user-db
-          MongoClient.connect(process.env.USER_DB_CONNECTION_STRING, (err, db) => {
-            userdb = db.collection('users')
+          MongoClient.connect(process.env.MONGO_DB, (err, client) => {
+            assert.equal(null, err)
+            userdb = client.db('users').collection('users')
             resolve(true)
           })
         } else {
@@ -82,7 +86,8 @@ i18n.use(Backend).use(i18nextMiddleware.LanguageDetector).init({
           sessionStore = new MongoStore({
             url: process.env.SESSION_DB_CONNECTION_STRING,
             autoRemove: 'interval',
-            autoRemoveInterval: 10, // Removes expired sessions every 10 minutes
+            // Removes expired sessions every 10 minutes
+            autoRemoveInterval: 10,
             collection: 'sessions',
             stringify: false
           })
