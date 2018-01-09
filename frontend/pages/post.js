@@ -11,10 +11,10 @@ import Image from 'grommet/components/Image'
 import Animate from 'grommet/components/Animate'
 import { FacebookButton, FacebookCount } from 'react-social'
 
-import Layout from './layout'
-import _Header from './components/Header'
-import _Footer from './components/Footer'
-import Date from './utils/helpers'
+import Layout from '../layout'
+import _Header from '../components/Header'
+import _Footer from '../components/Footer'
+import Date from '../utils/helpers'
 
 export default class Post extends Component {
   static async getInitialProps ({ req }) {

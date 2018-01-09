@@ -4,10 +4,10 @@ import 'isomorphic-unfetch'
 import Article from 'grommet/components/Article'
 import App from 'grommet/components/App'
 
-import Layout from './layout'
-import Block from './components/Block'
-import _Header from './components/Header'
-import _Footer from './components/Footer'
+import Layout from '../layout'
+import Block from '../components/Block'
+import _Header from '../components/Header'
+import _Footer from '../components/Footer'
 
 export default class Blog extends Component {
   static async getInitialProps ({ req }) {

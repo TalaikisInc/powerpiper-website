@@ -7,9 +7,9 @@ import Heading from 'grommet/components/Heading'
 import Paragraph from 'grommet/components/Paragraph'
 import Animate from 'grommet/components/Animate'
 
-import Layout from './layout'
-import _Header from './components/Header'
-import _Footer from './components/Footer'
+import Layout from '../layout'
+import _Header from '../components/Header'
+import _Footer from '../components/Footer'
 
 export default class Blog extends Component {
   static async getInitialProps ({ req }) {

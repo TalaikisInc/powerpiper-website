@@ -6,10 +6,10 @@ import App from 'grommet/components/App'
 import Animate from 'grommet/components/Animate'
 import { translate } from 'react-i18next'
 
-import Layout from './layout'
-import _Header from './components/Header'
-import _Footer from './components/Footer'
-import Subscribe from './components/Subscribe'
+import Layout from '../layout'
+import _Header from '../components/Header'
+import _Footer from '../components/Footer'
+import Subscribe from '../components/Subscribe'
 import i18n from '../i18n'
 const t = i18n.t.bind(i18n)
 
