@@ -1,5 +1,6 @@
 import { Fragment } from 'react'
 import Router from 'next/router'
+import Head from 'next/head'
 
 import Spinning from 'grommet/components/icons/Spinning'
 
@@ -51,14 +52,13 @@ export default class CallBack extends Page {
   }
 
   render() {
-    // Use a meta refresh to redirect clients without JavaScript as a fallback
-    // - also provides a regular link in case the meta refresh doesn't work.
     return (
       <Fragment>
-        <meta httpEquiv="refresh" content={'1;url='+this.props.redirectTo} />
+        <Head>
+          <meta httpEquiv="refresh" content={'1;url='+this.props.redirectTo} />
+        </Head>
         <Spinning size='large' />
       </Fragment>
     )
   }
-
 }

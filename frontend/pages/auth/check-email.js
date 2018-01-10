@@ -1,5 +1,9 @@
 import Router from 'next/router'
 
+import Section from 'grommet/components/Section'
+import Heading from 'grommet/components/Heading'
+import Paragraph from 'grommet/components/Paragraph'
+
 import Page from '../../components/Page'
 import Layout from '../../layout'
 import Session from '../../components/Session'
@@ -23,10 +27,10 @@ export default class extends Page {
   render() {
     return (
       <Layout {...this.props}>
-        <div>
-          <h1>Check your email</h1>
-          <p>Check your email for a sign in link.</p>
-        </div>
+        <Section full={true} pad='none' align='center' justify='center'>
+          <Heading>Check your email</Heading>
+          <Paragraph>Check your email for a sign in link.</Paragraph>
+        </Section>
       </Layout>
     )
   }

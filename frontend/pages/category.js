@@ -1,10 +1,8 @@
 import 'isomorphic-unfetch'
-import Article from 'grommet/components/Article'
 
 import Layout from '../layout'
 import Page from '../components/Page'
 import Block from '../components/Block'
-import _Footer from '../components/Footer'
 
 export default class Blog extends Page {
   static async getInitialProps ({ req }) {
@@ -21,11 +19,8 @@ export default class Blog extends Page {
     const total = this.props.posts[0].id
 
     return (
-      <Layout title={title} description={description} image={image}>
-        <Article responsive={true} margin='none' flex={false} primary={true}>
-          {this.props.posts.map(item => <Block key={item.id} post={item} total={total} />)}
-        </Article>
-        {_Footer()}
+      <Layout title={title} description={description} image={image} session={this.props.session}>
+        {this.props.posts.map(item => <Block key={item.id} post={item} total={total} />)}
       </Layout>
     )
   }

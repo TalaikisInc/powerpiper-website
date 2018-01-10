@@ -4,6 +4,7 @@ import cookie from 'react-cookies'
 import Head from 'next/head'
 import PropTypes from 'prop-types'
 
+import Article from 'grommet/components/Article'
 import Layer from 'grommet/components/Layer'
 import Box from 'grommet/components/Box'
 import Label from 'grommet/components/Label'
@@ -18,6 +19,7 @@ import scss from '../assets/scss/theme.scss'
 import nprogress from '../assets/css/progress.css'
 import NProgress from 'nprogress'
 
+import _Footer from '../components/Footer'
 import Meta from '../components/Meta'
 import Title from '../components/Title'
 import { initGA, logPageView } from '../components/GA'
@@ -44,14 +46,14 @@ export default class Layout extends Component {
     }
   }
 
-  componentWillMount() {
+  async componentWillMount() {
     this.state = {
       policy: cookie.load('cookie-policy') || false,
       keep: true
     }
   }
 
-  componentDidMount () {
+  async componentDidMount () {
     if (!window.GA_INITIALIZED && this.props.documentPath) {
       initGA(this.props.documentPath)
       window.GA_INITIALIZED = true
@@ -138,15 +140,18 @@ export default class Layout extends Component {
           </Animate>
         }
         { layerNode }
-        { this.props.children }
+        <Article responsive={true} margin='none' flex={false} primary={true}>
+          { this.props.children }
+        </Article>
         { logPageView() }
+        {_Footer()}
       </Fragment>
     )
   }
 }
 
 Layout.propTypes = {
-  //session: PropTypes.object.isRequired,
+  session: PropTypes.object.isRequired,
   children: PropTypes.object.isRequired,
   title: PropTypes.string.isRequired
 }

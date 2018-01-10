@@ -1,5 +1,7 @@
 import Router from 'next/router'
 
+import Section from 'grommet/components/Section'
+
 import Page from '../../components/Page'
 import Layout from '../../layout'
 import Session from '../../components/Session'
@@ -48,7 +50,9 @@ export default class extends Page {
   render() {
     return (
       <Layout session={this.state.session}>
-        <Signin session={this.state.session} />
+        <Section full={true} pad='none' align='center' justify='center'>
+          <Signin session={this.state.session} />
+        </Section>
       </Layout>
     )
   }

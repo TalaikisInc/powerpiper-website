@@ -123,7 +123,7 @@ i18n.use(Backend).use(i18nextMiddleware.LanguageDetector).init({
       server.post('/locales/add/:lng/:ns', i18nextMiddleware.missingKeyHandler(i18n))
 
       // Expose a route to return user profile if logged in with a session
-      server.get('/board/user', (req, res) => {
+      server.get('/dashboard/user', (req, res) => {
         if (req.user) {
           userdb.findOne({ _id: req.user.id }, (err, user) => {
             if (err || !user) {
@@ -145,7 +145,7 @@ i18n.use(Backend).use(i18nextMiddleware.LanguageDetector).init({
       })
 
       // Expose a route to allow users to update their profiles (name, email)
-      server.post('/board/user', (req, res) => {
+      server.post('/dashboard/user', (req, res) => {
         if (req.user) {
           userdb.findOne({ _id: req.user.id }, (err, user) => {
             if (err || !user) {
@@ -167,7 +167,7 @@ i18n.use(Backend).use(i18nextMiddleware.LanguageDetector).init({
               if (err) {
                 return res.status(500).json({ error: 'Unable save changes to profile' })
               }
-              return res.status(204).redirect('/board/')
+              return res.status(204).redirect('/dashboard/')
             })
           })
         } else {

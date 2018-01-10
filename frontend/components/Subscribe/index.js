@@ -19,41 +19,47 @@ export default class Subscribe extends Component {
     };
     this.actionURL = '//powerpiper.us17.list-manage.com/subscribe/post?u=0fffbdcc0fda19cf7460e0710&amp;id=61682d65ff'
   }
+
+  async componentDidMount () {
+    this.input.focus()
+  }
+
   onSubmit = e => {
     e.preventDefault()
-    if (!this.input.value || this.input.value.length < 5 || this.input.value.indexOf("@") === -1) {
+    if (!this.input.value || this.input.value.length < 5 || this.input.value.indexOf('@') === -1) {
       this.setState({
         status: 'error'
       })
       return
     }
+
     const url = getAjaxUrl(this.actionURL) + `&EMAIL=${encodeURIComponent(this.input.value)}`
-    this.setState(
-      {
-        status: 'sending',
-        msg: null
-      }, () => jsonp(url, {
-        param: 'c'
-      }, (err, data) => {
-        if (err) {
-          this.setState({
-            status: 'error',
-            msg: err
-          })
-        } else if (data.result !== 'success') {
-          this.setState({
-            status: 'error',
-            msg: data.msg
-          })
-        } else {
-          this.setState({
-            status: 'success',
-            msg: data.msg
-          })
-        }
-      })
-    )
+
+    this.setState({
+      status: 'sending',
+      msg: null
+    }, () => jsonp(url, {
+      param: 'c'
+    }, (err, data) => {
+      if (err) {
+        this.setState({
+          status: 'error',
+          msg: err
+        })
+      } else if (data.result !== 'success') {
+        this.setState({
+          status: 'error',
+          msg: data.msg
+        })
+      } else {
+        this.setState({
+          status: 'success',
+          msg: data.msg
+        })
+      }
+    }))
   }
+
   render() {
     const { action, messages, style, styles } = this.props
     const { status, msg } = this.state
@@ -88,10 +94,6 @@ export default class Subscribe extends Component {
         </form>
       </div>
     )
-  }
-
-  componentDidMount () {
-    this.input.focus()
   }
 }
 
