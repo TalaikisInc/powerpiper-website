@@ -1,16 +1,14 @@
-import Link from 'next/link'
-import React from 'react'
-import Page from '../../../components/page'
-import Layout from '../../../components/layout'
+import Page from '../../../components/Page'
+import Layout from '../../../layout'
 
 export default class extends Page {
   render() {
     return (
-      <Layout session={this.props.session} navmenu={false}>
-        <div className="text-center pt-5 pb-5">
-          <h1 className="display-4">Support for this service is not configured</h1>
-          <p className="lead">Support for the requested oAuth provider has not been configured.</p>
-          <p className="lead"><Link href="/auth/signin"><a>Use another method to sign in.</a></Link></p>
+      <Layout session={this.props.session}>
+        <div>
+          <h1>Support for this service is not configured</h1>
+          <p>Support for the requested oAuth provider has not been configured.</p>
+          <p><a href="/auth/signin">Use another method to sign in.</a></p>
         </div>
       </Layout>
     )

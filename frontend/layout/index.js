@@ -1,7 +1,8 @@
-import { Component, PropTypes, Fragment } from 'react'
+import { Component, Fragment } from 'react'
 import Router from 'next/router'
 import cookie from 'react-cookies'
 import Head from 'next/head'
+import PropTypes from 'prop-types'
 
 import Layer from 'grommet/components/Layer'
 import Box from 'grommet/components/Box'
@@ -22,7 +23,7 @@ import Title from '../components/Title'
 import { initGA, logPageView } from '../components/GA'
 import Cookies from '../components/Cookies'
 import Signin from '../components/Signin'
-import UserMenu from '../components/UserMenu'
+//import UserMenu from '../components/UserMenu'
 
 Router.onRouteChangeStart = () => {
   NProgress.start()
@@ -34,14 +35,6 @@ Router.onRouteChangeError = () => NProgress.done()
 export default class Layout extends Component {
   static async getInitialProps ({ req }) {
     return { documentPath: req.url }
-  }
-
-  static propTypes() {
-    return {
-      session: PropTypes.object.isRequired,
-      children: PropTypes.object.isRequired,
-      title: PropTypes.string.isRequired
-    }
   }
 
   constructor(props) {
@@ -132,7 +125,6 @@ export default class Layout extends Component {
               <a href='/blog/' className='grommetux-anchor' onMouseEnter={() => { Router.prefetch('/') }}>Blog</a>
               <Button label="Sign In / Sign Up" onClick={this.onOpenModal} />
             </Menu>
-            <UserMenu session={this.props.session} toggleModal={this.toggleModal}/>
           </Box>
         </Header>
         {
@@ -151,4 +143,10 @@ export default class Layout extends Component {
       </Fragment>
     )
   }
+}
+
+Layout.propTypes = {
+  //session: PropTypes.object.isRequired,
+  children: PropTypes.object.isRequired,
+  title: PropTypes.string.isRequired
 }

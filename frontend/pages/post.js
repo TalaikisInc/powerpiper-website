@@ -31,9 +31,9 @@ export default class Post extends Page {
     const categoryUrl = '/category/' + this.props.post.CategoryID.Slug + '/0/'
     const postUrl = process.env.BASE_URL + '/' + this.props.post.Slug + '/'
     const fbAppId = process.env.FB_APP_ID
-    const twAppId = process.env.FB_APP_ID
-    const goAppId = process.env.FB_APP_ID
-    const liAppId = process.env.FB_APP_ID
+    const twAppId = process.env.TWITTER_APP_ID
+    const goAppId = process.env.GOOGLE_APP_ID
+    const liAppId = process.env.LINKEDIN_APP_ID
 
     return (
       <Layout title={title} description={description} image={image}>

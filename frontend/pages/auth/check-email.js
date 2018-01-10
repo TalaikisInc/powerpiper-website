@@ -1,16 +1,12 @@
-import React from 'react'
-import Page from '../../components/page'
-import Layout from '../../components/layout'
-import Session from '../../components/session'
+import Router from 'next/router'
+
+import Page from '../../components/Page'
+import Layout from '../../layout'
+import Session from '../../components/Session'
 
 export default class extends Page {
-  
-  static async getInitialProps({req, res}) {
-    // Get latest session (forceing cache busting when rending on client)
+  static async getInitialProps({ req, res }) {
     const session = await Session.getSession({force: true, req: req})
-    
-    // If signed in already, instead of displaying message send to callback page
-    // which should redirect them to whatever page it normally sends clients to
     if (session.user) {
       if (req) {
         res.redirect('/auth/callback')
@@ -18,18 +14,18 @@ export default class extends Page {
         Router.push('/auth/callback')
       }
     }
-      
+
     return {
       session: session
     }
   }
-  
+
   render() {
     return (
-      <Layout {...this.props} navmenu={false}>
-        <div className="text-center pt-5 pb-5">
-          <h1 className="display-4">Check your email</h1>
-          <p className="lead">Check your email for a sign in link.</p>
+      <Layout {...this.props}>
+        <div>
+          <h1>Check your email</h1>
+          <p>Check your email for a sign in link.</p>
         </div>
       </Layout>
     )

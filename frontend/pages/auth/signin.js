@@ -1,20 +1,14 @@
 import Router from 'next/router'
-import { Row, Col } from 'reactstrap'
-import Page from '../../components/page'
-import Layout from '../../components/layout'
-import Session from '../../components/session'
-import Signin from '../../components/signin'
-import Cookies from '../../components/cookies'
+
+import Page from '../../components/Page'
+import Layout from '../../layout'
+import Session from '../../components/Session'
+import Signin from '../../components/Signin'
+import Cookies from '../../components/Cookies'
 
 export default class extends Page {
-
-  static async getInitialProps({req, res, query}) {
-    // On the sign in page we always force get the latest session data from the
-    // server by passing 'force: true' to getSession to force cache busting.
-    const session = await Session.getSession({force: true, req: req})
-    
-    // If the user is logged in, we redirect them to the /auth/callback
-    // page which handles final routing.
+  static async getInitialProps({ req, res, query }) {
+    const session = await Session.getSession({ force: true, req: req })
     if (session.user) {
       if (req) {
         // Server side redirect
@@ -24,7 +18,7 @@ export default class extends Page {
         Router.push('/auth/callback')
       }
     }
-    
+
     if (query.redirect) {
       if (res) {
         res.cookie('redirect_url', query.redirect)
@@ -32,7 +26,7 @@ export default class extends Page {
         Cookies.save('redirect_url', query.redirect)
       }
     }
-    
+
     return {
       session: session
     }
@@ -46,24 +40,16 @@ export default class extends Page {
   }
 
   async componentDidMount() {
-    // Get latest session data after rendering on client
-    // Any page specified as an oauth/signin callback page should do this
     this.setState({
-      session: await Session.getSession({force: true})
+      session: await Session.getSession({ force: true })
     })
   }
 
   render() {
     return (
-      <Layout session={this.state.session} navmenu={false}>
-        <h1 className="text-center display-4">Sign up / Sign in</h1>
-        <Row className="mb-5">
-          <Col lg="8" className="mr-auto ml-auto" style={{marginBottom: 20}}>
-            <Signin session={this.state.session}/>
-          </Col>
-        </Row>
+      <Layout session={this.state.session}>
+        <Signin session={this.state.session} />
       </Layout>
     )
   }
-
 }

@@ -12,6 +12,14 @@ import i18n from '../i18n'
 const t = i18n.t.bind(i18n)
 
 class Index extends Page {
+  static async getInitialProps() {
+    return {
+      title: 'Decentralized Energy Marketplace',
+      description: 'Decentralized Energy Marketplace',
+      image: ''
+    }
+  }
+
   constructor() {
     super()
     this.state = {
@@ -34,12 +42,8 @@ class Index extends Page {
   }
   
   render () {
-    this.title = 'Decentralized Energy Marketplace'
-    this.description = 'Decentralized Energy Marketplace'
-    this.image = ''
-
     return (
-      <Layout title={this.title} description={this. description} image={this.image}>
+      <Layout {...this.props}>
         <Article responsive={true} margin='none' flex={false} primary={true}>
           <Section full={true} pad='none' align='center' justify='center'>
             <h1>{t('welcome')}</h1>

@@ -20,7 +20,7 @@ export default class Blog extends Page {
 
   render () {
     const title = this.props.post.Title
-    const description = this.title
+    const description = title
     const image = ''
 
     return (

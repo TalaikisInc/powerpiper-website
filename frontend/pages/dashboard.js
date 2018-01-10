@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types'
+/*import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
 import COLORS from '../utils/colors'
@@ -124,3 +124,4 @@ export default class UserCard extends Component {
     )
   }
 }
+*/

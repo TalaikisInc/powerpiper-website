@@ -16,7 +16,7 @@ export default class Blog extends Page {
 
   render () {
     const title = this.props.posts[0].author_id.LastName + ' ' + this.props.posts[0].author_id.FirstName + ' Blog'
-    const description = this.title
+    const description = title
     const image = process.env.BASE_URL + '/' + this.props.posts[0].image
     const total = this.props.posts[0].id
 

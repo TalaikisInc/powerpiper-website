@@ -55,8 +55,8 @@ before_script:
   - npm i -g pm2
   - export FRONTEND_PORT=3010
   - pm2 start npm --name "node" -- start
-  - pm2 start $PROJECT --interpreter=bash
   - cd ../
+  - pm2 start ./$PROJECT --interpreter=bash
   - sudo service postgresql restart
   - psql -c "CREATE DATABASE test_db ENCODING = 'UTF8';" -U postgres
 

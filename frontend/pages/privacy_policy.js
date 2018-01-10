@@ -6,9 +6,9 @@ import Heading from 'grommet/components/Heading'
 import Paragraph from 'grommet/components/Paragraph'
 import Animate from 'grommet/components/Animate'
 
-import Layout from './layout'
-import Page from './components/Page'
-import _Footer from './components/Footer'
+import Layout from '../layout'
+import Page from '../components/Page'
+import _Footer from '../components/Footer'
 
 export default class Blog extends Page {
   static async getInitialProps () {
@@ -20,7 +20,7 @@ export default class Blog extends Page {
 
   render () {
     const title = this.props.post.Title
-    const description = this.title
+    const description = title
     const image = ''
 
     return (
