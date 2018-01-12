@@ -60,7 +60,7 @@ export default class Layout extends Component {
   }
 
   async componentDidMount () {
-    if (!window.GA_INITIALIZED && this.props.documentPath) {
+    if (!window.GA_INITIALIZED && this.props.documentPath && this.state.policy) {
       initGA(this.props.documentPath)
       window.GA_INITIALIZED = true
     }
