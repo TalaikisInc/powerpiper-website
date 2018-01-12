@@ -2,8 +2,11 @@ import { Component, Fragment } from 'react'
 import Router from 'next/router'
 import cookie from 'react-cookies'
 import Head from 'next/head'
+import Link from 'next/link'
 import PropTypes from 'prop-types'
 
+import scss from '../assets/scss/theme.scss'
+import nprogress from '../assets/css/progress.css'
 import App from 'grommet/components/App'
 import Article from 'grommet/components/Article'
 import Layer from 'grommet/components/Layer'
@@ -11,13 +14,14 @@ import Box from 'grommet/components/Box'
 import Label from 'grommet/components/Label'
 import Header from 'grommet/components/Header'
 import SVGIcon from 'grommet/components/SVGIcon'
-import Menu from 'grommet/components/Menu'
-import MenuIcon from 'grommet/components/icons/base/Menu'
+import Columns from 'grommet/components/Columns'
+import BlogIcon from 'grommet/components/icons/base/Blog'
+import ContactInfoIcon from 'grommet/components/icons/base/ContactInfo'
+import LoginIcon from 'grommet/components/icons/base/Login'
 import Button from 'grommet/components/Button'
 import Animate from 'grommet/components/Animate'
 import Section from 'grommet/components/Section'
-import scss from '../assets/scss/theme.scss'
-import nprogress from '../assets/css/progress.css'
+import Anchor from 'grommet/components/Anchor'
 import NProgress from 'nprogress'
 
 import _Footer from '../components/Footer'
@@ -26,7 +30,6 @@ import Title from '../components/Title'
 import { initGA, logPageView } from '../components/GA'
 import Cookies from '../components/Cookies'
 import Signin from '../components/Signin'
-//import UserMenu from '../components/UserMenu'
 
 Router.onRouteChangeStart = () => {
   NProgress.start()
@@ -45,16 +48,18 @@ export default class Layout extends Component {
     this.onOpenModal = this.onOpenModal.bind(this)
     this.onCloseModal = this.onCloseModal.bind(this)
     this.state = {
-      modal: undefined
-    }
-  }
-
-  async componentWillMount() {
-    this.state = {
+      modal: undefined,
       policy: cookie.load('cookie-policy') || false,
       keep: true
     }
   }
+
+  /*componentWillMount() {
+    this.state = {
+      policy: cookie.load('cookie-policy') || false,
+      keep: true
+    }
+  }*/
 
   async componentDidMount () {
     if (!window.GA_INITIALIZED && this.props.documentPath) {
@@ -83,20 +88,6 @@ export default class Layout extends Component {
   }
 
   render () {
-    let layerNode = null
-    if (this.state.modal) {
-      layerNode = (
-        <Layer flush={true} closer={true} onClose={this.onCloseModal} align='center'>
-          <Box pad='medium'>
-            <Label>
-              Sign In / Sign Up
-            </Label>
-            <Signin session={this.props.session} />
-          </Box>
-        </Layer>
-      )
-    }
-
     return (
       <Fragment>
         <Head>
@@ -109,22 +100,31 @@ export default class Layout extends Component {
         </Head>
         <App centered={false}>
           <Header size='small' fixed={true} direction='row' pad={{ horizontal: 'medium' }} align='center'>
-            <SVGIcon viewBox='0 0 130 108'
-              version='1.1'
-              type='logo'
-              a11yTitle='PowerPiper'>
-              <g stroke='#865CD6'
-                strokeWidth='4'
-                fill='none'
-                strokeLinejoin='round'>
-                <path d='M40,65 L40,96 L16,107 L16,49 L16,49 L28.4679195,43.2855369 M75.6892892,43.6424091 L88,38 L88,96 L64,107 L64,64.5 L64,64.5 M64,64 L64,107 L40,96 L40,65 M89,38 L113,49 L113,107 L89,96 L89,38 Z M52,49 C56.971,49 61,44.971 61,40 C61,35.029 56.971,31 52,31 C47.029,31 43,35.029 43,40 C43,44.971 47.029,49 52,49 L52,49 Z M52,76 C52,76 28,58 28,40 C28,25 40,16 52,16 C64,16 76,25 76,40 C76,58 52,76 52,76 Z' />
-              </g>
-            </SVGIcon>
+            <Link prefetch href="/">
+              <SVGIcon viewBox='0 0 130 108'
+                version='1.1'
+                type='logo'
+                a11yTitle='PowerPiper'>
+                <g stroke='#865CD6'
+                  strokeWidth='4'
+                  fill='none'
+                  strokeLinejoin='round'>
+                  <path d='M40,65 L40,96 L64,107 L64,64.5 L64,64.5 M64,64 L64,107 L40,96 L40,65 M89,38 L113,49 L113,107 L89,96 L89,38 Z M52,49 C56.971,49 61,44.971 61,40 C61,35.029 56.971,31 52,31 C47.029,31 43,35.029 43,40 C43,44.971 47.029,49 52,49 L52,49 Z M52,76 C52,76 28,58 28,40 C28,25 40,16 52,16 C64,16 76,25 76,40 C76,58 52,76 52,76 Z' />
+                </g>
+              </SVGIcon>
+            </Link>
             <Box flex={true} justify='end' direction='row' responsive={false} pad='none'>
-              <Button label='Sign In / Sign Up' onClick={this.onOpenModal} size='small' />
-              <Menu icon={<MenuIcon />} direction='row' label='Menu' align='start' justify='between' size='small'>
-                <a href='/blog/' className='grommetux-anchor' onMouseEnter={() => { Router.prefetch('/') }}>Blog</a>
-              </Menu>
+              <Columns maxCount={2} responsive={true} justify='end' size='small'>
+                <Box align='end' alignContent='end' responsive={true}>
+                  <UserMenu session={this.props.session} onOpenModal={this.onOpenModal}/>
+                  <SigninModal modal={this.state.modal} onCloseModal={this.onCloseModal} onOpenModal={this.onOpenModal} session={this.props.session} />
+                </Box>
+                <Box align='end' alignContent='end' responsive={true}>
+                  <Link prefetch href="/blog/">
+                    <Anchor href='/blog/' icon={<BlogIcon />} label='Blog' />
+                  </Link>
+                </Box>
+              </Columns>
             </Box>
           </Header>
           {
@@ -137,14 +137,63 @@ export default class Layout extends Component {
               </Section>
             </Animate>
           }
-          { layerNode }
-          <Article responsive={true} margin='none' flex={false} primary={true}>
+          <MainBody>
             { this.props.children }
-          </Article>
+          </MainBody>
           { logPageView() }
           {_Footer()}
         </App>
       </Fragment>
+    )
+  }
+}
+
+// eslint-disable-next-line
+export class MainBody extends Component {
+  render() {
+    return (
+      <Fragment>
+        <Article responsive={true} margin='none' flex={false} primary={true}>
+          { this.props.children }
+        </Article>
+      </Fragment>
+    )
+  }
+}
+
+// eslint-disable-next-line
+export class UserMenu extends Component {
+  render() {
+    if (this.props.session && this.props.session.user) {
+      const session = this.props.session
+      return (
+        <Link href="/account/">
+          <Anchor href='/account/' icon={<ContactInfoIcon />} label={session.user.name || session.user.email} />
+        </Link>
+      )
+    } else {
+      return (
+        <Anchor icon={<LoginIcon />} label='Sign In / Sign up' onClick={this.props.onOpenModal} />
+      )
+    }
+  }
+}
+
+// eslint-disable-next-line
+export class SigninModal extends Component {
+  render() {
+    return (
+      <div>
+        { this.props.modal && <Layer flush={true} closer={true} onClose={this.props.onCloseModal} align='center'>
+          <Box pad='medium'>
+            <Label>
+              Sign In / Sign Up
+            </Label>
+            { /* <Signin session={this.props.session} />*/ }
+          </Box>
+        </Layer>
+        }
+      </div>
     )
   }
 }
@@ -156,6 +205,9 @@ Layout.defaultProps = {
 }
 
 Layout.propTypes = {
+  siteTitle: PropTypes.string.isRequired,
+  author: PropTypes.string.isRequired,
+  baseURL: PropTypes.string.isRequired,
   session: PropTypes.object.isRequired,
   children: PropTypes.object.isRequired
 }

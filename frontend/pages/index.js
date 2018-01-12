@@ -1,7 +1,8 @@
+import { translate } from 'react-i18next'
+
 import Section from 'grommet/components/Section'
 import Heading from 'grommet/components/Heading'
 import Animate from 'grommet/components/Animate'
-import { translate } from 'react-i18next'
 
 import Layout from '../layout'
 import Page from '../components/Page'
@@ -63,7 +64,9 @@ Index.defaultProps = {
 const Extended = translate(['index'], { i18n, wait: process.browser })(Index)
 
 Extended.getInitialProps = async ({ req }) => {
-  if (req && !process.browser) { return i18n.getInitialProps(req, ['index'])}
+  if (req && !process.browser) {
+    return i18n.getInitialProps(req, ['index'])
+  }
   return {}
 }
 

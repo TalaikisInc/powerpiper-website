@@ -163,7 +163,7 @@ export default class Session {
       return false
     }
   }
-  
+
   static _removeLocalStore(name) {
     try {
       localStorage.removeItem(name)

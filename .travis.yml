@@ -47,11 +47,9 @@ before_script:
   - go get github.com/joho/godotenv
   - go get github.com/die-net/lrucache
   - go build
-  - wget https://nodejs.org/dist/v8.6.0/node-v8.6.0-linux-x64.tar.xz
-  - sudo tar -C /usr/local --strip-components 1 -xJf node-v8.6.0-linux-x64.tar.xz
-  - ls -l /usr/local/bin/node
-  - ls -l /usr/local/bin/npm
-  - cd frontend
+  - cd scripts/
+  - bash./node,sh
+  - cd ../frontend
   - npm i
   - npm i -g pm2
   - export FRONTEND_PORT=3010

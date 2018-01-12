@@ -19,8 +19,6 @@ export default class Signin extends Component {
       email: '',
       session: this.props.session
     }
-    console.log(this.props.session)
-    console.log('--------------------------------------')
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleEmailChange = this.handleEmailChange.bind(this)
   }
@@ -46,7 +44,7 @@ export default class Signin extends Component {
 
   render() {
     if (this.props.session.user) {
-      return <div/>
+      return <div />
     } else {
       return (
         <Fragment>
@@ -59,14 +57,14 @@ export default class Signin extends Component {
               <p><a href="/auth/oauth/linkedin"><SocialLinkedIn a11yTitle='Sign In with LinkedIn' /></a></p>
             </Box>
             <Box>
-              <Form id="signin" method="post" action="/auth/email/signin" onSubmit={this.handleSubmit}>
-                <Input name="_csrf" type="hidden" value={this.state.session.csrfToken}/>
+              <form id="signin" method="post" action="/auth/email/signin" onSubmit={this.handleSubmit}>
+                <input name="_csrf" type="hidden" value={this.props.session.csrfToken}/>
                 <Paragraph>
                   <Label htmlFor="email">Email address</Label><br/>
                   <Input name="email" type="text" placeholder="j.smith@example.com" id="email" className="form-control" value={this.state.email} onChange={this.handleEmailChange}/>
                 </Paragraph>
                 <Button id="submitButton" outline color="dark" type="submit">Sign in with email</Button>
-              </Form>
+              </form>
             </Box>
           </Columns>
         </Fragment>
