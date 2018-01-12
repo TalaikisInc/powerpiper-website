@@ -105,7 +105,6 @@
           "SwitchCase": 1
         }],
         "arrow-spacing": 2,
-        "brace-style": 2,
         "camelcase": 0,
         "comma-spacing": 2,
         "comma-style": 2,
@@ -140,7 +139,6 @@
         "quotes": [2, "single"],
         "quote-props": [2, "as-needed"],
         "semi": [2, "never"],
-        "sort-vars": [2, {"ignoreCase": true}],
         "keyword-spacing": 2,
         "space-before-blocks": 2,
         "object-curly-spacing": [2, "always"],

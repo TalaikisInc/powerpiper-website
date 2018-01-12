@@ -3,6 +3,7 @@ import Router from 'next/router'
 
 import Columns from 'grommet/components/Columns'
 import Box from 'grommet/components/Box'
+import Paragraph from 'grommet/components/Paragraph'
 import Label from 'grommet/components/Label'
 import SocialFacebook from 'grommet/components/icons/base/SocialFacebook'
 import SocialTwitter from 'grommet/components/icons/base/SocialTwitter'
@@ -18,6 +19,8 @@ export default class Signin extends Component {
       email: '',
       session: this.props.session
     }
+    console.log(this.props.session)
+    console.log('--------------------------------------')
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleEmailChange = this.handleEmailChange.bind(this)
   }
@@ -58,10 +61,10 @@ export default class Signin extends Component {
             <Box>
               <Form id="signin" method="post" action="/auth/email/signin" onSubmit={this.handleSubmit}>
                 <Input name="_csrf" type="hidden" value={this.state.session.csrfToken}/>
-                <p>
+                <Paragraph>
                   <Label htmlFor="email">Email address</Label><br/>
                   <Input name="email" type="text" placeholder="j.smith@example.com" id="email" className="form-control" value={this.state.email} onChange={this.handleEmailChange}/>
-                </p>
+                </Paragraph>
                 <Button id="submitButton" outline color="dark" type="submit">Sign in with email</Button>
               </Form>
             </Box>

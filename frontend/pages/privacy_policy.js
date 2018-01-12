@@ -8,7 +8,7 @@ import Animate from 'grommet/components/Animate'
 import Layout from '../layout'
 import Page from '../components/Page'
 
-export default class Blog extends Page {
+export default class PrivacyPolicy extends Page {
   static async getInitialProps () {
     // eslint-disable-next-line no-undef
     const res = await fetch(process.env.API_URL + '/api/v1.0/flatpage/Privacy Policy/')
@@ -17,23 +17,25 @@ export default class Blog extends Page {
   }
 
   render () {
-    const title = this.props.post.Title
-    const description = title
-    const image = ''
-
     return (
-      <Layout title={title} description={description} image={image} session={this.props.session}>
+      <Layout {...this.props}>
         <Section full={false} pad='medium' align='center' justify='center'>
-          <Animate enter={{animation: 'slide-up', duration: 1000, delay: 0}} keep={true} visible={this.visibility}>
+          <Animate enter={{ animation: 'slide-up', duration: 1000, delay: 0 }} keep={true} visible={this.visibility}>
             <Heading align='center'>
               {this.props.post.Title} 
             </Heading>
             <Paragraph align='start' size='large'>
-              <div dangerouslySetInnerHTML={{ __html: this.props.post.Content}} />
+              <div dangerouslySetInnerHTML={{ __html: this.props.post.Content }} />
             </Paragraph>
           </Animate>
         </Section>
       </Layout>
     )
   }
+}
+
+PrivacyPolicy.defaultProps = {
+  title: this.props.post.Title,
+  description: this.props.title,
+  image: ''
 }

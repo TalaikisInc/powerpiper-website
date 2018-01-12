@@ -17,11 +17,9 @@ import Session from '../components/Session'
 import Cookies from '../components/Cookies'
 
 export default class DashBoard extends Page {
-  static async getInitialProps({ req, query }) {
+  static async getInitialProps({ req }) {
     return {
-      session: await Session.getSession({ force: true, req: req }),
-      title: 'Dashbord',
-      loginTitle: 'Sign In'
+      session: await Session.getSession({ force: true, req: req })
     }
   }
 
@@ -147,13 +145,13 @@ export default class DashBoard extends Page {
     await Session.signout()
     Router.push('/')
   }
-  
+
   render() {
     if (this.state.isSignedIn === true) {
       const alert = (this.state.alertText === null) ? <div/> : <div className={`alert ${this.state.alertStyle}`} role="alert">{this.state.alertText}</div>
 
       return (
-        <Layout session={this.state.session} title={this.props.title}>
+        <Layout {...this.props}>
           <Section full={false} pad='medium' align='center' justify='center'>
             <Box>
               <Heading className="display-4">Your Account</Heading>
@@ -267,4 +265,11 @@ export class LinkAccount extends Component {
       return (<p />)
     }
   }
+}
+
+DashBoard.defaultProps = {
+  title: 'Dashbord',
+  description: this.props.title,
+  image: '',
+  loginTitle: 'Sign In'
 }

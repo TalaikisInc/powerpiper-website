@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 const Meta = (props) => {
   return (
     <div>
+      <meta charSet='utf-8' />
       <meta name='title' content={props.title} />
       <meta name='description' content={props.description} />
       <meta httpEquiv='X-UA-Compatible' content='IE=edge, chrome=1' />

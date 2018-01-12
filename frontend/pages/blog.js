@@ -13,15 +13,17 @@ export default class Blog extends Page {
   }
 
   render () {
-    const title = 'Decentralized Energy Blog'
-    const description = 'Decentralized Energy Blog'
-    const image = process.env.BASE_URL + '/' + this.props.posts[0].image
-    const total = Object.keys(this.props.posts).length
-
     return (
-      <Layout title={title} description={description} image={image} session={this.props.session}>
-        {this.props.posts.map(item => <Block key={item.id} post={item} total={total} />)}
+      <Layout {...this.props}>
+        {this.props.posts.map(item => <Block key={item.id} post={item} total={this.props.total} />)}
       </Layout>
     )
   }
+}
+
+Blog.defaultProps = {
+  title: 'Decentralized Energy Blog',
+  description: 'Decentralized Energy Blog',
+  image: process.env.BASE_URL + '/' + this.props.posts[0].image,
+  total: Object.keys(this.props.posts).length
 }

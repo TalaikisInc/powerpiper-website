@@ -6,6 +6,7 @@ import Heading from 'grommet/components/Heading'
 import Paragraph from 'grommet/components/Paragraph'
 import Image from 'grommet/components/Image'
 import Animate from 'grommet/components/Animate'
+import FormNextIcon from 'grommet/components/icons/base/FormNext'
 
 import Date from '../../utils/helpers'
 
@@ -23,7 +24,7 @@ export default class Block extends Component {
           <Heading align='center'>
             <a href={this.categoryUrl} className='grommetux-anchor' onMouseEnter={() => {Router.prefetch(categoryUrl)}}>
               {this.props.post.category_id.Title}
-            </a>  &gt;&gt;
+            </a>  <FormNextIcon />
             <a href={articleUrl} className='grommetux-anchor' onMouseEnter={() => {Router.prefetch(articleUrl)}}>
               {this.props.post.title} 
             </a>

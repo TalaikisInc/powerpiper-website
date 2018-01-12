@@ -10,14 +10,6 @@ import i18n from '../i18n'
 const t = i18n.t.bind(i18n)
 
 class Index extends Page {
-  static async getInitialProps() {
-    return {
-      title: 'Decentralized Energy Marketplace',
-      description: 'Decentralized Energy Marketplace',
-      image: ''
-    }
-  }
-
   constructor() {
     super()
     this.state = {
@@ -26,19 +18,13 @@ class Index extends Page {
     this._onSelect = this._onSelect.bind(this)
   }
 
-  componentDidMount = () => {
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('../sw.js')
-    }
-  }
-
   _onSelect(selected) {
     this.setState({
       ...this.state,
       selected
-    });
+    })
   }
-  
+
   render () {
     return (
       <Layout {...this.props}>
@@ -66,6 +52,12 @@ class Index extends Page {
       </Layout>
     )
   }
+}
+
+Index.defaultProps = {
+  title: 'Decentralized Energy Marketplace',
+  description: 'Decentralized Energy Marketplace',
+  image: ''
 }
 
 const Extended = translate(['index'], { i18n, wait: process.browser })(Index)

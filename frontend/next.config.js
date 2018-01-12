@@ -5,14 +5,14 @@ const path = require('path')
 const glob = require('glob')
 
 module.exports = {
-  webpack: (config, { dev }) => {
+  webpack: (config) => {
     if (ANALYZE) {
       config.plugins.push(
         new BundleAnalyzerPlugin({
-            analyzerMode: 'server',
-            analyzerPort: 8888,
-            openAnalyzer: true
-            }),
+          analyzerMode: 'server',
+          analyzerPort: 8888,
+          openAnalyzer: true
+        }),
         new WebpackBundleSizeAnalyzerPlugin('stats.txt')
       )
     }
@@ -23,13 +23,11 @@ module.exports = {
         options: {
           name: 'dist/[path][name].[ext]'
         }
-      }
-    ,
+      },
       {
         test: /\.css$/,
         use: ['babel-loader', 'raw-loader', 'postcss-loader']
-      }
-    ,
+      },
       {
         test: /\.s(a|c)ss$/,
         use: ['babel-loader', 'raw-loader', 'postcss-loader',
@@ -44,7 +42,6 @@ module.exports = {
         ]
       }
     )
-
     return config
   }
 }

@@ -1,15 +1,13 @@
 require('dotenv').config({ path: '../.env' })
-
 const express = require('express')
 const smtpTransport = require('nodemailer-smtp-transport')
 const directTransport = require('nodemailer-direct-transport')
 const path = require('path')
 const next = require('next')
-const app = next({dev: process.env.NODE_ENV !== 'production' })
+const app = next({ dir: '.', dev: process.env.NODE_ENV === 'production' }) // no idea why so, otherwise hot relaod not working
 const i18nextMiddleware = require('i18next-express-middleware')
 const Backend = require('i18next-node-fs-backend')
 const i18n = require('./i18n')
-const port = process.env.FRONTEND_PORT
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
 const MongoClient = require('mongodb').MongoClient
@@ -17,10 +15,15 @@ const MongoStore = require('connect-mongo')(session)
 const NeDB = require('nedb')
 const routes = require('./routes/index')
 const auth = require('./routes/auth')
-const handler = routes.getRequestHandler(app)
 const assert = require('assert')
+const port = process.env.FRONTEND_PORT
+const sessConn = process.env.SESSION_DB_CONNECTION_STRING
+const mongoUrl = process.env.MONGO_DB
 
 assert.notEqual(null, process.env.SESSION_SECRET, 'Session secret is required!')
+assert.notEqual(null, port, 'Port is required!')
+assert.notEqual(null, sessConn, 'Session connection string is required!')
+assert.notEqual(null, mongoUrl, 'MongoDB URL is required!')
 
 process.on('uncaughtException', (err) => {
   console.error('Uncaught Exception: ', err)
@@ -57,13 +60,12 @@ i18n.use(Backend).use(i18nextMiddleware.LanguageDetector).init({
     addPath: path.join(__dirname, '/locales/{{lng}}/{{ns}}.missing.json')
   }
 }, () => {
-  // loaded translations we can bootstrap our routes
   app.prepare()
     .then(() => {
       return new Promise((resolve, reject) => {
-        if (process.env.MONGO_DB) {
+        if (mongoUrl) {
           // Example connection string: mongodb://localhost:27017/my-user-db
-          MongoClient.connect(process.env.MONGO_DB, (err, client) => {
+          MongoClient.connect(mongoUrl, (err, client) => {
             assert.equal(null, err)
             userdb = client.db('users').collection('users')
             resolve(true)
@@ -82,9 +84,9 @@ i18n.use(Backend).use(i18nextMiddleware.LanguageDetector).init({
     })
     .then(() => {
       return new Promise((resolve) => {
-        if (process.env.SESSION_DB_CONNECTION_STRING) {
+        if (sessConn) {
           sessionStore = new MongoStore({
-            url: process.env.SESSION_DB_CONNECTION_STRING,
+            url: sessConn,
             autoRemove: 'interval',
             // Removes expired sessions every 10 minutes
             autoRemoveInterval: 10,
@@ -140,7 +142,7 @@ i18n.use(Backend).use(i18nextMiddleware.LanguageDetector).init({
             })
           })
         } else {
-          return res.status(403).json({error: 'Must be signed in to get profile' })
+          return res.status(403).json({error: 'Must be signed in to access profile' })
         }
       })
 
@@ -176,13 +178,21 @@ i18n.use(Backend).use(i18nextMiddleware.LanguageDetector).init({
       })
 
       // use next.js
-      server.get('*', (req, res) => handler(req, res))
+      // server.get('*', (req, res) => handler(req, res))
+      server.all('*', (req, res) => {
+        const nextRequestHandler = routes.getRequestHandler(app)
+        return nextRequestHandler(req, res)
+      })
 
-      server.use(handler).listen(port, (err) => {
+      server.listen(process.env.FRONTEND_PORT, err => {
         if (err) {
           throw err
         }
-        console.log('> Ready on http://localhost:${port}')
+        console.log('> Ready on http://localhost:' + process.env.FRONTEND_PORT + ' [' + process.env.NODE_ENV + ']')
       })
+    })
+    .catch(err => {
+      console.log('An error occurred, unable to start the server')
+      console.log(err)
     })
 })
