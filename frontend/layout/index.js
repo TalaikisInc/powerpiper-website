@@ -48,18 +48,16 @@ export default class Layout extends Component {
     this.onOpenModal = this.onOpenModal.bind(this)
     this.onCloseModal = this.onCloseModal.bind(this)
     this.state = {
-      modal: undefined,
-      policy: cookie.load('cookie-policy') || false,
-      keep: true
+      modal: undefined
     }
   }
 
-  /*componentWillMount() {
+  componentWillMount() {
     this.state = {
       policy: cookie.load('cookie-policy') || false,
       keep: true
     }
-  }*/
+  }
 
   async componentDidMount () {
     if (!window.GA_INITIALIZED && this.props.documentPath) {
@@ -88,6 +86,7 @@ export default class Layout extends Component {
   }
 
   render () {
+    console.log(this.state.keep)
     return (
       <Fragment>
         <Head>
@@ -128,7 +127,7 @@ export default class Layout extends Component {
             </Box>
           </Header>
           {
-            !this.state.keep && <Animate enter={{ animation: 'slide-up', duration: 1000, delay: 400 }} keep={this.state.keep}>
+            !this.state.policy && <Animate enter={{ animation: 'slide-up', duration: 1000, delay: 400 }} keep={this.state.keep}>
               <Section pad='small' align='center' justify='center'>
                 <Label>
                   This site uses cookies. Click 'OK' if that's OK with you. You can also familiarize yourself with our <a href='/cookie_policy/'>Cookie Policy</a> or <a href='/privacy_policy/'>Privacy Policy</a>.
