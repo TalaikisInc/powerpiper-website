@@ -18,7 +18,7 @@ const _Footer = () => {
           <A href='//plus.google.com/u/1/109642331145101222195'>{FontAwesome({name: 'google-plus', ariaLabel: 'Google+', size: '2x'})}</A>
           <A href='//www.facebook.com/powerpiper/'>{FontAwesome({name: 'facebook', ariaLabel: 'Facebook', size: '2x'})}</A>
           <A href='//twitter.com/ThePowerPiper'>{FontAwesome({name: 'twitter', ariaLabel: 'Twitter', size:'2x'})}</A>
-          <A href='//www.instagram.com/powerpiper/'>{FontAwesome({name: 'instagram', ariaLabel: 'Instagram', size:'2x'})}</A>
+          <A href='//www.instagram.com/realpowerpiper/'>{FontAwesome({name: 'instagram', ariaLabel: 'Instagram', size:'2x'})}</A>
           <A href='//medium.com/power-piper'>{FontAwesome({name: 'medium', ariaLabel: 'Medium', size:'2x'})}</A>
           <A href='//www.reddit.com/user/powerpiper'>{FontAwesome({name: 'reddit', ariaLabel: 'Reddit', size: '2x'})}</A>
           <A href='#'>{FontAwesome({name: 'btc', ariaLabel: 'Bitcoin Talk', size: '2x'})}</A>
