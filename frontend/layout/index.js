@@ -51,16 +51,19 @@ export default class Layout extends Component {
     this.onOpenModal = this.onOpenModal.bind(this)
     this.onCloseModal = this.onCloseModal.bind(this)
     this.state = {
-      modal: undefined
+      modal: undefined,
+      session: null,
+      policy: false,
+      keep: true
     }
   }
 
   componentWillMount() {
-    this.state = {
-      policy: cookie.load('cookie-policy') || false,
-      session: cookie.load('sess_id') || undefined,
+    this.setState({
+      policy: cookie.load('cookie-policy'),
+      session: cookie.load('sess_id'),
       keep: true
-    }
+    })
   }
 
   async componentDidMount () {

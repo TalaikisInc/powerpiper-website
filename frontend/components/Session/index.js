@@ -18,10 +18,7 @@ export default class Session {
   }
 
   // We can't do async requests in the constructor so access is via asyc method
-  static async getSession({
-    req = null,
-    force = false
-  } = {}) {
+  static async getSession({ req = null, force = false} = {}) {
     let session = {}
     if (req) {
       session.csrfToken = req.connection._httpMessage.locals._csrf
@@ -79,14 +76,9 @@ export default class Session {
       .catch(() => Error('Unable to get session'))
   }
 
-  static signin = (email) => {
-    const session = this.getSession()
-    console.log('session')
-    console.log(session)
-    console.log('csrf')
-
-    // Make sure we have the latest CSRF Token in our session
-    session.csrfToken = this.getCsrfToken()
+  static async signin (email) {
+    const session = await this.getSession()
+    session.csrfToken = await this.getCsrfToken()
     console.log(session.csrfToken)
 
     const formData = {
@@ -118,8 +110,7 @@ export default class Session {
       .catch(() => Error('Unable to sign in'))
   }
 
-  static signout = () => {
-    // Signout from the server
+  static async signout () {
     const csrfToken = this.getCsrfToken()
     const formData = { _csrf: csrfToken }
 
@@ -150,16 +141,18 @@ export default class Session {
   static _getLocalStore(name) {
     try {
       return JSON.parse(localStorage.getItem(name))
-    } catch (err) {
+    }
+    catch (err) {
       return null
     }
   }
-  
+
   static _saveLocalStore(name, data) {
     try {
       localStorage.setItem(name, JSON.stringify(data))
       return true
-    } catch (err) {
+    }
+    catch (err) {
       return false
     }
   }
@@ -168,7 +161,8 @@ export default class Session {
     try {
       localStorage.removeItem(name)
       return true
-    } catch (err) {
+    }
+    catch (err) {
       return false
     }
   }

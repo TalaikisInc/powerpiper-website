@@ -1,5 +1,6 @@
-import { Component, Fragment } from 'react'
+import { Component, Fragment, PropTypes } from 'react'
 import Router from 'next/router'
+import cookie from 'react-cookies'
 
 import Columns from 'grommet/components/Columns'
 import Box from 'grommet/components/Box'
@@ -13,6 +14,12 @@ import SocialLinkedIn from 'grommet/components/icons/base/SocialLinkedin'
 import Session from '../Session'
 
 export default class Signin extends Component {
+  static propTypes() {
+    return {
+      session: PropTypes.object.isRequired
+    }
+  }
+
   constructor(props) {
     super(props)
     this.state = {
@@ -58,12 +65,12 @@ export default class Signin extends Component {
             </Box>
             <Box>
               <form id="signin" method="post" action="/auth/email/signin" onSubmit={this.handleSubmit}>
-                <input name="_csrf" type="hidden" value={this.props.session.csrfToken}/>
+                <input name="_csrf" type="hidden" value={this.props.session.csrfToken} />
                 <Paragraph>
                   <Label htmlFor="email">Email address</Label><br/>
-                  <Input name="email" type="text" placeholder="j.smith@example.com" id="email" className="form-control" value={this.state.email} onChange={this.handleEmailChange}/>
+                  <input name="email" type="text" placeholder="j.smith@example.com" id="email" value={this.state.email} onChange={this.handleEmailChange} />
                 </Paragraph>
-                <Button id="submitButton" outline color="dark" type="submit">Sign in with email</Button>
+                <button color="dark" type="submit">Sign in with email</button>
               </form>
             </Box>
           </Columns>
