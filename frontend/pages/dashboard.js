@@ -1,6 +1,7 @@
 import { Component, Fragment } from 'react'
 import Router from 'next/router'
 import fetch from 'unfetch'
+import cookie from 'react-cookies'
 
 import Box from 'grommet/components/Box'
 import Section from 'grommet/components/Section'
@@ -14,7 +15,6 @@ import UnlinkIcon from 'grommet/components/icons/base/Unlink'
 import Page from '../components/Page'
 import Layout from '../layout'
 import Session from '../components/Session'
-import Cookies from '../components/Cookies'
 
 export default class DashBoard extends Page {
   static async getInitialProps({ req }) {
@@ -54,9 +54,7 @@ export default class DashBoard extends Page {
       isSignedIn: (session.user) ? true : false
     })
 
-    // If the user bounces off to link/unlink their account we want them to
-    // land back here after signing in with the other service / unlinking.
-    Cookies.save('redirect_url', '/dashboard/')
+    cookie.save('redirect_url', '/dashboard/', { path: '/' })
 
     this.getProfile()
   }

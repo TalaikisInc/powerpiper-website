@@ -43,6 +43,7 @@
     "react-animations": "^1.0.0",
     "react-cookies": "^0.1.0",
     "react-dom": "^16.2.0",
+    "react-dom-stream": "^0.5.1",
     "react-ga": "^2.2.0",
     "react-i18next": "^7.3.0",
     "react-social": "^1.10.0",

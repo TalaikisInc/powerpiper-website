@@ -48,7 +48,7 @@ before_script:
   - go get github.com/die-net/lrucache
   - go build
   - cd scripts/
-  - bash./node,sh
+  - bash./node.sh
   - cd ../frontend
   - npm i
   - npm i -g pm2

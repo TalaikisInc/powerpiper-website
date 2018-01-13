@@ -178,8 +178,7 @@ i18n.use(Backend).use(i18nextMiddleware.LanguageDetector).init({
       })
 
       // use next.js
-      // server.get('*', (req, res) => handler(req, res))
-      server.all('*', (req, res) => {
+      server.get('*', (req, res) => {
         const nextRequestHandler = routes.getRequestHandler(app)
         return nextRequestHandler(req, res)
       })

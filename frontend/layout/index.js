@@ -28,7 +28,6 @@ import _Footer from '../components/Footer'
 import Meta from '../components/Meta'
 import Title from '../components/Title'
 import { initGA, logPageView } from '../components/GA'
-import Cookies from '../components/Cookies'
 import Signin from '../components/Signin'
 
 Router.onRouteChangeStart = () => {
@@ -65,7 +64,7 @@ export default class Layout extends Component {
       window.GA_INITIALIZED = true
     }
     if (this.state.modal !== true) {
-      Cookies.save('redirect_url', window.location.pathname)
+      cookie.save('redirect_url', window.location.pathname, { path: '/' })
     }
   }
 
@@ -86,7 +85,6 @@ export default class Layout extends Component {
   }
 
   render () {
-    console.log(this.state.keep)
     return (
       <Fragment>
         <Head>
