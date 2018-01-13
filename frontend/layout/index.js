@@ -1,9 +1,8 @@
-import { Component, Fragment } from 'react'
+import { Component, Fragment, PropTypes } from 'react'
 import Router from 'next/router'
 import cookie from 'react-cookies'
 import Head from 'next/head'
 import Link from 'next/link'
-import PropTypes from 'prop-types'
 
 import scss from '../assets/scss/theme.scss'
 import nprogress from '../assets/css/progress.css'
@@ -38,8 +37,13 @@ Router.onRouteChangeComplete = () => NProgress.done()
 Router.onRouteChangeError = () => NProgress.done()
 
 export default class Layout extends Component {
-  static async getInitialProps ({ req }) {
-    return { documentPath: req.url }
+  static propTypes() {
+    return {
+      siteTitle: PropTypes.string.isRequired,
+      author: PropTypes.string.isRequired,
+      baseURL: PropTypes.string.isRequired,
+      children: PropTypes.object.isRequired
+    }
   }
 
   constructor(props) {
@@ -54,6 +58,7 @@ export default class Layout extends Component {
   componentWillMount() {
     this.state = {
       policy: cookie.load('cookie-policy') || false,
+      session: cookie.load('sess_id') || undefined,
       keep: true
     }
   }
@@ -63,6 +68,7 @@ export default class Layout extends Component {
       initGA(this.props.documentPath)
       window.GA_INITIALIZED = true
     }
+
     if (this.state.modal !== true) {
       cookie.save('redirect_url', window.location.pathname, { path: '/' })
     }
@@ -113,8 +119,8 @@ export default class Layout extends Component {
             <Box flex={true} justify='end' direction='row' responsive={false} pad='none'>
               <Columns maxCount={2} responsive={true} justify='end' size='small'>
                 <Box align='end' alignContent='end' responsive={true}>
-                  <UserMenu session={this.props.session} onOpenModal={this.onOpenModal}/>
-                  <SigninModal modal={this.state.modal} onCloseModal={this.onCloseModal} onOpenModal={this.onOpenModal} session={this.props.session} />
+                  <UserMenu session={this.state.session} onOpenModal={this.onOpenModal}/>
+                  <SigninModal modal={this.state.modal} onCloseModal={this.onCloseModal} onOpenModal={this.onOpenModal} session={this.state.session} />
                 </Box>
                 <Box align='end' alignContent='end' responsive={true}>
                   <Link prefetch href="/blog/">
@@ -186,7 +192,7 @@ export class SigninModal extends Component {
             <Label>
               Sign In / Sign Up
             </Label>
-            { /* <Signin session={this.props.session} />*/ }
+            <Signin session={this.props.session} />
           </Box>
         </Layer>
         }
@@ -199,12 +205,4 @@ Layout.defaultProps = {
   siteTitle: process.env.SITE_TITLE,
   author: process.env.SITE_TITLE,
   baseURL: process.env.BASE_URL || ''
-}
-
-Layout.propTypes = {
-  siteTitle: PropTypes.string.isRequired,
-  author: PropTypes.string.isRequired,
-  baseURL: PropTypes.string.isRequired,
-  session: PropTypes.object.isRequired,
-  children: PropTypes.object.isRequired
 }

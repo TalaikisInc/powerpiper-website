@@ -24,10 +24,8 @@ export default class Session {
   } = {}) {
     let session = {}
     if (req) {
-      // If running on the server session data should be in the req object
       session.csrfToken = req.connection._httpMessage.locals._csrf
       session.expires = req.session.cookie._expires
-      // If the user is logged in, add the user to the session object
       if (req.user) {
         session.user = req.user
       }
@@ -82,12 +80,14 @@ export default class Session {
   }
 
   static signin = (email) => {
-    // Sign in to the server
-    // Make sure we have session in memory
     const session = this.getSession()
+    console.log('session')
+    console.log(session)
+    console.log('csrf')
 
     // Make sure we have the latest CSRF Token in our session
     session.csrfToken = this.getCsrfToken()
+    console.log(session.csrfToken)
 
     const formData = {
       _csrf: session.csrfToken,

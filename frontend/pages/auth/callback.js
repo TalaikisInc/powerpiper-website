@@ -1,14 +1,13 @@
-import { Fragment } from 'react'
+import { Fragment, Component } from 'react'
 import Router from 'next/router'
 import Head from 'next/head'
 import cookie from 'react-cookies'
 
 import Spinning from 'grommet/components/icons/Spinning'
 
-import Page from '../../components/Page'
 import Session from '../../components/Session'
 
-export default class CallBack extends Page {
+export default class CallBack extends Component {
   static async getInitialProps({ req }) {
     const session = await Session.getSession({ force: true, req: req })
     let redirectTo = '/dashboard/'

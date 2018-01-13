@@ -1,14 +1,14 @@
 import Router from 'next/router'
 import cookie from 'react-cookies'
+import { Component } from 'react'
 
 import Section from 'grommet/components/Section'
 
-import Page from '../../components/Page'
 import Layout from '../../layout'
 import Session from '../../components/Session'
 import Signin from '../../components/Signin'
 
-export default class extends Page {
+export default class SignIn extends Component {
   static async getInitialProps({ req, res, query }) {
     const session = await Session.getSession({ force: true, req: req })
     if (session.user && req) {

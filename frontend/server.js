@@ -4,7 +4,7 @@ const smtpTransport = require('nodemailer-smtp-transport')
 const directTransport = require('nodemailer-direct-transport')
 const path = require('path')
 const next = require('next')
-const app = next({ dir: '.', dev: process.env.NODE_ENV === 'production' }) // no idea why so, otherwise hot relaod not working
+const app = next({ dir: '.', dev: process.env.NODE_ENV === 'production' }) // no idea why so
 const i18nextMiddleware = require('i18next-express-middleware')
 const Backend = require('i18next-node-fs-backend')
 const i18n = require('./i18n')

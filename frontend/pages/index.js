@@ -1,18 +1,18 @@
 import { translate } from 'react-i18next'
+import { Component } from 'react'
 
 import Section from 'grommet/components/Section'
 import Heading from 'grommet/components/Heading'
 import Animate from 'grommet/components/Animate'
 
 import Layout from '../layout'
-import Page from '../components/Page'
 import Subscribe from '../components/Subscribe'
 import i18n from '../i18n'
 const t = i18n.t.bind(i18n)
 
-class Index extends Page {
-  constructor() {
-    super()
+class Index extends Component {
+  constructor(props) {
+    super(props)
     this.state = {
       selected: 0
     }

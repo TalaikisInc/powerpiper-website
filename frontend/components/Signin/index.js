@@ -44,7 +44,7 @@ export default class Signin extends Component {
 
   render() {
     if (this.props.session.user) {
-      return <div />
+      return <span />
     } else {
       return (
         <Fragment>

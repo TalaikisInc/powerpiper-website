@@ -12,11 +12,10 @@ import Label from 'grommet/components/Label'
 import LinkIcon from 'grommet/components/icons/base/Link'
 import UnlinkIcon from 'grommet/components/icons/base/Unlink'
 
-import Page from '../components/Page'
 import Layout from '../layout'
 import Session from '../components/Session'
 
-export default class DashBoard extends Page {
+export default class DashBoard extends Component {
   static async getInitialProps({ req }) {
     return {
       session: await Session.getSession({ force: true, req: req })

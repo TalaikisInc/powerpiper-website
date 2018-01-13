@@ -121,7 +121,6 @@
         "no-inline-comments": 0,
         "no-lonely-if": 2,
         "no-mixed-spaces-and-tabs": 2,
-        "no-nested-ternary": 2,
         "no-new-object": 2,
         "semi-spacing": [2, {
           "before": false,

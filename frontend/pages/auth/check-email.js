@@ -1,14 +1,14 @@
 import Router from 'next/router'
+import { Component } from 'react'
 
 import Section from 'grommet/components/Section'
 import Heading from 'grommet/components/Heading'
 import Paragraph from 'grommet/components/Paragraph'
 
-import Page from '../../components/Page'
 import Layout from '../../layout'
 import Session from '../../components/Session'
 
-export default class extends Page {
+export default class CheckEmail extends Component {
   static async getInitialProps({ req, res }) {
     const session = await Session.getSession({force: true, req: req})
     if (session.user) {

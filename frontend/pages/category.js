@@ -1,10 +1,10 @@
 import 'isomorphic-unfetch'
+import { Component } from 'react'
 
 import Layout from '../layout'
-import Page from '../components/Page'
 import Block from '../components/Block'
 
-export default class Category extends Page {
+export default class Category extends Component {
   static async getInitialProps ({ req }) {
     // eslint-disable-next-line no-undef
     const res = await fetch(process.env.API_URL + '/api/v1.0' + req.url)

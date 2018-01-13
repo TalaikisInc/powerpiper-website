@@ -1,13 +1,14 @@
+import { Component } from 'react'
+
 import Box from 'grommet/components/Box'
 import Label from 'grommet/components/Label'
 import Heading from 'grommet/components/Heading'
 import Paragraph from 'grommet/components/Paragraph'
 import Section from 'grommet/components/Section'
 
-import Page from '../../../components/Page'
 import Layout from '../../../layout'
 
-export default class extends Page {
+export default class Oauth extends Component {
   render() {
     const title = 'Unable to Sign In'
 

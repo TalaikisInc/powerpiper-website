@@ -1,6 +1,7 @@
 import { PropTypes } from 'react'
 import 'isomorphic-unfetch'
 import Router from 'next/router'
+import { Component } from 'react'
 
 import Section from 'grommet/components/Section'
 import Heading from 'grommet/components/Heading'
@@ -10,11 +11,10 @@ import Animate from 'grommet/components/Animate'
 import { FacebookButton, FacebookCount } from 'react-social'
 import FormNextIcon from 'grommet/components/icons/base/FormNext'
 
-import Page from '../components/Page'
 import Layout from '../layout'
 import Date from '../utils/helpers'
 
-export default class Post extends Page {
+export default class Post extends Component {
   static async getInitialProps ({ req }) {
     // eslint-disable-next-line no-undef
     const res = await fetch(process.env.API_URL + '/api/v1.0' + req.url)
