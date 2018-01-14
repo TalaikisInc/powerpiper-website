@@ -19,11 +19,23 @@ const assert = require('assert')
 const port = process.env.FRONTEND_PORT
 const sessConn = process.env.SESSION_DB_CONNECTION_STRING
 const mongoUrl = process.env.MONGO_DB
+const emailHost = process.env.EMAIL_SERVER
+const emailUser = process.env.EMAIL_USERNAME
+const emailPassword = process.env.EMAIL_PASSWORD
+const emailSecure = process.env.EMAIL_SECURE
+const emailPort = process.env.EMAIL_PORT
+const fromEmail = process.env.FROM_EMAIL_ADDRESS
+const serverUrl = process.env.SERVER_URL
+const sessionSecret = process.env.SESSION_SECRET
 
-assert.notEqual(null, process.env.SESSION_SECRET, 'Session secret is required!')
+assert.notEqual(null, sessionSecret, 'Session secret is required!')
 assert.notEqual(null, port, 'Port is required!')
 assert.notEqual(null, sessConn, 'Session connection string is required!')
 assert.notEqual(null, mongoUrl, 'MongoDB URL is required!')
+assert.notEqual(null, emailHost, 'Email server is required!')
+assert.notEqual(null, emailUser, 'Email server username is required!')
+assert.notEqual(null, emailPassword, 'Email password is required!')
+assert.notEqual(null, emailSecure, 'Email security string is required is required!')
 
 process.on('uncaughtException', (err) => {
   console.error('Uncaught Exception: ', err)
@@ -34,17 +46,14 @@ process.on('unhandledRejection', (reason, p) => {
 })
 
 let mailserver = directTransport()
-console.log('email secure')
-console.log(process.env.EMAIL_SECURE)
-console.log(process.env.EMAIL_SECURE.match(/true/i))
-if (process.env.EMAIL_SERVER && process.env.EMAIL_USERNAME && process.env.EMAIL_PASSWORD) {
+if (emailHost && emailUser && emailPassword) {
   mailserver = smtpTransport({
-    host: process.env.EMAIL_SERVER,
-    port: process.env.EMAIL_PORT || 25,
-    secure: (process.env.EMAIL_SECURE && process.env.EMAIL_SECURE.match(/true/i)) ? true : false,
+    host: emailHost,
+    port: emailPort || 25,
+    secure: (emailSecure && emailSecure.match(/true/i)) ? true : false,
     auth: {
-      user: process.env.EMAIL_USERNAME,
-      pass: process.env.EMAIL_PASSWORD
+      user: emailUser,
+      pass: emailPassword
     }
   })
 }
@@ -105,17 +114,16 @@ i18n.use(Backend).use(i18nextMiddleware.LanguageDetector).init({
       })
     })
     .then(() => {
-      // auth
       auth.configure({
         nextApp: app,
         expressApp: server,
         userdb: userdb,
         session: session,
         store: sessionStore,
-        secret: process.env.SESSION_SECRET,
+        secret: sessionSecret,
         mailserver: mailserver,
-        fromEmail: process.env.FROM_EMAIL_ADDRESS || null,
-        serverUrl: process.env.SERVER_URL || null
+        fromEmail: fromEmail || null,
+        serverUrl: serverUrl || null
       })
 
       // enable middleware for i18next

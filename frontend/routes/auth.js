@@ -5,38 +5,18 @@ const uuid = require('uuid/v4')
 const passportStrategies = require('./passport-strategies')
 
 exports.configure = ({
-  // Next.js App
   nextApp = null,
-  // Express Server
   expressApp = null,
-  // MongoDB connection to the user database
   userdb = null,
-  // URL base path for authentication routes
   path = '/auth',
-  // Express Session Handler
-  session = require('express-session'),
-  // Secret used to encrypt session data on the server
-  secret = process.env.SESSION_SECRET,
-  // Sessions store for express-session (defaults to /tmp/sessions file store)
+  session,
+  secret = null,
   store = null,
-  // Max session age in ms (default is 3 days)
-  // NB: With 'rolling: true' passed to session() the session expiry time will
-  // be reset every time a user visits the site again before it expires.
   maxAge = 60000 * 60 * 24 * 3,
-  // How often the client should revalidate the session in ms (default 60s)
-  // Does not impact the session life on the server, but causes the client to
-  // always refetch session info after N seconds has elapsed since last
-  // checked. Sensible values are between 0 (always check the server) and a
-  // few minutes.
   clientMaxAge = 60000,
-  // URL of the server (e.g. 'http://www.example.com'). Used when sending
-  // sign in links in emails. Autodetects to hostname if null.
   serverUrl = null,
-  // Mailserver configuration for nodemailer (defaults to localhost if null)
   mailserver = null,
-  // User DB Key. This is always '_id' on MongoDB, but configurable as an 
-  // option to make it easier to refactor the code below if you are using 
-  // another database.
+  fromEmail = null,
   userDbKey = '_id'
 } = {}) => {
 
@@ -92,7 +72,7 @@ exports.configure = ({
 
   // Return session info
   expressApp.get(path + '/session', (req, res) => {
-    let session = {
+    session = {
       maxAge: maxAge,
       clientMaxAge: clientMaxAge,
       csrfToken: res.locals._csrf
@@ -141,7 +121,7 @@ exports.configure = ({
 
           sendVerificationEmail({
             mailserver: mailserver,
-            fromEmail: process.env.FROM_EMAIL_ADDRESS,
+            fromEmail: fromEmail,
             toEmail: email,
             url: verificationUrl
           })
@@ -154,7 +134,7 @@ exports.configure = ({
 
           sendVerificationEmail({
             mailserver: mailserver,
-            fromEmail: process.env.FROM_EMAIL_ADDRESS,
+            fromEmail: fromEmail,
             toEmail: email,
             url: verificationUrl
           })

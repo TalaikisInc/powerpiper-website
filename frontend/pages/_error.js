@@ -9,11 +9,13 @@ import Layout from '../layout'
 export default class Error extends React.Component {
   static getInitialProps({ res, err }) {
     const statusCode = res ? res.statusCode : err ? err.statusCode : null
-    return { statusCode }
+    return {
+      error: statusCode ? `An error ${statusCode} occurred on server` : 'An error occurred on client'
+    }
   }
 
   render() {
-    this.error = this.props.statusCode ? `An error ${this.props.statusCode} occurred on server` : 'An error occurred on client'
+    this.props.title = 'Error ' + this.props.error
 
     return (
       <Layout {...this.props}>
@@ -22,7 +24,7 @@ export default class Error extends React.Component {
             Error encountered
           </Heading>
           <Paragraph>
-            { this.error }
+            { this.props.error }
           </Paragraph>
         </Section>
       </Layout>
@@ -31,7 +33,6 @@ export default class Error extends React.Component {
 }
 
 Error.defaultProps = {
-  title: 'Error ' + this.error,
   description: '',
   image: ''
 }
