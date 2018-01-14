@@ -66,7 +66,7 @@ server.use(cookieParser())
 
 i18n.use(Backend).use(i18nextMiddleware.LanguageDetector).init({
   preload: ['en', 'de', 'es', 'fr', 'ru', 'ko'],
-  ns: ['index'],
+  ns: ['common'],
   backend: {
     loadPath: path.join(__dirname, '/locales/{{lng}}/{{ns}}.json'),
     addPath: path.join(__dirname, '/locales/{{lng}}/{{ns}}.missing.json')
@@ -76,7 +76,6 @@ i18n.use(Backend).use(i18nextMiddleware.LanguageDetector).init({
     .then(() => {
       return new Promise((resolve, reject) => {
         if (mongoUrl) {
-          // Example connection string: mongodb://localhost:27017/my-user-db
           MongoClient.connect(mongoUrl, (err, client) => {
             assert.equal(null, err)
             userdb = client.db('users').collection('users')
@@ -90,6 +89,7 @@ i18n.use(Backend).use(i18nextMiddleware.LanguageDetector).init({
               return reject(err)
             }
             resolve(true)
+            return null
           })
         }
       })
@@ -100,7 +100,7 @@ i18n.use(Backend).use(i18nextMiddleware.LanguageDetector).init({
           sessionStore = new MongoStore({
             url: sessConn,
             autoRemove: 'interval',
-            // Removes expired sessions every 10 minutes
+            // in minutes
             autoRemoveInterval: 10,
             collection: 'sessions',
             stringify: false
@@ -126,13 +126,9 @@ i18n.use(Backend).use(i18nextMiddleware.LanguageDetector).init({
         serverUrl: serverUrl || null
       })
 
-      // enable middleware for i18next
+      // i18n
       server.use(i18nextMiddleware.handle(i18n))
-
-      // serve locales for client
       server.use('/locales', express.static(path.join(__dirname, '/locales')))
-
-      // missing keys
       server.post('/locales/add/:lng/:ns', i18nextMiddleware.missingKeyHandler(i18n))
 
       // Expose a route to return user profile if logged in with a session

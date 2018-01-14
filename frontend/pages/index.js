@@ -30,8 +30,10 @@ class Index extends Component {
     return (
       <Layout {...this.props}>
         <Section full={true} pad='none' align='center' justify='center'>
-          <h1>{t('welcome')}</h1>
-          <Subscribe />
+          <Animate enter={{ animation: 'slide-up', duration: 1000, delay: 0 }} keep={true}>
+            <h1>{t('welcome')}</h1>
+            <Subscribe />
+          </Animate>
         </Section>
         <Section full={true} pad='none' colorIndex='ascent-1'>
           <Animate enter={{ animation: 'slide-up', duration: 1000, delay: 0 }} keep={true}>
@@ -62,11 +64,11 @@ Index.defaultProps = {
   menu: true
 }
 
-const Extended = translate(['index'], { i18n, wait: process.browser })(Index)
+const Extended = translate(['common'], { i18n, wait: process.browser })(Index)
 
 Extended.getInitialProps = async ({ req }) => {
   if (req && !process.browser) {
-    return i18n.getInitialProps(req, ['index'])
+    return i18n.getInitialProps(req, ['common'])
   }
   return {}
 }

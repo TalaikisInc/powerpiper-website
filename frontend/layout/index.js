@@ -38,18 +38,6 @@ Router.onRouteChangeComplete = () => NProgress.done()
 Router.onRouteChangeError = () => NProgress.done()
 
 export default class Layout extends Component {
-  static async getInitialProps ({isServer, req}) {
-    if (isServer) {
-      // Server-side on first render
-      const loggedInUser = _.get(req, 'session.passport.user.username');
-      return { loggedInUser };
-    }
-    else {
-      // Client-side on following renders
-      return window.__NEXT_DATA__.props.initialProps;
-    }
-  }
-
   constructor(props) {
     super(props)
     this.onOpenModal = this.onOpenModal.bind(this)
