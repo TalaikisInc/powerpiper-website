@@ -55,25 +55,34 @@ export default class Signin extends Component {
     } else {
       return (
         <Fragment>
-          <Label>If you don't have an account yet, one will be created when you sign in.</Label>
-          <Columns responsive={true} maxCount={2}>
-            <Box>
-              <p><a href="/auth/oauth/facebook"><SocialFacebook a11yTitle='Sign In with Facebook' /></a></p>
-              <p><a href="/auth/oauth/google"><SocialGooglePlus a11yTitle='Sign In with Google' /></a></p>
-              <p><a href="/auth/oauth/twitter"><SocialTwitter a11yTitle='Sign In with Twitter' /></a></p>
-              <p><a href="/auth/oauth/linkedin"><SocialLinkedIn a11yTitle='Sign In with LinkedIn' /></a></p>
-            </Box>
-            <Box>
-              <form id="signin" method="post" action="/auth/email/signin" onSubmit={this.handleSubmit}>
-                <input name="_csrf" type="hidden" value={this.props.session.csrfToken} />
-                <Paragraph>
-                  <Label htmlFor="email">Email address</Label><br/>
-                  <input name="email" type="text" placeholder="j.smith@example.com" id="email" value={this.state.email} onChange={this.handleEmailChange} />
-                </Paragraph>
-                <button color="dark" type="submit">Sign in with email</button>
-              </form>
-            </Box>
-          </Columns>
+          <Label>If you don't have an account yet, one will be created when you sign in with any of followiung social networks:</Label>
+          <Box>
+            <Columns responsive={true} maxCount={4} size='small'>
+              <Box>
+                <p><a href="/auth/oauth/facebook"><SocialFacebook a11yTitle='Sign In with Facebook' /></a></p>
+              </Box>
+              <Box>
+                <p><a href="/auth/oauth/google"><SocialGooglePlus a11yTitle='Sign In with Google' /></a></p>
+              </Box>
+              <Box>
+                <p><a href="/auth/oauth/twitter"><SocialTwitter a11yTitle='Sign In with Twitter' /></a></p>
+              </Box>
+              <Box>
+                <p><a href="/auth/oauth/linkedin"><SocialLinkedIn a11yTitle='Sign In with LinkedIn' /></a></p>
+              </Box>
+            </Columns>
+          </Box>
+          <Label>Or you can sign up using your email:</Label>
+          <Box>
+            <form id="signin" method="post" action="/auth/email/signin" onSubmit={this.handleSubmit}>
+              <input name="_csrf" type="hidden" value={this.props.session.csrfToken} />
+              <Paragraph>
+                <Label htmlFor="email">Email address</Label><br/>
+                <input name="email" type="text" placeholder="j.smith@example.com" id="email" value={this.state.email} onChange={this.handleEmailChange} />
+              </Paragraph>
+              <button color="dark" type="submit">Sign in with email</button>
+            </form>
+          </Box>
         </Fragment>
       )
     }

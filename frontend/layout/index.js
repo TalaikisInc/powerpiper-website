@@ -14,6 +14,7 @@ import Label from 'grommet/components/Label'
 import Header from 'grommet/components/Header'
 import SVGIcon from 'grommet/components/SVGIcon'
 import Columns from 'grommet/components/Columns'
+import Heading from 'grommet/components/Heading'
 import BlogIcon from 'grommet/components/icons/base/Blog'
 import ContactInfoIcon from 'grommet/components/icons/base/ContactInfo'
 import LoginIcon from 'grommet/components/icons/base/Login'
@@ -199,9 +200,9 @@ export class SigninModal extends Component {
       <div>
         { this.props.modal && <Layer flush={true} closer={true} onClose={this.props.onCloseModal} align='center'>
           <Box pad='medium'>
-            <Label>
+            <Heading>
               Sign In / Sign Up
-            </Label>
+            </Heading>
             <Signin session={this.props.session} />
           </Box>
         </Layer>
