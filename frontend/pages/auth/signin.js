@@ -54,5 +54,6 @@ export default class SignIn extends Component {
 SignIn.defaultProps = {
   title: 'Sign In',
   description: '',
-  image: ''
+  image: '',
+  menu: false
 }

@@ -26,5 +26,6 @@ export default class EmailError extends Component {
 EmailError.defaultProps = {
   title: 'Sign In Error',
   description: '',
-  image: ''
+  image: '',
+  menu: false
 }

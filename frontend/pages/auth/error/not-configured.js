@@ -26,6 +26,7 @@ export default class NotConfigured extends Component {
 NotConfigured.defaultProps = {
   title: 'Not Configured',
   description: '',
-  image: ''
+  image: '',
+  menu: false
 }
 

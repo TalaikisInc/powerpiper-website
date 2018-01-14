@@ -25,7 +25,8 @@ Category.defaultProps = {
   title: this.props.posts[0].category_id.Title + ' Blog',
   description: this.props.posts[0].category_id.Title + ' Blog',
   image: process.env.BASE_URL + '/' + this.props.posts[0].image,
-  total: this.props.posts[0].id
+  total: this.props.posts[0].id,
+  menu: true
 }
 
 Category.propTypes = {

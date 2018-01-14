@@ -39,5 +39,6 @@ export default class CheckEmail extends Component {
 CheckEmail.defaultProps = {
   title: 'Check Email',
   description: '',
-  image: ''
+  image: '',
+  menu: false
 }

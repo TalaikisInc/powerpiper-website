@@ -37,5 +37,6 @@ export default class CookiePolicy extends Component {
 CookiePolicy.defaultProps = {
   title: this.props.post.Title,
   description: this.props.post.Title,
-  image: ''
+  image: '',
+  menu: true
 }

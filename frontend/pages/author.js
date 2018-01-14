@@ -25,7 +25,8 @@ Author.defaultProps = {
   title: this.props.posts[0].author_id.LastName + ' ' + this.props.posts[0].author_id.FirstName + ' Blog',
   description: this.props.posts[0].author_id.LastName + ' ' + this.props.posts[0].author_id.FirstName + ' Blog',
   image: process.env.BASE_URL + '/' + this.props.posts[0].image,
-  total: this.props.posts[0].id
+  total: this.props.posts[0].id,
+  menu: true
 }
 
 Author.propTypes = {

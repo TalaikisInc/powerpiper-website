@@ -33,5 +33,6 @@ export default class Oauth extends Component {
 Oauth.defaultProps = {
   title: 'Unable to Sign In',
   description: '',
-  image: ''
+  image: '',
+  menu: false
 }

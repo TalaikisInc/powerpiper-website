@@ -58,7 +58,8 @@ class Index extends Component {
 Index.defaultProps = {
   title: 'Decentralized Energy Marketplace',
   description: 'Decentralized Energy Marketplace',
-  image: ''
+  image: '',
+  menu: true
 }
 
 const Extended = translate(['index'], { i18n, wait: process.browser })(Index)

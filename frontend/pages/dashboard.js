@@ -270,5 +270,6 @@ DashBoard.defaultProps = {
   title: 'Dashbord',
   description: 'Dashbord',
   image: '',
-  loginTitle: 'Sign In'
+  loginTitle: 'Sign In',
+  menu: true
 }

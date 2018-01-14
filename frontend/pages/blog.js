@@ -25,7 +25,8 @@ Blog.defaultProps = {
   title: 'Decentralized Energy Blog',
   description: 'Decentralized Energy Blog',
   image: process.env.BASE_URL + '/' + this.props.posts[0].image,
-  total: Object.keys(this.props.posts).length
+  total: Object.keys(this.props.posts).length,
+  menu: true
 }
 
 Blog.propTypes = {

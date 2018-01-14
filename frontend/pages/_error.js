@@ -34,5 +34,6 @@ export default class Error extends React.Component {
 
 Error.defaultProps = {
   description: '',
-  image: ''
+  image: '',
+  menu: false
 }

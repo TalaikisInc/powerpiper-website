@@ -78,7 +78,8 @@ Post.defaultProps = {
   fbAppId: process.env.FB_APP_ID,
   twAppId: process.env.TWITTER_APP_ID,
   goAppId: process.env.GOOGLE_APP_ID,
-  liAppId: process.env.LINKEDIN_APP_ID
+  liAppId: process.env.LINKEDIN_APP_ID,
+  menu: true
 }
 
 Post.propTypes = {

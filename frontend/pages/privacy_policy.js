@@ -37,5 +37,6 @@ export default class PrivacyPolicy extends Component {
 PrivacyPolicy.defaultProps = {
   title: this.props.post.Title,
   description: this.props.post.Title,
-  image: ''
+  image: '',
+  menu: true
 }

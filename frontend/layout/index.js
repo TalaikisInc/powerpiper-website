@@ -123,10 +123,14 @@ export default class Layout extends Component {
               </SVGIcon>
             </Link>
             <Box flex={true} justify='end' direction='row' responsive={false} pad='none'>
-              <Columns maxCount={2} responsive={true} justify='end' size='small'>
+              <Columns maxCount={2} responsive={true} justify='end' size='small' masonry={true}>
                 <Box align='end' alignContent='end' responsive={true}>
-                  <UserMenu session={this.state.session} onOpenModal={this.onOpenModal}/>
-                  <SigninModal modal={this.state.modal} onCloseModal={this.onCloseModal} onOpenModal={this.onOpenModal} session={this.state.session} />
+                  {
+                    this.props.menu && <div>
+                      <UserMenu session={this.state.session} onOpenModal={this.onOpenModal} />
+                      <SigninModal modal={this.state.modal} onCloseModal={this.onCloseModal} onOpenModal={this.onOpenModal} session={this.state.session} />
+                    </div>
+                  }
                 </Box>
                 <Box align='end' alignContent='end' responsive={true}>
                   <Link prefetch href="/blog/">
@@ -211,7 +215,8 @@ Layout.propTypes = {
   siteTitle: PropTypes.string.isRequired,
   author: PropTypes.string.isRequired,
   baseURL: PropTypes.string.isRequired,
-  children: PropTypes.object.isRequired
+  children: PropTypes.object.isRequired,
+  menu: PropTypes.bool.isRequired
 }
 
 Layout.defaultProps = {
