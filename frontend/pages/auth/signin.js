@@ -42,11 +42,17 @@ export default class SignIn extends Component {
 
   render() {
     return (
-      <Layout session={this.state.session}>
+      <Layout session={this.state.session} title={this.props.title} description={this.props.description} image={this.props.image}>
         <Section full={true} pad='none' align='center' justify='center'>
           <Signin session={this.state.session} />
         </Section>
       </Layout>
     )
   }
+}
+
+SignIn.defaultProps = {
+  title: 'Sign In',
+  description: '',
+  image: ''
 }

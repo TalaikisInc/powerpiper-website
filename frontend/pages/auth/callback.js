@@ -40,7 +40,7 @@ export default class CallBack extends Component {
   }
 
   async componentDidMount() {
-    const session = await Session.getSession({force: true})
+    const session = await Session.getSession({ force: true })
     this.setState({
       session: session
     })

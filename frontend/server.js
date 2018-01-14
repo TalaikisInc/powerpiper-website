@@ -34,6 +34,9 @@ process.on('unhandledRejection', (reason, p) => {
 })
 
 let mailserver = directTransport()
+console.log('email secure')
+console.log(process.env.EMAIL_SECURE)
+console.log(process.env.EMAIL_SECURE.match(/true/i))
 if (process.env.EMAIL_SERVER && process.env.EMAIL_USERNAME && process.env.EMAIL_PASSWORD) {
   mailserver = smtpTransport({
     host: process.env.EMAIL_SERVER,

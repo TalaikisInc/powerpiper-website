@@ -1,6 +1,6 @@
 import { Component, Fragment, PropTypes } from 'react'
 import Router from 'next/router'
-import cookie from 'react-cookies'
+//import cookie from 'react-cookies'
 
 import Columns from 'grommet/components/Columns'
 import Box from 'grommet/components/Box'

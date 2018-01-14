@@ -220,6 +220,7 @@ export default class DashBoard extends Component {
   }
 }
 
+// eslint-disable-next-line
 export class LinkedAccounts extends Component {
   render() {
     if (typeof window === 'undefined' || this.props.gotProfile !== true) {
@@ -237,6 +238,7 @@ export class LinkedAccounts extends Component {
   }
 }
 
+// eslint-disable-next-line
 export class LinkAccount extends Component {
   render() {
     if (this.props.linked === true) {
@@ -266,7 +268,7 @@ export class LinkAccount extends Component {
 
 DashBoard.defaultProps = {
   title: 'Dashbord',
-  description: this.props.title,
+  description: 'Dashbord',
   image: '',
   loginTitle: 'Sign In'
 }

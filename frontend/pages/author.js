@@ -1,5 +1,5 @@
 import 'isomorphic-unfetch'
-import { Component } from 'react'
+import { Component, PropTypes } from 'react'
 
 import Layout from '../layout'
 import Block from '../components/Block'
@@ -23,7 +23,11 @@ export default class Author extends Component {
 
 Author.defaultProps = {
   title: this.props.posts[0].author_id.LastName + ' ' + this.props.posts[0].author_id.FirstName + ' Blog',
-  description: this.props.title,
+  description: this.props.posts[0].author_id.LastName + ' ' + this.props.posts[0].author_id.FirstName + ' Blog',
   image: process.env.BASE_URL + '/' + this.props.posts[0].image,
   total: this.props.posts[0].id
+}
+
+Author.propTypes = {
+  posts: PropTypes.array.isRequired
 }

@@ -10,10 +10,8 @@ import Layout from '../../../layout'
 
 export default class Oauth extends Component {
   render() {
-    const title = 'Unable to Sign In'
-
     return (
-      <Layout session={this.props.session} title={title}>
+      <Layout {...this.props}>
         <Section full={true} pad='none' align='center' justify='center'>
           <Box>
             <Heading>Unable to sign in</Heading>
@@ -30,4 +28,10 @@ export default class Oauth extends Component {
       </Layout>
     )
   }
+}
+
+Oauth.defaultProps = {
+  title: 'Unable to Sign In',
+  description: '',
+  image: ''
 }

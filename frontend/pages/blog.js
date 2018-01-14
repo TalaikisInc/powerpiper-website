@@ -1,5 +1,5 @@
 import 'isomorphic-unfetch'
-import { Component } from 'react'
+import { Component, PropTypes } from 'react'
 
 import Layout from '../layout'
 import Block from '../components/Block'
@@ -26,4 +26,8 @@ Blog.defaultProps = {
   description: 'Decentralized Energy Blog',
   image: process.env.BASE_URL + '/' + this.props.posts[0].image,
   total: Object.keys(this.props.posts).length
+}
+
+Blog.propTypes = {
+  posts: PropTypes.array.isRequired
 }

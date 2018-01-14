@@ -9,10 +9,8 @@ import Layout from '../../../layout'
 
 export default class NotConfigured extends Component {
   render() {
-    const title = 'Not Configured'
-
     return (
-      <Layout session={this.props.session} title={title}>
+      <Layout {...this.props}>
         <Section full={true} pad='none' align='center' justify='center'>
           <Box>
             <Heading>Support for this service is not configured</Heading>
@@ -24,3 +22,10 @@ export default class NotConfigured extends Component {
     )
   }
 }
+
+NotConfigured.defaultProps = {
+  title: 'Not Configured',
+  description: '',
+  image: ''
+}
+

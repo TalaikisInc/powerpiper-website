@@ -10,7 +10,7 @@ import Session from '../../components/Session'
 
 export default class CheckEmail extends Component {
   static async getInitialProps({ req, res }) {
-    const session = await Session.getSession({force: true, req: req})
+    const session = await Session.getSession({ force: true, req: req })
     if (session.user) {
       if (req) {
         res.redirect('/auth/callback')
@@ -29,9 +29,15 @@ export default class CheckEmail extends Component {
       <Layout {...this.props}>
         <Section full={true} pad='none' align='center' justify='center'>
           <Heading>Check your email</Heading>
-          <Paragraph>Check your email for a sign in link.</Paragraph>
+          <Paragraph>Please check your email for a sign in link.</Paragraph>
         </Section>
       </Layout>
     )
   }
+}
+
+CheckEmail.defaultProps = {
+  title: 'Check Email',
+  description: '',
+  image: ''
 }
