@@ -31,7 +31,7 @@ class Index extends Component {
       <Layout {...this.props}>
         <Section full={true} pad='none' align='center' justify='center'>
           <Animate enter={{ animation: 'slide-up', duration: 1000, delay: 0 }} keep={true}>
-            <h1>{t('welcome')}</h1>
+            <h1>{t('common:welcome')}</h1>
             <Subscribe />
           </Animate>
         </Section>
