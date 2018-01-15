@@ -7,6 +7,7 @@ import Link from 'next/link'
 import scss from '../assets/scss/theme.scss'
 import nprogress from '../assets/css/progress.css'
 import App from 'grommet/components/App'
+import Select from 'grommet/components/Select'
 import Article from 'grommet/components/Article'
 import Layer from 'grommet/components/Layer'
 import Box from 'grommet/components/Box'
@@ -38,15 +39,21 @@ Router.onRouteChangeComplete = () => NProgress.done()
 Router.onRouteChangeError = () => NProgress.done()
 
 export default class Layout extends Component {
+  static async getInitialProps ({ req }) {
+    return { documentPath: req.url }
+  }
+
   constructor(props) {
     super(props)
     this.onOpenModal = this.onOpenModal.bind(this)
     this.onCloseModal = this.onCloseModal.bind(this)
+    this.onLangSelect = this.onLangSelect.bind(this)
     this.state = {
       modal: undefined,
       session: null,
       policy: false,
-      keep: true
+      keep: true,
+      currentLang: undefined
     }
   }
 
@@ -54,12 +61,13 @@ export default class Layout extends Component {
     this.setState({
       policy: cookie.load('cookie-policy'),
       session: cookie.load('sess_id'),
-      keep: true
+      keep: true,
+      currentLang: cookie.load('langLabel')
     })
   }
 
   async componentDidMount () {
-    if (!window.GA_INITIALIZED && this.props.documentPath && this.state.policy) {
+    if (!window.GA_INITIALIZED && window.location.pathname && this.state.policy) {
       initGA(this.props.documentPath)
       window.GA_INITIALIZED = true
     }
@@ -85,7 +93,24 @@ export default class Layout extends Component {
     cookie.save('cookie-policy', this.state.policy, { path: '/' })
   }
 
+  onLangSelect(e) {
+    this.setState({ currentLang: e.option.label })
+    cookie.save('langLabel', e.option.label, { path: '/' })
+    Router.push('/?lang=' + e.option.value)
+    window.location.reload()
+  }
+
   render () {
+    const options = [
+      { value: '', label: '' }, // hacks the problem of invisible first lang.
+      { value: 'en', label: 'English' },
+      { value: 'de', label: 'Deutsch' },
+      { value: 'es', label: 'Español' },
+      { value: 'fr', label: 'Français' },
+      { value: 'ko', label: '한국어' },
+      { value: 'ru', label: 'Русский' }
+    ]
+
     return (
       <Fragment>
         <Head>
@@ -111,9 +136,9 @@ export default class Layout extends Component {
                 </g>
               </SVGIcon>
             </Link>
-            <Box flex={true} justify='end' direction='row' responsive={false} pad='none'>
-              <Columns maxCount={2} responsive={true} justify='end' size='small' masonry={true}>
-                <Box align='end' alignContent='end' responsive={true}>
+            <Box flex={true} justify='end' direction='row' responsive={true} pad='none'>
+              <Columns maxCount={3} responsive={true} justify='end' size='small' responsive={true}>
+                <Box align='center' alignContent='end' responsive={false} direction='row' basis ='xsmall'>
                   {
                     this.props.menu && <div>
                       <UserMenu session={this.state.session} onOpenModal={this.onOpenModal} />
@@ -121,10 +146,16 @@ export default class Layout extends Component {
                     </div>
                   }
                 </Box>
-                <Box align='end' alignContent='end' responsive={true}>
+                <Box align='center' alignContent='end' responsive={false} direction='row' basis ='xsmall'>
                   <Link prefetch href="/blog/">
                     <Anchor href='/blog/' icon={<BlogIcon />} label='Blog' />
                   </Link>
+                </Box>
+                <Box align='center' alignContent='end' responsive={true} direction='row' basis ='xsmall' alignSelf='grow'>
+                  <Select
+                    onChange={this.onLangSelect}
+                    options={options}
+                    value={this.state.currentLang} />
                 </Box>
               </Columns>
             </Box>
@@ -175,7 +206,7 @@ export class UserMenu extends Component {
       )
     } else {
       return (
-        <Anchor icon={<LoginIcon />} label='Sign In / Sign up' onClick={this.props.onOpenModal} />
+        <Anchor icon={<LoginIcon />} label='Sign In' onClick={this.props.onOpenModal} />
       )
     }
   }

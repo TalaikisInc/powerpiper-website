@@ -27,11 +27,14 @@ const detectionOptions = {
   order: ['querystring', 'cookie', 'localStorage', 'navigator', 'htmlTag'],
   lookupQuerystring: 'lang',
   lookupCookie: 'i18next',
+  lookupSession: 'lang',
+  lookupPath: 'lang',
+  lookupFromPathIndex: 0,
   lookupLocalStorage: 'i18nextLng',
   caches: ['localStorage', 'cookie'],
   excludeCacheFor: ['cimode'], // languages to not persist (cookie, localStorage)
   cookieMinutes: 10,
-  cookieDomain: ''
+  cookieDomain: process.env.DOMAIN
 }
 
 const cacheOptions = {

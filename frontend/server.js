@@ -67,6 +67,7 @@ server.use(cookieParser())
 i18n.use(Backend).use(i18nextMiddleware.LanguageDetector).init({
   preload: ['en', 'de', 'es', 'fr', 'ru', 'ko'],
   ns: ['common'],
+  removeLngFromUrl: false,
   backend: {
     loadPath: path.join(__dirname, '/locales/{{lng}}/{{ns}}.json'),
     addPath: path.join(__dirname, '/locales/{{lng}}/{{ns}}.missing.json')
