@@ -1,11 +1,11 @@
 const i18n = require('i18next')
 const XHR = require('i18next-xhr-backend')
 const LanguageDetector = require('i18next-browser-languagedetector')
-const cookie = require('react-cookies')
 const Cache = require('i18next-localstorage-cache')
 const debug = false
 
-const options = {
+const backendOptions = {
+  fallbackLng: 'en',
   load: 'languageOnly',
   ns: ['common'],
   defaultNS: 'common',
@@ -21,6 +21,17 @@ const options = {
       return value
     }
   }
+}
+
+const detectionOptions = {
+  order: ['querystring', 'cookie', 'localStorage', 'navigator', 'htmlTag'],
+  lookupQuerystring: 'lang',
+  lookupCookie: 'i18next',
+  lookupLocalStorage: 'i18nextLng',
+  caches: ['localStorage', 'cookie'],
+  excludeCacheFor: ['cimode'], // languages to not persist (cookie, localStorage)
+  cookieMinutes: 10,
+  cookieDomain: ''
 }
 
 const cacheOptions = {
@@ -41,7 +52,8 @@ if (process.browser) {
 // initialize if not already initialized
 if (!i18n.isInitialized) {
   i18n.init({
-    backend: options,
+    detection: detectionOptions,
+    backend: backendOptions,
     cache: cacheOptions
   })
 }
@@ -61,8 +73,6 @@ i18n.getInitialProps = (req, namespaces) => {
   const initialI18nStore = {}
   req.i18n.languages.forEach((l) => {
     if (req && l === req.i18n.language) {
-      cookie.save('i18n_lang', l, { path: '/' })
-
       initialI18nStore[l] = {}
       namespaces.forEach((ns) => {
         initialI18nStore[l][ns] = req.i18n.services.resourceStore.data[l][ns] || {}
