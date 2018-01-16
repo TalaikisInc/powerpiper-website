@@ -31,8 +31,6 @@ const detectionOptions = {
   lookupPath: 'lang',
   lookupFromPathIndex: 0,
   lookupLocalStorage: 'i18nextLng',
-  caches: ['localStorage', 'cookie'],
-  excludeCacheFor: ['cimode'], // languages to not persist (cookie, localStorage)
   cookieMinutes: 10,
   cookieDomain: process.env.DOMAIN
 }
@@ -75,7 +73,7 @@ i18n.getInitialProps = (req, namespaces) => {
 
   const initialI18nStore = {}
   req.i18n.languages.forEach((l) => {
-    if (req && l === req.i18n.language) {
+    if (req && l !== 'dev' && l === req.i18n.language) {
       initialI18nStore[l] = {}
       namespaces.forEach((ns) => {
         initialI18nStore[l][ns] = req.i18n.services.resourceStore.data[l][ns] || {}

@@ -27,7 +27,9 @@ const emailPort = process.env.EMAIL_PORT
 const fromEmail = process.env.FROM_EMAIL_ADDRESS
 const serverUrl = process.env.SERVER_URL
 const sessionSecret = process.env.SESSION_SECRET
+const baseUrl = process.env.BASE_URL
 
+assert.notEqual(null, baseUrl, 'Base URL is required!')
 assert.notEqual(null, sessionSecret, 'Session secret is required!')
 assert.notEqual(null, port, 'Port is required!')
 assert.notEqual(null, sessConn, 'Session connection string is required!')

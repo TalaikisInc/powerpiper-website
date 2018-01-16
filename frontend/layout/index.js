@@ -39,10 +39,6 @@ Router.onRouteChangeComplete = () => NProgress.done()
 Router.onRouteChangeError = () => NProgress.done()
 
 export default class Layout extends Component {
-  static async getInitialProps ({ req }) {
-    return { documentPath: req.url }
-  }
-
   constructor(props) {
     super(props)
     this.onOpenModal = this.onOpenModal.bind(this)
@@ -50,7 +46,7 @@ export default class Layout extends Component {
     this.onLangSelect = this.onLangSelect.bind(this)
     this.state = {
       modal: undefined,
-      session: null,
+      session: undefined,
       policy: false,
       keep: true,
       currentLang: undefined
@@ -101,8 +97,9 @@ export default class Layout extends Component {
   }
 
   render () {
+    //  hacks the problem of invisible first lang.
     const options = [
-      { value: '', label: '' }, // hacks the problem of invisible first lang.
+      { value: '', label: '' },
       { value: 'en', label: 'English' },
       { value: 'de', label: 'Deutsch' },
       { value: 'es', label: 'Español' },
@@ -122,44 +119,40 @@ export default class Layout extends Component {
           <style dangerouslySetInnerHTML={{ __html: scss }} />
         </Head>
         <App centered={false}>
-          <Header size='small' fixed={true} direction='row' pad={{ horizontal: 'medium' }} align='center'>
-            <Link prefetch href="/">
-              <SVGIcon viewBox='0 0 130 108'
-                version='1.1'
-                type='logo'
-                a11yTitle='PowerPiper'>
-                <g stroke='#865CD6'
-                  strokeWidth='4'
-                  fill='none'
-                  strokeLinejoin='round'>
-                  <path d='M40,65 L40,96 L64,107 L64,64.5 L64,64.5 M64,64 L64,107 L40,96 L40,65 M89,38 L113,49 L113,107 L89,96 L89,38 Z M52,49 C56.971,49 61,44.971 61,40 C61,35.029 56.971,31 52,31 C47.029,31 43,35.029 43,40 C43,44.971 47.029,49 52,49 L52,49 Z M52,76 C52,76 28,58 28,40 C28,25 40,16 52,16 C64,16 76,25 76,40 C76,58 52,76 52,76 Z' />
-                </g>
-              </SVGIcon>
-            </Link>
-            <Box flex={true} justify='end' direction='row' responsive={true} pad='none'>
-              <Columns maxCount={3} responsive={true} justify='end' size='small' responsive={true}>
-                <Box align='center' alignContent='end' responsive={false} direction='row' basis ='xsmall'>
-                  {
-                    this.props.menu && <div>
-                      <UserMenu session={this.state.session} onOpenModal={this.onOpenModal} />
-                      <SigninModal modal={this.state.modal} onCloseModal={this.onCloseModal} onOpenModal={this.onOpenModal} session={this.state.session} />
-                    </div>
-                  }
-                </Box>
-                <Box align='center' alignContent='end' responsive={false} direction='row' basis ='xsmall'>
-                  <Link prefetch href="/blog/">
-                    <Anchor href='/blog/' icon={<BlogIcon />} label='Blog' />
-                  </Link>
-                </Box>
-                <Box align='center' alignContent='end' responsive={true} direction='row' basis ='xsmall' alignSelf='grow'>
-                  <Select
-                    onChange={this.onLangSelect}
-                    options={options}
-                    value={this.state.currentLang} />
-                </Box>
-              </Columns>
-            </Box>
-          </Header>
+          <Animate enter={{ animation: 'slide-up', duration: 1000, delay: 400 }} keep={true}>
+            <Header size='small' fixed={true} direction='row' pad={{ horizontal: 'medium' }} align='center'>
+              <Link prefetch href="/">
+                <SVGIcon viewBox='0 0 130 108' version='1.1' type='logo' a11yTitle='PowerPiper'>
+                  <g stroke='#865CD6' strokeWidth='4' fill='none' strokeLinejoin='round'>
+                    <path d='M40,65 L40,96 L64,107 L64,64.5 L64,64.5 M64,64 L64,107 L40,96 L40,65 M89,38 L113,49 L113,107 L89,96 L89,38 Z M52,49 C56.971,49 61,44.971 61,40 C61,35.029 56.971,31 52,31 C47.029,31 43,35.029 43,40 C43,44.971 47.029,49 52,49 L52,49 Z M52,76 C52,76 28,58 28,40 C28,25 40,16 52,16 C64,16 76,25 76,40 C76,58 52,76 52,76 Z' />
+                  </g>
+                </SVGIcon>
+              </Link>
+              <Box flex={true} justify='end' align='end' alignContent='end' direction='row' responsive={true} pad='none'>
+                <Columns maxCount={3} justify='end' size='small' responsive={true}>
+                  <Box align='center' alignContent='end' responsive={true} direction='row' basis ='xsmall'>
+                    {
+                      this.props.menu && <div>
+                        <UserMenu session={this.state.session} onOpenModal={this.onOpenModal} />
+                        <SigninModal modal={this.state.modal} onCloseModal={this.onCloseModal} onOpenModal={this.onOpenModal} session={this.state.session} />
+                      </div>
+                    }
+                  </Box>
+                  <Box align='center' alignContent='end' responsive={true} direction='row' basis ='xsmall'>
+                    <Link prefetch href="/blog/">
+                      <Anchor href='/blog/' icon={<BlogIcon />} label='Blog' />
+                    </Link>
+                  </Box>
+                  <Box align='center' alignContent='end' responsive={true} direction='row' basis ='xsmall'>
+                    <Select
+                      onChange={this.onLangSelect}
+                      options={options}
+                      value={this.state.currentLang} />
+                  </Box>
+                </Columns>
+              </Box>
+            </Header>
+          </Animate>
           {
             !this.state.policy && <Animate enter={{ animation: 'slide-up', duration: 1000, delay: 400 }} keep={this.state.keep}>
               <Section pad='small' align='center' justify='center'>

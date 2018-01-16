@@ -1,4 +1,5 @@
 {
+  "presets": ["next/babel"],
   "plugins": [
     [
       "module-resolver", {
@@ -7,7 +8,7 @@
             "styles": "./styles"
           },
           "cwd": "babelrc"
-      }
+        }
       ],
       [
       "wrap-in-js",
@@ -15,9 +16,6 @@
         "extensions": ["css$", "scss$"]
       }
     ]
-  ],
-  "presets": [
-      "next/babel"
   ],
   "ignore": []
 }
