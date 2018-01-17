@@ -25,6 +25,12 @@ import Section from 'grommet/components/Section'
 import Anchor from 'grommet/components/Anchor'
 import NProgress from 'nprogress'
 
+import ES from '../components/Flags/es'
+import GB from '../components/Flags/gb'
+import DE from '../components/Flags/de'
+import FR from '../components/Flags/fr'
+import KR from '../components/Flags/kr'
+import RU from '../components/Flags/ru'
 import _Footer from '../components/Footer'
 import Meta from '../components/Meta'
 import Title from '../components/Title'
@@ -58,7 +64,7 @@ export default class Layout extends Component {
       policy: cookie.load('cookie-policy'),
       session: cookie.load('sess_id'),
       keep: true,
-      currentLang: cookie.load('langLabel')
+      currentLang: cookie.load('i18next')
     })
   }
 
@@ -90,8 +96,8 @@ export default class Layout extends Component {
   }
 
   onLangSelect(e) {
-    this.setState({ currentLang: e.option.label })
-    cookie.save('langLabel', e.option.label, { path: '/' })
+    this.setState({ currentLang: e.option })
+    cookie.save('i18next', e.option.value, { path: '/' })
     Router.push('/?lang=' + e.option.value)
     window.location.reload()
   }
@@ -99,13 +105,13 @@ export default class Layout extends Component {
   render () {
     //  hacks the problem of invisible first lang.
     const options = [
-      { value: '', label: '' },
-      { value: 'en', label: 'English' },
-      { value: 'de', label: 'Deutsch' },
-      { value: 'es', label: 'Español' },
-      { value: 'fr', label: 'Français' },
-      { value: 'ko', label: '한국어' },
-      { value: 'ru', label: 'Русский' }
+      { value: '', label: '', displayValue: '' },
+      { value: 'en', label: <GB label='English' />, displayValue: 'English' },
+      { value: 'de', label: <DE label='Deutsch' />, displayValue: 'Deutsch' },
+      { value: 'es', label: <ES label='Español' />, displayValue: 'Español' },
+      { value: 'fr', label: <FR label='Français' />, displayValue: 'Français' },
+      { value: 'ko', label: <KR label='한국어' />, displayValue: '한국어' },
+      { value: 'ru', label: <RU label='Русский' />, displayValue: 'Русский' }
     ]
 
     return (
@@ -147,7 +153,7 @@ export default class Layout extends Component {
                     <Select
                       onChange={this.onLangSelect}
                       options={options}
-                      value={this.state.currentLang} />
+                      value={this.state.currentLang ? this.state.currentLang.displayValue : undefined} />
                   </Box>
                 </Columns>
               </Box>

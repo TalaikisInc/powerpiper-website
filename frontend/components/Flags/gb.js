@@ -6,7 +6,7 @@ import Wrapper from './wrapper'
 const GB = (props) => {
   return (
     <Wrapper>
-      <SVGIcon viewBox='0 0 50 75' version='1.1' type='logo' a11yTitle={props.label}>
+      <SVGIcon viewBox='0 0 60 30' width="100" height="60" version='1.1' type='logo' a11yTitle={props.label}>
         <clipPath id="t">
           <path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/>
         </clipPath>

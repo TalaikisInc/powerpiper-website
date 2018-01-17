@@ -32,7 +32,7 @@ const detectionOptions = {
   lookupFromPathIndex: 0,
   lookupLocalStorage: 'i18nextLng',
   cookieMinutes: 10,
-  cookieDomain: process.env.DOMAIN
+  cookieDomain: '' // process.env.DOMAIN
 }
 
 const cacheOptions = {
