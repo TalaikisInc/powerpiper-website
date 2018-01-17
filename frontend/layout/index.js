@@ -44,6 +44,22 @@ Router.onRouteChangeStart = () => {
 Router.onRouteChangeComplete = () => NProgress.done()
 Router.onRouteChangeError = () => NProgress.done()
 
+//  hacks the problem of invisible first lang.
+const options = [
+  { value: '', label: '', displayValue: '' },
+  { value: 'en', label: <GB label='English' />, displayValue: 'English' },
+  { value: 'de', label: <DE label='Deutsch' />, displayValue: 'Deutsch' },
+  { value: 'es', label: <ES label='Español' />, displayValue: 'Español' },
+  { value: 'fr', label: <FR label='Français' />, displayValue: 'Français' },
+  { value: 'ko', label: <KR label='한국어' />, displayValue: '한국어' },
+  { value: 'ru', label: <RU label='Русский' />, displayValue: 'Русский' }
+]
+
+function getByValue(arr, keyword) {
+  const result = arr.filter((o) => { return o.value === keyword })
+  return result ? result[0].displayValue : undefined
+}
+
 export default class Layout extends Component {
   constructor(props) {
     super(props)
@@ -64,7 +80,7 @@ export default class Layout extends Component {
       policy: cookie.load('cookie-policy'),
       session: cookie.load('sess_id'),
       keep: true,
-      currentLang: cookie.load('i18next')
+      currentLang: cookie.load('i18next') || undefined
     })
   }
 
@@ -96,24 +112,13 @@ export default class Layout extends Component {
   }
 
   onLangSelect(e) {
-    this.setState({ currentLang: e.option })
+    this.setState({ currentLang: e.option.value })
     cookie.save('i18next', e.option.value, { path: '/' })
     Router.push('/?lang=' + e.option.value)
     window.location.reload()
   }
 
   render () {
-    //  hacks the problem of invisible first lang.
-    const options = [
-      { value: '', label: '', displayValue: '' },
-      { value: 'en', label: <GB label='English' />, displayValue: 'English' },
-      { value: 'de', label: <DE label='Deutsch' />, displayValue: 'Deutsch' },
-      { value: 'es', label: <ES label='Español' />, displayValue: 'Español' },
-      { value: 'fr', label: <FR label='Français' />, displayValue: 'Français' },
-      { value: 'ko', label: <KR label='한국어' />, displayValue: '한국어' },
-      { value: 'ru', label: <RU label='Русский' />, displayValue: 'Русский' }
-    ]
-
     return (
       <Fragment>
         <Head>
@@ -153,7 +158,7 @@ export default class Layout extends Component {
                     <Select
                       onChange={this.onLangSelect}
                       options={options}
-                      value={this.state.currentLang ? this.state.currentLang.displayValue : undefined} />
+                      value={this.state.currentLang ? getByValue(options, this.state.currentLang) : undefined} />
                   </Box>
                 </Columns>
               </Box>
