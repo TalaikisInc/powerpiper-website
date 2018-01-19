@@ -1,8 +1,9 @@
-import { Component, Fragment, PropTypes } from 'react'
+import { Component, Fragment } from 'react'
 import Router from 'next/router'
 import cookie from 'react-cookies'
 import Head from 'next/head'
 import Link from 'next/link'
+import PropTypes from 'prop-types'
 
 import scss from '../assets/scss/theme.scss'
 import nprogress from '../assets/css/progress.css'
@@ -134,9 +135,7 @@ export default class Layout extends Component {
             <Header size='small' fixed={true} direction='row' pad={{ horizontal: 'medium' }} align='center'>
               <Link prefetch href="/">
                 <SVGIcon viewBox='0 0 130 108' version='1.1' type='logo' a11yTitle='PowerPiper'>
-                  <g stroke='#865CD6' strokeWidth='4' fill='none' strokeLinejoin='round'>
-                    <path d='M40,65 L40,96 L64,107 L64,64.5 L64,64.5 M64,64 L64,107 L40,96 L40,65 M89,38 L113,49 L113,107 L89,96 L89,38 Z M52,49 C56.971,49 61,44.971 61,40 C61,35.029 56.971,31 52,31 C47.029,31 43,35.029 43,40 C43,44.971 47.029,49 52,49 L52,49 Z M52,76 C52,76 28,58 28,40 C28,25 40,16 52,16 C64,16 76,25 76,40 C76,58 52,76 52,76 Z' />
-                  </g>
+                  { /* TODO */ }
                 </SVGIcon>
               </Link>
               <Box flex={true} justify='end' align='end' alignContent='end' direction='row' responsive={true} pad='none'>
@@ -236,15 +235,13 @@ export class SigninModal extends Component {
 }
 
 Layout.propTypes = {
-  siteTitle: PropTypes.string.isRequired,
-  author: PropTypes.string.isRequired,
-  baseURL: PropTypes.string.isRequired,
-  children: PropTypes.object.isRequired,
+  children: PropTypes.array.isRequired,
   menu: PropTypes.bool.isRequired
 }
 
 Layout.defaultProps = {
   siteTitle: process.env.SITE_TITLE,
   author: process.env.SITE_TITLE,
-  baseURL: process.env.BASE_URL || ''
+  baseURL: process.env.BASE_URL || '',
+  menu: true
 }

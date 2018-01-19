@@ -8,13 +8,9 @@ branches:
   - master
 
 matrix:
-    include:
-      - os: linux
-        dist: xenial
-      - os: linux
-        dist: yakkety
-      - os: linux
-        dist: zesty
+  include:
+    - os: linux
+      dist: xenial
 
 addons:
   apt:
@@ -29,33 +25,21 @@ services:
   - postgresql
 
 env:
-  - DJANGO_VERSION=2.0
+  - DJANGO_VERSION=2.0.1
+  - PATH=$PATH:/usr/bin/go/bin
+  - GOROOT=/usr/bin/go
+  - GOPATH=$TRAVIS_BUILD_DIR
+  - FRONTEND_PORT=3010
 
-before_script:
+before_install:
   - sudo apt-get update -q
   - sudo apt-get install -y nginx
   - sudo rm -rf /etc/nginx/sites-enabled/default
   - sudo apt-get install -y xz-utils
   - wget https://storage.googleapis.com/golang/go1.8.2.linux-amd64.tar.gz
   - sudo tar -C /usr/bin -xzf go1.8.2.linux-amd64.tar.gz
-  - export PATH=$PATH:/usr/bin/go/bin
-  - export GOROOT=/usr/bin/go
-  - export GOPATH=$TRAVIS_BUILD_DIR
-  - go get github.com/lib/pq
-  - go get github.com/labstack/echo
-  - go get github.com/labstack/echo/...
-  - go get github.com/joho/godotenv
-  - go get github.com/die-net/lrucache
-  - go build
-  - cd scripts/
-  - bash ./node.sh
-  - cd ../frontend
-  - npm i
-  - npm i -g pm2
-  - export FRONTEND_PORT=3010
-  - pm2 start npm --name "node" -- start
-  - cd ../
-  - pm2 start ./$PROJECT --interpreter=bash
+  - bash scripts/node.sh
+  - bash scripts/mongo.sh
   - sudo service postgresql restart
   - psql -c "CREATE DATABASE test_db ENCODING = 'UTF8';" -U postgres
 
@@ -67,16 +51,30 @@ install:
   - travis_wait 240 pip install -r requirements.txt
   - pip install -q Django==$DJANGO_VERSION
 
+before_script:
+  - cp scripts/database.yml config/database.yml
+
+script:
+  - python manage.py makemigrations
+  - python manage.py migrate
+  - python scripts/superuser.py --user=testuser --password=testpassword --email=test@email.com
+  - python manage.py collectstatic --noinput
+  - python tests.py
+  - go get github.com/dgrijalva/jwt-go
+  - go get github.com/lib/pq
+  - go get github.com/labstack/echo
+  - go get github.com/labstack/echo/...
+  - go get github.com/joho/godotenv
+  - go get github.com/die-net/lrucache
+  - go build
+  - cd ../frontend
+  - npm i
+  - npm i -g pm2
+  - pm2 start npm --name "node" -- start
+  - travis_wait 360 bash scripts/build.sh 3010 8010
+
 notifications:
   email:
     on_success: never
     on_failure: always
   slack: powerpiper:fEBF3prSwdbMzHrmXs6Pd4ut
-
-script:
-    - python manage.py makemigrations
-    - python manage.py migrate
-    - python scripts/superuser.py --user=testuser --password=testpassword --email=test@email.com
-    - python manage.py collectstatic --noinput
-    - python tests.py
-    - travis_wait 360 bash scripts/build.sh 3010 8010

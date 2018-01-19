@@ -61,7 +61,7 @@
     "build": "next build",
     "start": "next build; NODE_ENV=production node server.js",
     "analyze": "cross-env ANALYZE=1 next build",
-    "installdev": "npm install; npm install --only=dev"
+    "installdev": "npm install --only=dev"
   },
   "optionalDependencies": {
     "fsevents": "*"
