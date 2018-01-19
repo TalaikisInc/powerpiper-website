@@ -13,7 +13,13 @@ export default class CookiePolicy extends Component {
     // eslint-disable-next-line no-undef
     const res = await fetch(process.env.API_URL + '/api/v1.0/flatpage/Cookie Policy/')
     const json = await res.json()
-    return { post: json }
+    return {
+      post: json,
+      title: json.Title,
+      description: json.Title,
+      image: '',
+      menu: true
+    }
   }
 
   render () {
@@ -32,11 +38,4 @@ export default class CookiePolicy extends Component {
       </Layout>
     )
   }
-}
-
-CookiePolicy.defaultProps = {
-  title: this.props.post.Title,
-  description: this.props.post.Title,
-  image: '',
-  menu: true
 }

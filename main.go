@@ -1,11 +1,11 @@
 package main
 
 import (
+	"flag"
 	"log"
 	"net/http"
 	"os"
 	"time"
-	"flag"
 
 	"./api"
 	"github.com/joho/godotenv"
@@ -20,7 +20,7 @@ func init() {
 	// dev format: -isdev=true
 	flag.BoolVar(&isdev, "isdev", false, "Set to true to run the app in development mode.")
 	flag.Parse()
-	if (isdev) {
+	if isdev {
 		err := godotenv.Load(".env.dev")
 		if err != nil {
 			log.Fatal("Error loading development environment variables.")

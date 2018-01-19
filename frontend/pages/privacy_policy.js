@@ -13,7 +13,12 @@ export default class PrivacyPolicy extends Component {
     // eslint-disable-next-line no-undef
     const res = await fetch(process.env.API_URL + '/api/v1.0/flatpage/Privacy Policy/')
     const json = await res.json()
-    return { post: json }
+    return {
+      post: json,
+      title: json.Title,
+      description: json.Title,
+      image: '',
+      menu: true
   }
 
   render () {
@@ -32,11 +37,4 @@ export default class PrivacyPolicy extends Component {
       </Layout>
     )
   }
-}
-
-PrivacyPolicy.defaultProps = {
-  title: this.props.post.Title,
-  description: this.props.post.Title,
-  image: '',
-  menu: true
 }

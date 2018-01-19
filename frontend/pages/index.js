@@ -2,6 +2,7 @@ import { translate } from 'react-i18next'
 import { Component } from 'react'
 
 import Section from 'grommet/components/Section'
+import Box from 'grommet/components/Box'
 import Heading from 'grommet/components/Heading'
 import Animate from 'grommet/components/Animate'
 
@@ -30,27 +31,12 @@ class Index extends Component {
     return (
       <Layout {...this.props}>
         <Section full={true} pad='none' align='center' justify='center'>
-          <Animate enter={{ animation: 'slide-up', duration: 1000, delay: 0 }} keep={true}>
-            <h1>{t('common:welcome')}</h1>
-            <Subscribe />
+          <Animate enter={{ animation: 'slide-up', duration: 400, delay: 0 }} keep={true}>
+            <Box align='center' responsive={true}>
+              <Heading align='center'>{t('common:welcome')}</Heading>
+              <Subscribe />
+            </Box>
           </Animate>
-        </Section>
-        <Section full={true} pad='none' colorIndex='ascent-1'>
-          <Animate enter={{ animation: 'slide-up', duration: 1000, delay: 0 }} keep={true}>
-            <Heading align='center' justify='center'>
-            Testing theme color
-            </Heading>
-          </Animate>
-        </Section>
-        <Section full={true} pad='none' colorIndex='neutral-1'>
-          <Animate enter={{ animation: 'slide-up', duration: 1000, delay: 0 }} keep={true}>
-            <Heading>
-            Section3
-            </Heading>
-          </Animate>
-        </Section>
-        <Section full={true} pad='none' colorIndex='ascent-1'>
-          Section4
         </Section>
       </Layout>
     )

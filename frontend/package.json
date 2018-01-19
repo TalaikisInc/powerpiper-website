@@ -48,7 +48,6 @@
     "react-ga": "^2.2.0",
     "react-i18next": "^7.3.0",
     "react-redux": "^5.0.6",
-    "react-social": "^1.10.0",
     "redux": "^3.7.2",
     "redux-devtools-extension": "^2.13.2",
     "redux-thunk": "^2.2.0",

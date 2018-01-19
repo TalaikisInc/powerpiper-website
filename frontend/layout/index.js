@@ -1,4 +1,4 @@
-import { Component, Fragment } from 'react'
+import { Component, Fragment, Children, cloneElement } from 'react'
 import Router from 'next/router'
 import cookie from 'react-cookies'
 import Head from 'next/head'
@@ -25,6 +25,7 @@ import Animate from 'grommet/components/Animate'
 import Section from 'grommet/components/Section'
 import Anchor from 'grommet/components/Anchor'
 import NProgress from 'nprogress'
+import Responsive from 'grommet/utils/Responsive'
 
 import ES from '../components/Flags/es'
 import GB from '../components/Flags/gb'
@@ -67,6 +68,8 @@ export default class Layout extends Component {
     this.onOpenModal = this.onOpenModal.bind(this)
     this.onCloseModal = this.onCloseModal.bind(this)
     this.onLangSelect = this.onLangSelect.bind(this)
+    this._onResponsive = this._onResponsive.bind(this)
+
     this.state = {
       modal: undefined,
       session: undefined,
@@ -90,14 +93,26 @@ export default class Layout extends Component {
       initGA(this.props.documentPath)
       window.GA_INITIALIZED = true
     }
-
     if (this.state.modal !== true) {
       cookie.save('redirect_url', window.location.pathname, { path: '/' })
     }
+    this._responsive = Responsive.start(this._onResponsive)
   }
 
   onOpenModal() {
     this.setState({ modal: true })
+  }
+
+  async componentDidMount () {
+    this._responsive = Responsive.start(this._onResponsive)
+  }
+
+  componentWillUnmount () {
+    this._responsive.stop()
+  }
+
+  _onResponsive(small) {
+    this.setState({ small })
   }
 
   onCloseModal () {
@@ -120,6 +135,18 @@ export default class Layout extends Component {
   }
 
   render () {
+    const { masonry, alignC, align, pad, direction } = this.state.small ? {
+      masonry: true,
+      direction: 'column',
+      alignC: 'center',
+      align: 'end',
+      pad: 'large' } : {
+      masonry: false,
+      direction: 'row',
+      alignC: 'end',
+      align: 'center',
+      pad: 'none' }
+
     return (
       <Fragment>
         <Head>
@@ -131,53 +158,55 @@ export default class Layout extends Component {
           <style dangerouslySetInnerHTML={{ __html: scss }} />
         </Head>
         <App centered={false}>
-          <Animate enter={{ animation: 'slide-up', duration: 1000, delay: 400 }} keep={true}>
-            <Header size='small' fixed={true} direction='row' pad={{ horizontal: 'medium' }} align='center'>
-              <Link prefetch href="/">
-                <SVGIcon viewBox='0 0 130 108' version='1.1' type='logo' a11yTitle='PowerPiper'>
-                  { /* TODO */ }
-                </SVGIcon>
-              </Link>
-              <Box flex={true} justify='end' align='end' alignContent='end' direction='row' responsive={true} pad='none'>
-                <Columns maxCount={3} justify='end' size='small' responsive={true}>
-                  <Box align='center' alignContent='end' responsive={true} direction='row' basis ='xsmall'>
-                    {
-                      this.props.menu && <div>
-                        <UserMenu session={this.state.session} onOpenModal={this.onOpenModal} />
-                        <SigninModal modal={this.state.modal} onCloseModal={this.onCloseModal} onOpenModal={this.onOpenModal} session={this.state.session} />
-                      </div>
-                    }
-                  </Box>
-                  <Box align='center' alignContent='end' responsive={true} direction='row' basis ='xsmall'>
-                    <Link prefetch href="/blog/">
-                      <Anchor href='/blog/' icon={<BlogIcon />} label='Blog' />
-                    </Link>
-                  </Box>
-                  <Box align='center' alignContent='end' responsive={true} direction='row' basis ='xsmall'>
-                    <Select
-                      onChange={this.onLangSelect}
-                      options={options}
-                      value={this.state.currentLang ? getByValue(options, this.state.currentLang) : undefined} />
-                  </Box>
-                </Columns>
-              </Box>
-            </Header>
-          </Animate>
-          {
-            !this.state.policy && <Animate enter={{ animation: 'slide-up', duration: 1000, delay: 400 }} keep={this.state.keep}>
-              <Section pad='small' align='center' justify='center'>
-                <Label>
-                  This site uses cookies. Click 'OK' if that's OK with you. You can also familiarize yourself with our <a href='/cookie_policy/'>Cookie Policy</a> or <a href='/privacy_policy/'>Privacy Policy</a>.
-                </Label>
-                <Button critical={true} label='OK' onClick={this.onButtonClick} />
-              </Section>
+          <Article responsive={true} margin='none' flex={false} primary={true}>
+            <Animate enter={{ animation: 'slide-up', duration: 1000, delay: 400 }} keep={true}>
+              <Header size='small' fixed={true} direction='row' align='center'>
+                <Link prefetch href="/">
+                  <SVGIcon viewBox='0 0 130 108' version='1.1' type='logo' a11yTitle='PowerPiper'>
+                    { /* TODO */ }
+                  </SVGIcon>
+                </Link>
+                <Box flex={true} direction='row' responsive={true} pad={pad} size='auto'>
+                  <Columns maxCount={3} justify={alignC} size='small' responsive={true} masonry={masonry}>
+                    <Box align={align} alignContent={alignC} responsive={true} direction={direction} basis ='xsmall' size='auto'>
+                      {
+                        this.props.menu && <div>
+                          <UserMenu session={this.state.session} onOpenModal={this.onOpenModal} />
+                          <SigninModal modal={this.state.modal} onCloseModal={this.onCloseModal} onOpenModal={this.onOpenModal} session={this.state.session} />
+                        </div>
+                      }
+                    </Box>
+                    <Box align={align} alignContent={alignC} responsive={true} direction={direction} basis ='xsmall' size='auto'>
+                      <Link prefetch href="/blog/">
+                        <Anchor href='/blog/' icon={<BlogIcon />} label='Blog' />
+                      </Link>
+                    </Box>
+                    <Box align={align} alignContent={alignC} responsive={true} direction={direction} basis ='xsmall' size='auto'>
+                      <Select
+                        onChange={this.onLangSelect}
+                        options={options}
+                        value={this.state.currentLang ? getByValue(options, this.state.currentLang) : undefined} />
+                    </Box>
+                  </Columns>
+                </Box>
+              </Header>
             </Animate>
-          }
-          <MainBody>
-            { this.props.children }
-          </MainBody>
-          { logPageView() }
-          {_Footer()}
+            {
+              !this.state.policy && <Animate enter={{ animation: 'slide-up', duration: 1000, delay: 400 }} keep={this.state.keep}>
+                <Section pad='small' align='center' justify='center'>
+                  <Label>
+                    This site uses cookies. Click 'OK' if that's OK with you. You can also familiarize yourself with our <a href='/cookie_policy/'>Cookie Policy</a> or <a href='/privacy_policy/'>Privacy Policy</a>.
+                  </Label>
+                  <Button critical={true} label='OK' onClick={this.onButtonClick} />
+                </Section>
+              </Animate>
+            }
+            <MainBody>
+              { this.props.children }
+            </MainBody>
+            { logPageView() }
+            {_Footer()}
+          </Article>
         </App>
       </Fragment>
     )
@@ -189,9 +218,7 @@ export class MainBody extends Component {
   render() {
     return (
       <Fragment>
-        <Article responsive={true} margin='none' flex={false} primary={true}>
-          { this.props.children }
-        </Article>
+        { this.props.children }
       </Fragment>
     )
   }
@@ -221,7 +248,7 @@ export class SigninModal extends Component {
     return (
       <div>
         { this.props.modal && <Layer flush={true} closer={true} onClose={this.props.onCloseModal} align='center'>
-          <Box pad='medium'>
+          <Box pad='medium' responsive={true}>
             <Heading>
               Sign In / Sign Up
             </Heading>
@@ -235,7 +262,10 @@ export class SigninModal extends Component {
 }
 
 Layout.propTypes = {
-  children: PropTypes.array.isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.object.isRequired,
+    PropTypes.array.isRequired
+  ]),
   menu: PropTypes.bool.isRequired
 }
 

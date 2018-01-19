@@ -1,4 +1,4 @@
-const envLoc = process.env.NODE_ENV == 'production' ? '../.env' : '../.env.dev'
+const envLoc = process.env.NODE_ENV === 'production' ? '../.env' : '../.env.dev'
 require('dotenv').config({ path: envLoc })
 const express = require('express')
 const smtpTransport = require('nodemailer-smtp-transport')

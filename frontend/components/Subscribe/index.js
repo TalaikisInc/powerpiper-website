@@ -7,6 +7,8 @@ import Button from 'grommet/components/Button'
 // eslint-disable-next-line
 import TextInput from 'grommet/components/TextInput'
 import Paragraph from 'grommet/components/Paragraph'
+import Box from 'grommet/components/Box'
+import Responsive from 'grommet/utils/Responsive'
 
 const getAjaxUrl = url => url.replace('/post?', '/post-json?')
 
@@ -16,12 +18,22 @@ export default class Subscribe extends Component {
     this.state = {
       status: null,
       msg: null
-    };
+    }
+    this._onResponsive = this._onResponsive.bind(this)
     this.actionURL = '//powerpiper.us17.list-manage.com/subscribe/post?u=0fffbdcc0fda19cf7460e0710&amp;id=61682d65ff'
   }
 
   async componentDidMount () {
     this.input.focus()
+    this._responsive = Responsive.start(this._onResponsive)
+  }
+
+  componentWillUnmount () {
+    this._responsive.stop()
+  }
+
+  _onResponsive(small) {
+    this.setState({ small })
   }
 
   onSubmit = e => {
@@ -61,18 +73,21 @@ export default class Subscribe extends Component {
   }
 
   render() {
-    const { action, messages, style, styles } = this.props
+    const inputSize = this.state.small ? 25 : 40
+
+    const { action, messages, styles } = this.props
     const { status, msg } = this.state
+
     return (
-      <div>
-        <form action={action} method="post" className='grommetux-form grommetux-form--pad-large' noValidate>
-          <div>
+      <Box align='center' alignContent='center' responsive={true}>
+        <form action={action} method="post" noValidate>
+          <Box align='center' alignContent='center' responsive={true}>
             <input
               ref={node => (this.input = node)}
               type='email'
               defaultValue=''
               name='EMAIL'
-              size='40'
+              size={inputSize}
               required={true}
               placeholder={messages.inputPlaceholder}
               className='grommetux-text-input grommetux-input' />
@@ -85,14 +100,14 @@ export default class Subscribe extends Component {
               className='grommetux-button grommetux-button-invert'>
               {messages.btnLabel}
             </button>
-          </div>
+          </Box>
           <Paragraph align='center' size='medium' margin='small'>
-            {status === 'sending' && <p style={styles.sending} dangerouslySetInnerHTML={{ __html: messages.sending }} />}
-            {status === 'success' && <p style={styles.success} dangerouslySetInnerHTML={{ __html: messages.success || msg }} />}
-            {status === 'error' && <p style={styles.error} dangerouslySetInnerHTML={{ __html: messages.error || msg }} />}
+            {status === 'sending' && <span style={styles.sending} dangerouslySetInnerHTML={{ __html: messages.sending }} />}
+            {status === 'success' && <span style={styles.success} dangerouslySetInnerHTML={{ __html: messages.success || msg }} />}
+            {status === 'error' && <span style={styles.error} dangerouslySetInnerHTML={{ __html: messages.error || msg }} />}
           </Paragraph>
         </form>
-      </div>
+      </Box>
     )
   }
 }
@@ -107,7 +122,7 @@ Subscribe.defaultProps = {
   },
   styles: {
     sending: { color: 'auto', sifontSizeze: '1em' },
-    success:  { color: 'green', fontSize: '1em' },
+    success: { color: 'green', fontSize: '1em' },
     error: { color: 'red', fontSize: '1em' }
   }
 }

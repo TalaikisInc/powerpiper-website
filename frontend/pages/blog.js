@@ -1,5 +1,5 @@
 import 'isomorphic-unfetch'
-import { Component, PropTypes } from 'react'
+import { Component } from 'react'
 
 import Layout from '../layout'
 import Block from '../components/Block'
@@ -7,9 +7,19 @@ import Block from '../components/Block'
 export default class Blog extends Component {
   static async getInitialProps (props) {
     // eslint-disable-next-line no-undef
-    const res = await fetch(process.env.API_URL + '/api/v1.0/posts/' + (props.page || '0') + '/')
+    const apiUrl = process.env.API_URL ? process.env.API_URL : console.log(process.env.API_URL)
+    const res = await fetch(apiUrl + '/api/v1.0/posts/' + (props.page || '0') + '/')
     const json = await res.json()
-    return { posts: json }
+    const serverUrl = process.env.SERVER_URL
+
+    return {
+      posts: json,
+      title: 'Decentralized Energy Blog',
+      description: 'Decentralized Energy Blog',
+      image: serverUrl + json[0].image,
+      total: Object.keys(json).length,
+      menu: true
+    }
   }
 
   render () {
@@ -19,16 +29,4 @@ export default class Blog extends Component {
       </Layout>
     )
   }
-}
-
-Blog.defaultProps = {
-  title: 'Decentralized Energy Blog',
-  description: 'Decentralized Energy Blog',
-  image: process.env.BASE_URL + '/' + this.props.posts[0].image,
-  total: Object.keys(this.props.posts).length,
-  menu: true
-}
-
-Blog.propTypes = {
-  posts: PropTypes.array.isRequired
 }
