@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 	"time"
+	"flag"
 
 	"./api"
 	"github.com/joho/godotenv"
@@ -13,10 +14,22 @@ import (
 	"golang.org/x/crypto/acme/autocert"
 )
 
+var isdev bool
+
 func init() {
-	err := godotenv.Load(".env")
-	if err != nil {
-		log.Fatal("Error loading environment variables.")
+	// dev format: -isdev=true
+	flag.BoolVar(&isdev, "isdev", false, "Set to true to run the app in development mode.")
+	flag.Parse()
+	if (isdev) {
+		err := godotenv.Load(".env.dev")
+		if err != nil {
+			log.Fatal("Error loading development environment variables.")
+		}
+	} else {
+		err := godotenv.Load(".env")
+		if err != nil {
+			log.Fatal("Error loading production environment variables.")
+		}
 	}
 }
 

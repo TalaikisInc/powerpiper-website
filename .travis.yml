@@ -70,7 +70,7 @@ script:
   - cd ../frontend
   - npm i
   - npm i -g pm2
-  - pm2 start npm --name "node" -- start
+  - pm2 start npm --name "pp" -- start
   - travis_wait 360 bash scripts/build.sh 3010 8010
 
 notifications:
