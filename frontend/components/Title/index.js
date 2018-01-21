@@ -3,8 +3,10 @@ import PropTypes from 'prop-types'
 const siteTitle = process.env.SITE_TITLE
 
 const Title = (props) => {
+  const title = `${props.title} | ${siteTitle}`
+
   return (
-    <title>{props.title} | {siteTitle}</title>
+    <title>{ title }</title>
   )
 }
 
