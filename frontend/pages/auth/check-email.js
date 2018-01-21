@@ -8,7 +8,7 @@ import Paragraph from 'grommet/components/Paragraph'
 import Layout from '../../layout'
 import Session from '../../components/Session'
 
-export default class CheckEmail extends Component {
+class CheckEmail extends Component {
   static async getInitialProps({ req, res }) {
     const session = await Session.getSession({ force: true, req: req })
     if (session.user) {
@@ -25,6 +25,9 @@ export default class CheckEmail extends Component {
   }
 
   render() {
+    console.log('------------ auth/check email session ---------------')
+    console.log(this.props.session)
+
     return (
       <Layout {...this.props}>
         <Section full={true} pad='none' align='center' justify='center'>
@@ -42,3 +45,5 @@ CheckEmail.defaultProps = {
   image: '',
   menu: false
 }
+
+export default CheckEmail

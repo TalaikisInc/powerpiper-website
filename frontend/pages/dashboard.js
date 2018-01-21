@@ -9,13 +9,17 @@ import Paragraph from 'grommet/components/Paragraph'
 import Heading from 'grommet/components/Heading'
 import Columns from 'grommet/components/Columns'
 import Label from 'grommet/components/Label'
+import Button from 'grommet/components/Button'
 import LinkIcon from 'grommet/components/icons/base/Link'
 import UnlinkIcon from 'grommet/components/icons/base/Unlink'
+import LogoutIcon from 'grommet/components/icons/base/Logout'
+import LoginIcon from 'grommet/components/icons/base/Login'
+import SaveIcon from 'grommet/components/icons/base/Save'
 
 import Layout from '../layout'
 import Session from '../components/Session'
 
-export default class DashBoard extends Component {
+class DashBoard extends Component {
   static async getInitialProps({ req }) {
     return {
       session: await Session.getSession({ force: true, req: req })
@@ -26,7 +30,7 @@ export default class DashBoard extends Component {
     super(props)
     this.state = {
       session: props.session,
-      isSignedIn: (props.session.user) ? true : false,
+      isSignedIn: (props.session && props.session.user) ? true : false,
       name: '',
       email: '',
       emailVerified: false,
@@ -47,7 +51,7 @@ export default class DashBoard extends Component {
   }
 
   async componentDidMount() {
-    const session = await Session.getSession({force: true})
+    const session = await Session.getSession({ force: true })
     this.setState({
       session: session,
       isSignedIn: (session.user) ? true : false
@@ -120,18 +124,18 @@ export default class DashBoard extends Component {
           this.getProfile()
           this.setState({
             alertText: 'Changes to your profile have been saved',
-            alertStyle: 'alert-success',
+            alertStyle: 'alert-success'
           })
           // Force update session so that changes to name or email are reflected
           // immediately in the navbar (as we pass our session to it)
           this.setState({
-            session: await Session.getSession({force: true}),
+            session: await Session.getSession({ force: true }),
           })
         } else {
           this.setState({
-            session: await Session.getSession({force: true}),
+            session: await Session.getSession({ force: true }),
             alertText: 'Failed to save changes to your profile',
-            alertStyle: 'alert-danger',
+            alertStyle: 'alert-danger'
           })
         }
       })
@@ -151,39 +155,35 @@ export default class DashBoard extends Component {
         <Layout {...this.props}>
           <Section full={false} pad='medium' align='center' justify='center'>
             <Box>
-              <Heading className="display-4">Your Account</Heading>
-              <Paragraph>
-                Edit your profile and link your account
-              </Paragraph>
+              <Heading>Your Account</Heading>
             </Box>
-            {alert}
+            { alert }
           </Section>
-          <Columns>
-            <Box>
+          <Section full={false} pad='medium' align='center' justify='center'>
+            <Box align='center' alignContent='center' responsive={true} direction='row' size='auto'>
+              <Label>
+                Edit your profile
+              </Label>
               <form method="post" action="/dashboard/user" onSubmit={this.onSubmit} className="grommetux-form grommetux-form--pad-large">
                 <input name="_csrf" type="hidden" value={this.state.session.csrfToken} onChange={() => {}} />
-                <FormGroup row>
-                  <Label sm={2}>Name:</Label>
-                  <Col sm={10} md={8}>
-                    <input name="name" value={this.state.name} onChange={this.handleChange} className="grommetux-text-input grommetux-input" />
-                  </Col>
-                </FormGroup>
-                <FormGroup row>
-                  <Label sm={2}>Email:</Label>
-                  <Col sm={10} md={8}>
-                    <input name="email" value={(this.state.email.match(/.*@localhost\.localdomain$/)) ? '' : this.state.email} onChange={this.handleChange} className="grommetux-text-input grommetux-input" />
-                  </Col>
-                </FormGroup>
-                <FormGroup row>
-                  <Col sm={12} md={10}>
-                    <p className="text-right">
-                      <Button color="primary" type="submit">Save Changes</Button>
-                    </p>
-                  </Col>
-                </FormGroup>
+                <Box pad='medium'>
+                  <Label>Name: </Label>
+                  <input name="name" value={this.state.name} onChange={this.handleChange} className="grommetux-text-input grommetux-input" />
+                </Box>
+                <Box pad='medium'>
+                  <Label>Email:</Label>
+                  <input name="email" value={(this.state.email.match(/.*@localhost\.localdomain$/)) ? '' : this.state.email} onChange={this.handleChange} className="grommetux-text-input grommetux-input" />
+                </Box>
+                <button type="submit" className="grommetux-button grommetux-button-invert"><SaveIcon /> Save Changes</button>
               </form>
             </Box>
-            <Box>
+            <Box align='center' alignContent='center' responsive={true} direction='row' size='auto' pad='medium'>
+              <Label>
+                Link your account
+              </Label>
+              <Paragraph>
+                When you link your account to social networks, later you can access it with just one click.
+              </Paragraph>
               <LinkedAccounts
                 session={this.props.session}
                 linkedWithFacebook={this.state.linkedWithFacebook}
@@ -191,17 +191,21 @@ export default class DashBoard extends Component {
                 linkedWithTwitter={this.state.linkedWithTwitter}
                 gotProfile={this.state.gotProfile} />
             </Box>
-          </Columns>
-          <Box>
-            <h2>Sign out</h2>
-            <Paragraph>
-              If you sign out, you can sign in again at any time.
-            </Paragraph>
-            <Form id="signout" method="post" action="/auth/signout" onSubmit={this.handleSignoutSubmit}>
-              <input name="_csrf" type="hidden" value={this.state.session.csrfToken}/>
-              <Button type="submit" color="outline-secondary"><span className="icon ion-md-log-out mr-1"></span> Sign Out</Button>
-            </Form>
-          </Box>
+            <Box align='center' alignContent='center' responsive={true} direction='row' size='auto' pad='medium'>
+              <Label>
+                Sign out
+              </Label>
+              <Paragraph>
+                If you sign out, you can sign in again at any time.
+              </Paragraph>
+              <Box>
+                <form id="signout" method="post" action="/auth/signout" onSubmit={this.handleSignoutSubmit}>
+                  <input name="_csrf" type="hidden" value={this.state.session.csrfToken}/>
+                  <button type="submit" className="grommetux-button grommetux-button-invert"><LogoutIcon /> Sign Out</button>
+                </form>
+              </Box>
+            </Box>
+          </Section>
         </Layout>
       )
     } else {
@@ -210,7 +214,7 @@ export default class DashBoard extends Component {
           <Section full={false} pad='medium' align='center' justify='center'>
             <Box>
               <Label>
-                <a href="/auth/signin">Sign in to view your account.</a>
+                <a href="/auth/signin" className="grommetux-button grommetux-button-invert"><LoginIcon /> Sign in</a>
               </Label>
             </Box>
           </Section>
@@ -228,10 +232,18 @@ export class LinkedAccounts extends Component {
     } else {
       return (
         <Fragment>
-          <LinkAccount provider="Facebook" session={this.props.session} linked={this.props.linkedWithFacebook}/>
-          <LinkAccount provider="Google" session={this.props.session} linked={this.props.linkedWithGoogle}/>
-          <LinkAccount provider="Twitter" session={this.props.session} linked={this.props.linkedWithTwitter}/>
-          <LinkAccount provider="LinkedIn" session={this.props.session} linked={this.props.linkedWithLinkedIn}/>
+          <Box>
+            <LinkAccount provider="Facebook" session={this.props.session} linked={this.props.linkedWithFacebook}/>
+          </Box>
+          <Box>
+            <LinkAccount provider="Google" session={this.props.session} linked={this.props.linkedWithGoogle}/>
+          </Box>
+          <Box>
+            <LinkAccount provider="Twitter" session={this.props.session} linked={this.props.linkedWithTwitter}/>
+          </Box>
+          <Box>
+            <LinkAccount provider="LinkedIn" session={this.props.session} linked={this.props.linkedWithLinkedIn}/>
+          </Box>
         </Fragment>
       )
     }
@@ -243,25 +255,25 @@ export class LinkAccount extends Component {
   render() {
     if (this.props.linked === true) {
       return (
-        <form action={`/auth/oauth/${this.props.provider.toLowerCase()}/unlink`} method="post" className="grommetux-form grommetux-form--pad-large">
-          <Input name="_csrf" type="hidden" value={this.props.session.csrfToken}/>
+        <form action={`/auth/oauth/${this.props.provider.toLowerCase()}/unlink`} method="post">
+          <input name="_csrf" type="hidden" value={this.props.session.csrfToken}/>
           <Paragraph>
-            <Button block color="danger" outline type="submit">
+            <button type="submit">
               <UnlinkIcon /> Unlink from {this.props.provider}
-            </Button>
+            </button>
           </Paragraph>
         </form>
       )
     } else if (this.props.linked === false) {
       return (
-        <Paragraph>
-          <a className="btn btn-block btn-outline-dark" href={`/auth/oauth/${this.props.provider.toLowerCase()}`}>
+        <button type="submit">
+          <a href={`/auth/oauth/${this.props.provider.toLowerCase()}`}>
             <LinkIcon /> Link with {this.props.provider}
           </a>
-        </Paragraph>
+        </button>
       )
     } else {
-      return (<p />)
+      return (<Paragraph />)
     }
   }
 }
@@ -273,3 +285,5 @@ DashBoard.defaultProps = {
   loginTitle: 'Sign In',
   menu: true
 }
+
+export default DashBoard

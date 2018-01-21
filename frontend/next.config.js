@@ -1,21 +1,17 @@
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
-const { WebpackBundleSizeAnalyzerPlugin } = require('webpack-bundle-size-analyzer')
-const { ANALYZE } = process.env
 const path = require('path')
 const glob = require('glob')
+const webpack = require('webpack')
 
 module.exports = {
   webpack: (config) => {
-    if (ANALYZE) {
-      config.plugins.push(
-        new BundleAnalyzerPlugin({
-          analyzerMode: 'server',
-          analyzerPort: 8888,
-          openAnalyzer: true
-        }),
-        new WebpackBundleSizeAnalyzerPlugin('stats.txt')
+    config.plugins.push(
+      new webpack.DefinePlugin(
+        new webpack.DefinePlugin({
+          'process.env.API_URL': JSON.stringify(process.env.API_URL)
+        })
       )
-    }
+    )
+
     config.module.rules.push(
       {
         test: /\.(css|scss)/,

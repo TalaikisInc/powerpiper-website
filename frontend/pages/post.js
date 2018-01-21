@@ -12,23 +12,24 @@ import SocialShare from 'grommet/components/SocialShare'
 
 import Layout from '../layout'
 import Date from '../utils/helpers'
+const apiUrl = process.env.API_URL
+const imagesUrl = process.env.IMAGES_URL
+const serverUrl = process.env.SERVER_URL
 
 export default class Post extends Component {
   static async getInitialProps ({ req }) {
     // eslint-disable-next-line no-undef
-    const res = await fetch(process.env.API_URL + '/api/v1.0' + req.url)
+    const res = await fetch(`${apiUrl}/api/v1.0${req.url}`)
     const json = await res.json()
-    const baseUrl = process.env.BASE_URL
-    const serverUrl = process.env.SERVER_URL
 
     return {
       post: json,
       title: json.Title,
       description: json.Title,
-      image: baseUrl + json.Image,
-      authorUrl: serverUrl + '/author/' + json.AuthorID.Username + '/0/',
-      categoryUrl: serverUrl + '/category/' + json.CategoryID.Slug + '/0/',
-      postUrl: serverUrl + '/' + json.Slug + '/',
+      image: `${imagesUrl}/${json.Image}`,
+      authorUrl: `${serverUrl}/author/${json.AuthorID.Username}/0/`,
+      categoryUrl: `${serverUrl}/category/${json.CategoryID.Slug}/0/`,
+      postUrl: `${serverUrl}/${json.Slug}/`,
       menu: true
     }
   }

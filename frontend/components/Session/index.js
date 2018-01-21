@@ -79,7 +79,6 @@ export default class Session {
   static async signin (email) {
     const session = await this.getSession()
     session.csrfToken = await this.getCsrfToken()
-    console.log(session.csrfToken)
 
     const formData = {
       _csrf: session.csrfToken,

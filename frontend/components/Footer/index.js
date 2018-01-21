@@ -7,9 +7,9 @@ import A from '../A'
 import Wrapper from './wrapper'
 import Copy from '../Copy'
 
-const _Footer = () => {
+const _Footer = (props) => {
   return (
-    <Animate enter={{animation: 'slide-up', duration: 1000, delay: 300 }} keep={true} visible='scroll'>
+    <Animate enter={{ animation: 'slide-up', duration: 1000, delay: 300 }} keep={true} visible='scroll'>
       <Footer primary={true} appCentered={true} direction="column" align="center" pad="medium" colorIndex="grey-1">
         <Wrapper>
           <A href='//www.linkedin.com/company/power-piper/'>{FontAwesome({name: 'linkedin', ariaLabel: 'Linkedin', size: '2x'})}</A>

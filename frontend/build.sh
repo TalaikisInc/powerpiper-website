@@ -1,7 +1,13 @@
 #!/bin/bash
 
-echo $1
+echo "How to call: ./build.sh PORT [install]"
 cd /home/powerpiper/frontend
-npm install
-npm run installdev
+if [ "$2" = "install" ]
+then
+  npm install
+  npm run installdev
+fi
+
 FRONTEND_PORT=$1 npm run build
+pm2 delete pp
+FRONTEND_PORT=$1 pm2 start npm --name "pp" -- start

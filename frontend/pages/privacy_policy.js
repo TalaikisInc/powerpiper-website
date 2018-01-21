@@ -7,18 +7,21 @@ import Paragraph from 'grommet/components/Paragraph'
 import Animate from 'grommet/components/Animate'
 
 import Layout from '../layout'
+const apiUrl = process.env.API_URL
 
 export default class PrivacyPolicy extends Component {
   static async getInitialProps () {
     // eslint-disable-next-line no-undef
-    const res = await fetch(process.env.API_URL + '/api/v1.0/flatpage/Privacy Policy/')
+    const res = await fetch(`${apiUrl}/api/v1.0/flatpage/Privacy Policy/`)
     const json = await res.json()
+
     return {
       post: json,
       title: json.Title,
       description: json.Title,
       image: '',
       menu: true
+    }
   }
 
   render () {

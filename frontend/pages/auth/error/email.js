@@ -7,7 +7,7 @@ import Section from 'grommet/components/Section'
 
 import Layout from '../../../layout'
 
-export default class EmailError extends Component {
+class EmailError extends Component {
   render() {
     return (
       <Layout {...this.props}>
@@ -29,3 +29,5 @@ EmailError.defaultProps = {
   image: '',
   menu: false
 }
+
+export default EmailError

@@ -202,7 +202,7 @@ function sendVerificationEmail({ mailserver, fromEmail, toEmail, url }) {
     }, (err) => {
       // @TODO Handle errors
       if (err) {
-        console.log('Error sending email to ' + toEmail, err)
+        console.error('Error sending email to ' + toEmail, err)
       }
     })
   if (process.env.NODE_ENV === 'development')  {

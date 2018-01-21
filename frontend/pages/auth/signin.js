@@ -8,7 +8,7 @@ import Layout from '../../layout'
 import Session from '../../components/Session'
 import Signin from '../../components/Signin'
 
-export default class SignIn extends Component {
+class SignIn extends Component {
   static async getInitialProps({ req, res, query }) {
     const session = await Session.getSession({ force: true, req: req })
     if (session.user && req) {
@@ -41,10 +41,15 @@ export default class SignIn extends Component {
   }
 
   render() {
+    console.log('------------ auth/signin session state ---------------')
+    console.log(this.state.session)
+
     return (
       <Layout session={this.state.session} title={this.props.title} description={this.props.description} image={this.props.image}>
         <Section full={true} pad='none' align='center' justify='center'>
-          <Signin session={this.state.session} />
+          <Box>
+            <Signin session={this.state.session} />
+          </Box>
         </Section>
       </Layout>
     )
@@ -57,3 +62,5 @@ SignIn.defaultProps = {
   image: '',
   menu: false
 }
+
+export default SignIn

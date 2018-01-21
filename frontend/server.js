@@ -1,11 +1,11 @@
-const envLoc = process.env.NODE_ENV === 'production' ? '../.env' : '../.env.dev'
+const envLoc = process.env.NODE_ENV === 'production' ? '../.env' : '../.env.development'
 require('dotenv').config({ path: envLoc })
 const express = require('express')
 const smtpTransport = require('nodemailer-smtp-transport')
 const directTransport = require('nodemailer-direct-transport')
 const path = require('path')
 const next = require('next')
-const app = next({ dir: '.', dev: process.env.NODE_ENV !== 'production' })
+const app = next({ dir: '.', dev: process.env.NODE_ENV !== 'production', quiet: false })
 const i18nextMiddleware = require('i18next-express-middleware')
 const Backend = require('i18next-node-fs-backend')
 const i18n = require('./i18n')
@@ -17,6 +17,7 @@ const NeDB = require('nedb')
 const routes = require('./routes/index')
 const auth = require('./routes/auth')
 const assert = require('assert')
+
 const port = process.env.FRONTEND_PORT
 const sessConn = process.env.SESSION_DB_CONNECTION_STRING
 const mongoUrl = process.env.MONGO_DB

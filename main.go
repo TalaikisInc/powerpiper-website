@@ -21,7 +21,7 @@ func init() {
 	flag.BoolVar(&isdev, "isdev", false, "Set to true to run the app in development mode.")
 	flag.Parse()
 	if isdev {
-		err := godotenv.Load(".env.dev")
+		err := godotenv.Load(".env.development")
 		if err != nil {
 			log.Fatal("Error loading development environment variables.")
 		}
@@ -48,7 +48,7 @@ func main() {
 		Browse: true,
 	}))
 	app.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins: []string{os.Getenv("BASE_URL")},
+		AllowOrigins: []string{"http://127.0.0.1:" + os.Getenv("FRONTEND_PORT")},
 		AllowMethods: []string{echo.GET, echo.PUT, echo.POST, echo.DELETE},
 	}))
 

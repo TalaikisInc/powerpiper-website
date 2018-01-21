@@ -1,4 +1,4 @@
-import { Component, Fragment, Children, cloneElement } from 'react'
+import { Component, Fragment } from 'react'
 import Router from 'next/router'
 import cookie from 'react-cookies'
 import Head from 'next/head'
@@ -93,14 +93,12 @@ export default class Layout extends Component {
       initGA(this.props.documentPath)
       window.GA_INITIALIZED = true
     }
+
     if (this.state.modal !== true) {
       cookie.save('redirect_url', window.location.pathname, { path: '/' })
     }
-    this._responsive = Responsive.start(this._onResponsive)
-  }
 
-  onOpenModal() {
-    this.setState({ modal: true })
+    this._responsive = Responsive.start(this._onResponsive)
   }
 
   async componentDidMount () {
@@ -109,6 +107,10 @@ export default class Layout extends Component {
 
   componentWillUnmount () {
     this._responsive.stop()
+  }
+
+  onOpenModal() {
+    this.setState({ modal: true })
   }
 
   _onResponsive(small) {
@@ -145,13 +147,13 @@ export default class Layout extends Component {
       direction: 'row',
       alignC: 'end',
       align: 'center',
-      pad: 'none' }
+      pad: 'small' }
 
     return (
       <Fragment>
         <Head>
-          {Title({ title: this.props.title, siteTitle: this.props.siteTitle })}
-          {Meta({ props: this.props, baseURL: this.props.baseURL, siteTitle: this.props.siteTitle, author: this.props.author })}
+          {Title({ title: this.props.title })}
+          {Meta({ ...this.props })}
           <link rel='canonical' href={this.props.baseURL} />
           <link href='//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' rel='stylesheet' type='text/css' />
           <style dangerouslySetInnerHTML={{ __html: nprogress }} />
@@ -159,13 +161,13 @@ export default class Layout extends Component {
         </Head>
         <App centered={false}>
           <Article responsive={true} margin='none' flex={false} primary={true}>
-            <Animate enter={{ animation: 'slide-up', duration: 1000, delay: 400 }} keep={true}>
+            <Animate enter={{ animation: 'slide-up', duration: 1000, delay: 300 }} keep={true}>
               <Header size='small' fixed={true} direction='row' align='center'>
-                <Link prefetch href="/">
-                  <SVGIcon viewBox='0 0 130 108' version='1.1' type='logo' a11yTitle='PowerPiper'>
-                    { /* TODO */ }
-                  </SVGIcon>
-                </Link>
+                <Box pad={pad} size='auto' responsive={true}>
+                  <Link href="/">
+                    <Label>Home</Label>
+                  </Link>
+                </Box>
                 <Box flex={true} direction='row' responsive={true} pad={pad} size='auto'>
                   <Columns maxCount={3} justify={alignC} size='small' responsive={true} masonry={masonry}>
                     <Box align={align} alignContent={alignC} responsive={true} direction={direction} basis ='xsmall' size='auto'>
@@ -270,8 +272,5 @@ Layout.propTypes = {
 }
 
 Layout.defaultProps = {
-  siteTitle: process.env.SITE_TITLE,
-  author: process.env.SITE_TITLE,
-  baseURL: process.env.BASE_URL || '',
   menu: true
 }

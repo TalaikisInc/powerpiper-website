@@ -7,7 +7,7 @@ import Section from 'grommet/components/Section'
 
 import Layout from '../../../layout'
 
-export default class NotConfigured extends Component {
+class NotConfigured extends Component {
   render() {
     return (
       <Layout {...this.props}>
@@ -30,3 +30,4 @@ NotConfigured.defaultProps = {
   menu: false
 }
 
+export default NotConfigured

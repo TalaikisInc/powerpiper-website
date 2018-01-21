@@ -1,13 +1,13 @@
 import { Fragment, Component } from 'react'
 import Router from 'next/router'
-import Head from 'next/head'
 import cookie from 'react-cookies'
 
 import Spinning from 'grommet/components/icons/Spinning'
+import Box from 'grommet/components/Box'
 
 import Session from '../../components/Session'
 
-export default class CallBack extends Component {
+class CallBack extends Component {
   static async getInitialProps({ req }) {
     const session = await Session.getSession({ force: true, req: req })
     let redirectTo = '/dashboard/'
@@ -53,11 +53,12 @@ export default class CallBack extends Component {
   render() {
     return (
       <Fragment>
-        <Head>
-          <meta httpEquiv="refresh" content={'1; url='+this.props.redirectTo} />
-        </Head>
-        <Spinning size='large' />
+        <Box align='center' justify='center'>
+          <Spinning size='medium' />
+        </Box>
       </Fragment>
     )
   }
 }
+
+export default CallBack
