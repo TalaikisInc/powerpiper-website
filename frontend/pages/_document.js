@@ -7,14 +7,14 @@ export default class CustomDocument extends Document {
   static async getInitialProps({ renderPage, req }) {
     const { html, head, errorHtml, chunks } = renderPage()
     const session = await Session.getSession({ req })
-    const lang = 'en'
     cookie.save('sess_id', session.csrfToken, { path: '/' })
-    return { html, head, errorHtml, chunks, lang }
+    const lang = req.i18n ? req.i18n.language : 'en'
+    return { html, head, errorHtml, chunks, session, lang }
   }
 
   render() {
     return (
-      <html lang={this.props.lang || 'en'}>
+      <html lang={this.props.lang}>
         <Head>
         </Head>
         <body>

@@ -12,9 +12,10 @@ import SocialShare from 'grommet/components/SocialShare'
 
 import Layout from '../layout'
 import Date from '../utils/helpers'
+
 const apiUrl = process.env.API_URL
 const imagesUrl = process.env.IMAGES_URL
-const serverUrl = process.env.SERVER_URL
+const serverUrl = process.env.BASE_URL
 
 export default class Post extends Component {
   static async getInitialProps ({ req }) {
@@ -27,14 +28,17 @@ export default class Post extends Component {
       title: json.Title,
       description: json.Title,
       image: `${imagesUrl}/${json.Image}`,
-      authorUrl: `${serverUrl}/author/${json.AuthorID.Username}/0/`,
-      categoryUrl: `${serverUrl}/category/${json.CategoryID.Slug}/0/`,
-      postUrl: `${serverUrl}/${json.Slug}/`,
-      menu: true
+      authorUrl: `/author/${json.AuthorID.Username}/0/`,
+      categoryUrl: `/category/${json.CategoryID.Slug}/0/`,
+      postUrl: `${serverUrl}/post/${json.Slug}/`,
+      menu: true,
+      langSelector: false
     }
   }
 
   render () {
+    const authorName = this.props.post.AuthorID.FirstName ? `${this.props.post.AuthorID.FirstName} ${this.props.post.AuthorID.LastName}` : 'Anonymous'
+
     return (
       <Layout {...this.props}>
         <Section full={false} pad='medium' align='center' justify='center'>
@@ -46,7 +50,7 @@ export default class Post extends Component {
             </Heading>
             <Paragraph>
               By <a href={this.props.authorUrl} className='grommetux-anchor' onMouseEnter={() => {Router.prefetch(this.props.authorUrl)}}>
-                {this.props.post.AuthorID.FirstName} {this.props.post.AuthorID.LastName}
+                { authorName }
               </a>
               &nbsp;|&nbsp;
               {Date(this.props.post.Date)}

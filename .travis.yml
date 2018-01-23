@@ -26,10 +26,6 @@ services:
 
 env:
   - DJANGO_VERSION=2.0.1
-  - PATH=$PATH:/usr/bin/go/bin
-  - GOROOT=/usr/bin/go
-  - GOPATH=$TRAVIS_BUILD_DIR
-  - FRONTEND_PORT=3010
 
 before_install:
   - sudo apt-get update -q
@@ -38,6 +34,10 @@ before_install:
   - sudo apt-get install -y xz-utils
   - wget https://storage.googleapis.com/golang/go1.8.2.linux-amd64.tar.gz
   - sudo tar -C /usr/bin -xzf go1.8.2.linux-amd64.tar.gz
+  - export PATH=$PATH:/usr/bin/go/bin
+  - export GOROOT=/usr/bin/go
+  - export GOPATH=$TRAVIS_BUILD_DIR
+  - export FRONTEND_PORT=3010
   - bash scripts/node.sh
   - bash scripts/mongo.sh
   - sudo service postgresql restart
@@ -52,7 +52,8 @@ install:
   - pip install -q Django==$DJANGO_VERSION
 
 before_script:
-  - cp scripts/database.yml config/database.yml
+  - mkdir config
+  - scripts/database.yml config/database.yml
 
 script:
   - python manage.py makemigrations
@@ -68,10 +69,10 @@ script:
   - go get github.com/die-net/lrucache
   - go build
   - cd ../frontend
-  - npm i
   - npm i -g pm2
-  - pm2 start npm --name "pp" -- start
-  - travis_wait 360 bash scripts/build.sh 3010 8010
+  - bash ./build.sh 3010 install
+  - cd ../
+  - bash scripts/build.sh 3010 8010
 
 notifications:
   email:

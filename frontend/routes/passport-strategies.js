@@ -3,7 +3,6 @@ const passport = require('passport')
 exports.configure = ({
   expressApp = null,
   userdb = null,
-  path = '/auth',
   serverUrl = null,
   userDbKey = '_id'
 } = {}) => {
@@ -130,11 +129,10 @@ exports.configure = ({
   // Define a Passport strategy for provider
   providers.forEach(({ providerName, Strategy, strategyOptions, getUserFromProfile }) => {
 
-    strategyOptions.callbackURL = (serverUrl || '') + path + '/oauth/' + providerName + '/callback' 
+    strategyOptions.callbackURL = (serverUrl || '') + `/auth/oauth/${providerName}/callback`
     strategyOptions.passReqToCallback = true
 
     passport.use(new Strategy(strategyOptions, (req, accessToken, refreshToken, profile, next) => {
-
       req.session[providerName] = { accessToken: accessToken }
 
       try {
@@ -151,7 +149,7 @@ exports.configure = ({
         }
 
         // See if we have this oAuth account in the database associated with a user
-        userdb.findOne({ [providerName+'.id']: profile.id }, (err, user) => {
+        userdb.findOne({ [`${providerName}id`]: profile.id }, (err, user) => {
           if (err) {
             return next(err)
           }
@@ -213,7 +211,7 @@ exports.configure = ({
 
             // If the oAuth account is already linked to different account, exit with error
             if (req.user.id !== user.id) {
-              return next(null, false, {message: 'This account is already associated with another login.'})
+              return next(null, false, { message: 'This account is already associated with another login.' })
             }
           } else {
             // If the current session is not signed in
@@ -282,16 +280,16 @@ exports.configure = ({
   // Add routes for each provider
   providers.forEach(({ providerName, providerOptions }) => {
     // Route to start sign in
-    expressApp.get(path + '/oauth/' + providerName, passport.authenticate(providerName, providerOptions))
+    expressApp.get(`/auth/oauth/${providerName}`, passport.authenticate(providerName, providerOptions))
     // Route to call back to after signing in
-    expressApp.get(path + '/oauth/' + providerName + '/callback',
+    expressApp.get(`/auth/oauth/${providerName}/callback`,
       passport.authenticate(providerName, {
-        successRedirect: path + '/callback?action=signin&service=' + providerName,
-        failureRedirect: path + '/error/oauth?service=' + providerName
+        successRedirect: `/auth/callback?action=signin&service=${providerName}`,
+        failureRedirect: `/auth/error/oauth?service=${providerName}`
       })
     )
     // Route to post to unlink accounts
-    expressApp.post(path + '/oauth/' + providerName + '/unlink', (req, res, next) => {
+    expressApp.post(`/auth/oauth/${providerName}/unlink`, (req, res, next) => {
       if (!req.user) {
         return next(new Error('Not signed in'))
       }
@@ -314,15 +312,16 @@ exports.configure = ({
           if (err) {
             return next(err)
           }
-          return res.redirect(path + '/callback?action=unlink&service=' + providerName)
+          return res.redirect(`/auth/callback?action=unlink&service=${providerName}`)
         })
       })
     })
+    return null
   })
 
   // A catch all for providers that are not configured
-  expressApp.get(path + '/oauth/:provider', (req, res) => {
-    res.redirect(path + '/error/not_configured')
+  expressApp.get('/auth/oauth/:provider', (req, res) => {
+    res.redirect('/auth/error/not_configured')
   })
 
   return passport

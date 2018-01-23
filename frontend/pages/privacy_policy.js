@@ -20,7 +20,8 @@ export default class PrivacyPolicy extends Component {
       title: json.Title,
       description: json.Title,
       image: '',
-      menu: true
+      menu: true,
+      langSelector: false
     }
   }
 

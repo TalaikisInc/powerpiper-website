@@ -4,7 +4,8 @@
        "node": true
     },
     "plugins": [
-      "jsx-a11y"
+      "jsx-a11y",
+      "flowtype"
     ],
     "extends": [
       "plugin:jsx-a11y/recommended"
@@ -143,6 +144,13 @@
         "space-in-parens": 2,
         "space-unary-ops": 2,
         "spaced-comment": 2,
-        "wrap-regex": 0
+        "no-console": 2,
+        "wrap-regex": 0,
+        "flowtype/define-flow-type": 1
+    },
+    "settings": {
+      "flowtype": {
+        "onlyFilesWithFlowAnnotation": true
+      }
     }
 }

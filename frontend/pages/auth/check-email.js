@@ -25,9 +25,6 @@ class CheckEmail extends Component {
   }
 
   render() {
-    console.log('------------ auth/check email session ---------------')
-    console.log(this.props.session)
-
     return (
       <Layout {...this.props}>
         <Section full={true} pad='none' align='center' justify='center'>

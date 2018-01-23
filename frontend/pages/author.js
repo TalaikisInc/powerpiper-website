@@ -10,17 +10,21 @@ const imagesUrl = process.env.IMAGES_URL
 export default class Author extends Component {
   static async getInitialProps ({ req }) {
     // eslint-disable-next-line no-undef
-    const res = await fetch(`${apiUrl}/api/v1.0${req.url}`)
-    const json = await res.json()
+    if (req) {
+      const res = await fetch(`${apiUrl}/api/v1.0${req.url}`)
+      const json = await res.json()
 
-    return {
-      posts: json,
-      title: `${json[0].author_id.LastName} ${json[0].author_id.FirstName} Blog`,
-      description: `${json[0].author_id.LastName} ${json[0].author_id.FirstName} Blog`,
-      image: `${imagesUrl}/${json[0].image}`,
-      total: json[0].id,
-      menu: true
+      return {
+        posts: json,
+        title: `${json[0].author_id.LastName} ${json[0].author_id.FirstName} Blog`,
+        description: `${json[0].author_id.LastName} ${json[0].author_id.FirstName} Blog`,
+        image: `${imagesUrl}/${json[0].image}`,
+        total: json[0].id,
+        menu: true,
+        langSelector: false
+      }
     }
+    return null
   }
 
   render () {

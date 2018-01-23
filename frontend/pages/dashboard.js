@@ -3,12 +3,13 @@ import Router from 'next/router'
 import fetch from 'unfetch'
 import cookie from 'react-cookies'
 
+import Toast from 'grommet/components/Toast'
 import Box from 'grommet/components/Box'
 import Section from 'grommet/components/Section'
 import Paragraph from 'grommet/components/Paragraph'
 import Heading from 'grommet/components/Heading'
-import Columns from 'grommet/components/Columns'
 import Label from 'grommet/components/Label'
+/* eslint-disable no-unused-vars */
 import Button from 'grommet/components/Button'
 import LinkIcon from 'grommet/components/icons/base/Link'
 import UnlinkIcon from 'grommet/components/icons/base/Unlink'
@@ -38,7 +39,7 @@ class DashBoard extends Component {
       linkedWithGoogle: false,
       linkedWithTwitter: false,
       alertText: null,
-      alertStyle: null,
+      alertStatus: null,
       gotProfile: false
     }
     if (props.session.user) {
@@ -54,7 +55,7 @@ class DashBoard extends Component {
     const session = await Session.getSession({ force: true })
     this.setState({
       session: session,
-      isSignedIn: (session.user) ? true : false
+      isSignedIn: (session &&session.user) ? true : false
     })
 
     cookie.save('redirect_url', '/dashboard/', { path: '/' })
@@ -68,9 +69,9 @@ class DashBoard extends Component {
     })
       .then(r => r.json())
       .then(user => {
-        if (!user.name || !user.email) {
+        /*if (!user.name || !user.email) {
           return
-        }
+        }*/
         this.setState({
           name: user.name,
           email: user.email,
@@ -89,17 +90,17 @@ class DashBoard extends Component {
     })
   }
 
-  async onSubmit(e) {
+  onSubmit(e) {
     // Submits the URL encoded form without causing a page reload
     e.preventDefault()
 
     this.setState({
       alertText: null,
-      alertStyle: null
+      alertStatus: null
     })
 
     const formData = {
-      _csrf: await Session.getCsrfToken(),
+      _csrf: Session.getCsrfToken(),
       name: this.state.name || '',
       email: this.state.email || ''
     }
@@ -124,7 +125,7 @@ class DashBoard extends Component {
           this.getProfile()
           this.setState({
             alertText: 'Changes to your profile have been saved',
-            alertStyle: 'alert-success'
+            alertStatus: 'ok'
           })
           // Force update session so that changes to name or email are reflected
           // immediately in the navbar (as we pass our session to it)
@@ -135,21 +136,21 @@ class DashBoard extends Component {
           this.setState({
             session: await Session.getSession({ force: true }),
             alertText: 'Failed to save changes to your profile',
-            alertStyle: 'alert-danger'
+            alertStatus: 'critical'
           })
         }
       })
   }
 
-  async handleSignoutSubmit(event) {
+  handleSignoutSubmit(event) {
     event.preventDefault()
-    await Session.signout()
+    Session.signout()
     Router.push('/')
   }
 
   render() {
-    if (this.state.isSignedIn === true) {
-      const alert = (this.state.alertText === null) ? <div/> : <div className={`alert ${this.state.alertStyle}`} role="alert">{this.state.alertText}</div>
+    if (this.state.isSignedIn) {
+      const alert = (this.state.alertText === null) ? <p /> : <Toast status={this.state.alertStatus} size='medium'>{this.state.alertText}</Toast>
 
       return (
         <Layout {...this.props}>
@@ -178,26 +179,36 @@ class DashBoard extends Component {
               </form>
             </Box>
             <Box align='center' alignContent='center' responsive={true} direction='row' size='auto' pad='medium'>
-              <Label>
-                Link your account
-              </Label>
-              <Paragraph>
-                When you link your account to social networks, later you can access it with just one click.
-              </Paragraph>
-              <LinkedAccounts
-                session={this.props.session}
-                linkedWithFacebook={this.state.linkedWithFacebook}
-                linkedWithGoogle={this.state.linkedWithGoogle}
-                linkedWithTwitter={this.state.linkedWithTwitter}
-                gotProfile={this.state.gotProfile} />
+              <Box>
+                <Label>
+                  Link your account
+                </Label>
+              </Box>
+              <Box>
+                <Paragraph>
+                  When you link your account to social networks, later you can access it with just one click.
+                </Paragraph>
+              </Box>
+              <Box>
+                <LinkedAccounts
+                  session={this.props.session}
+                  linkedWithFacebook={this.state.linkedWithFacebook}
+                  linkedWithGoogle={this.state.linkedWithGoogle}
+                  linkedWithTwitter={this.state.linkedWithTwitter}
+                  gotProfile={this.state.gotProfile} />
+              </Box>
             </Box>
             <Box align='center' alignContent='center' responsive={true} direction='row' size='auto' pad='medium'>
-              <Label>
-                Sign out
-              </Label>
-              <Paragraph>
-                If you sign out, you can sign in again at any time.
-              </Paragraph>
+              <Box>
+                <Label>
+                  Sign out
+                </Label>
+              </Box>
+              <Box>
+                <Paragraph>
+                  If you sign out, you can sign in again at any time.
+                </Paragraph>
+              </Box>
               <Box>
                 <form id="signout" method="post" action="/auth/signout" onSubmit={this.handleSignoutSubmit}>
                   <input name="_csrf" type="hidden" value={this.state.session.csrfToken}/>
@@ -228,7 +239,7 @@ class DashBoard extends Component {
 export class LinkedAccounts extends Component {
   render() {
     if (typeof window === 'undefined' || this.props.gotProfile !== true) {
-      return null
+      return <p />
     } else {
       return (
         <Fragment>

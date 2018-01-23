@@ -8,17 +8,7 @@ from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 
 
-PROVIDERS = (
-    (0, 'Facebook'),
-    (1, 'Google'),
-    (2, 'LinkedIn'),
-)
-
-
 class Author(AbstractUser):
-    provider = models.SmallIntegerField(choices=PROVIDERS, null=True, blank=True, verbose_name=T("Social provider"))
-    access_token = models.TextField(verbose_name=T("Social access token"), null=True, blank=True)
-    expiration = models.DateTimeField(verbose_name=T("Date"), null=True, blank=True)
     avatar = models.URLField(max_length=255, verbose_name=T("Avatar URL"), null=True, blank=True)
 
 
@@ -89,7 +79,7 @@ class Post(AutoSlugifyOnSaveModel):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name=T("Author"), default=1)
     content = RichTextUploadingField("contents")
     date = models.DateTimeField(verbose_name=T("Date"))
-    image = models.ImageField(upload_to="", verbose_name=T("Image", unique=True))
+    image = models.ImageField(upload_to="", verbose_name=T("Image"), unique=True)
 
     class Meta:
         ordering = ('date',)

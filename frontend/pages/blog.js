@@ -1,6 +1,5 @@
 import 'isomorphic-unfetch'
 import { Component } from 'react'
-const assert = require('assert')
 
 import Layout from '../layout'
 import Block from '../components/Block'
@@ -20,7 +19,8 @@ class Blog extends Component {
       description: 'Decentralized Energy Blog',
       image: `${imagesUrl}/${json[0].image}`,
       total: Object.keys(json).length,
-      menu: true
+      menu: true,
+      langSelector: false
     }
   }
 

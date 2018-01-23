@@ -4,22 +4,37 @@ const csrf = require('lusca').csrf()
 const uuid = require('uuid/v4')
 const passportStrategies = require('./passport-strategies')
 
+// @TODO Argument validation
+function sendVerificationEmail({ mailserver, fromEmail, toEmail, url }) {
+  nodemailer
+    .createTransport(mailserver)
+    .sendMail({
+      to: toEmail,
+      from: fromEmail,
+      subject: 'Your sign-in link for PowerPiper',
+      text: 'Use the link provided below to sign in to site:\n\n' + url + '\n\n'
+    }, (err) => {
+      // @TODO Handle errors
+      if (err) {
+        console.error(`Error sending email to ${toEmail} wioth error: ${err}`)
+      }
+    })
+}
+
 exports.configure = ({
   nextApp = null,
   expressApp = null,
   userdb = null,
-  path = '/auth',
   session,
-  secret = null,
   store = null,
-  maxAge = 60000 * 60 * 24 * 3,
-  clientMaxAge = 60000,
-  serverUrl = null,
+  secret = null,
   mailserver = null,
   fromEmail = null,
-  userDbKey = '_id'
+  serverUrl = null,
+  userDbKey = '_id',
+  maxAge = 60000 * 60 * 24 * 3,
+  clientMaxAge = 60000
 } = {}) => {
-
   if (nextApp === null) {
     throw new Error('nextApp option must be a next server instance')
   }
@@ -66,12 +81,12 @@ exports.configure = ({
   })
 
   // Add route to get CSRF token via AJAX
-  expressApp.get(path + '/csrf', (req, res) => {
+  expressApp.get('/auth/csrf', (req, res) => {
     return res.json({ csrfToken: res.locals._csrf })
   })
 
   // Return session info
-  expressApp.get(path + '/session', (req, res) => {
+  expressApp.get('/auth/session', (req, res) => {
     session = {
       maxAge: maxAge,
       clientMaxAge: clientMaxAge,
@@ -84,27 +99,27 @@ exports.configure = ({
         name: req.user.name,
         email: req.user.email
       }
-      
+
       // If logged in, export the API access token details to the client
       // Note: This token is valid for the duration of this session only.
       if (req.session && req.session.api) {
         session.api = req.session.api
-      }    
+      }
     }
 
     return res.json(session)
   })
 
   // On post request, redirect to page with instrutions to check email for link
-  expressApp.post(path + '/email/signin', (req, res) => {
+  expressApp.post('/auth/email/signin', (req, res) => {
     const email = req.body.email || null
 
     if (!email || email.trim() === '') {
-      return nextApp.render(req, res, path + '/signin', req.params)
+      return nextApp.render(req, res, '/auth/signin', req.params)
     }
 
     const token = uuid()
-    const verificationUrl = (serverUrl || 'http://' + req.headers.host) + path + '/email/signin/' + token
+    const verificationUrl = (serverUrl || `https://${req.headers.host}`) + `/auth/email/signin/${token}`
 
     // Create verification token save it to database
     // @TODO Improve error handling
@@ -112,9 +127,10 @@ exports.configure = ({
       if (err) {
         throw err
       }
+
       if (user) {
         user.emailAccessToken = token
-        userdb.update({[userDbKey]: user[userDbKey]}, user, {}, () => {
+        userdb.update({ [userDbKey]: user[userDbKey] }, user, {}, () => {
           if (err) {
             throw err
           }
@@ -127,7 +143,7 @@ exports.configure = ({
           })
         })
       } else {
-        userdb.insert({ email: email, emailAccessToken: token }, (err) => {
+        userdb.insert({ email: email, emailAccessToken: token }, () => {
           if (err) {
             throw err
           }
@@ -142,44 +158,47 @@ exports.configure = ({
       }
     })
 
-    return nextApp.render(req, res, path + '/check-email', req.params)
+    return nextApp.render(req, res, '/auth/check-email', req.params)
   })
 
-  expressApp.get(path + '/email/signin/:token', (req, res) => {
+  expressApp.get('/auth/email/signin/:token', (req, res) => {
     if (!req.params.token) {
-      return res.redirect(path + '/signin')
+      return res.redirect('/auth/signin')
     }
 
     // Look up user by token
     userdb.findOne({ emailAccessToken: req.params.token }, (err, user) => {
       if (err) {
-        return res.redirect(path + '/error/email')
+        return res.redirect('/auth/error/email')
       }
       if (user) {
         // Reset token and mark as verified
         user.emailAccessToken = null
         user.emailVerified = true
-        userdb.update({[userDbKey]: user[userDbKey]}, user, {}, (err) => {
+        userdb.update({ [userDbKey]: user[userDbKey] }, user, {}, () => {
           // @TODO Improve error handling
           if (err) {
-            return res.redirect(path + '/error/email')
+            return res.redirect('/auth/error/email')
           }
           // Having validated to the token, we log the user with Passport
           req.logIn(user, () => {
             if (err) {
-              return res.redirect(path + '/error/email')
+              return res.redirect('/auth/error/email')
             }
             // If we end up here, login was successful
-            return res.redirect(path + '/callback?action=signin&service=email')
+            return res.redirect('/auth/callback?action=signin&service=email')
           })
+          return null
         })
       } else {
-        return res.redirect(path + '/error/email')
+        return res.redirect('/auth/error/email')
       }
+      return null
     })
+    return null
   })
 
-  expressApp.post(path + '/signout', (req, res) => {
+  expressApp.post('/auth/signout', (req, res) => {
     // Log user out by disassociating their account from the session
     req.logout()
     // Ran into issues where passport was not deleting session as it should be
@@ -188,24 +207,4 @@ exports.configure = ({
       res.redirect('/')
     })
   })
-}
-
-// @TODO Argument validation
-function sendVerificationEmail({ mailserver, fromEmail, toEmail, url }) {
-  nodemailer
-    .createTransport(mailserver)
-    .sendMail({
-      to: toEmail,
-      from: fromEmail,
-      subject: 'Your sign-in link',
-      text: 'Use the link below to sign in:\n\n' + url + '\n\n'
-    }, (err) => {
-      // @TODO Handle errors
-      if (err) {
-        console.error('Error sending email to ' + toEmail, err)
-      }
-    })
-  if (process.env.NODE_ENV === 'development')  {
-    console.log('Generated sign in link ' + url + ' for ' + toEmail)
-  }
 }

@@ -11,8 +11,8 @@ class EmailError extends Component {
   render() {
     return (
       <Layout {...this.props}>
-        <Section full={true} pad='none' align='center' justify='center'>
-          <Box>
+        <Section full={true} pad='medium' align='center' justify='center'>
+          <Box align='center' justify='center'>
             <Heading>Unable to sign in</Heading>
             <Label>The link you tried to use to sign in was not valid.</Label>
             <Label><a href="/auth/signin" className="grommetux-anchor">Request a new sign in link.</a></Label>

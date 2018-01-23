@@ -14,7 +14,7 @@ import Layer from 'grommet/components/Layer'
 import Box from 'grommet/components/Box'
 import Label from 'grommet/components/Label'
 import Header from 'grommet/components/Header'
-import SVGIcon from 'grommet/components/SVGIcon'
+// import SVGIcon from 'grommet/components/SVGIcon'
 import Columns from 'grommet/components/Columns'
 import Heading from 'grommet/components/Heading'
 import BlogIcon from 'grommet/components/icons/base/Blog'
@@ -183,12 +183,13 @@ export default class Layout extends Component {
                         <Anchor href='/blog/' icon={<BlogIcon />} label='Blog' />
                       </Link>
                     </Box>
-                    <Box align={align} alignContent={alignC} responsive={true} direction={direction} basis ='xsmall' size='auto'>
+                    { this.props.langSelector && <Box align={align} alignContent={alignC} responsive={true} direction={direction} basis ='xsmall' size='auto'>
                       <Select
                         onChange={this.onLangSelect}
                         options={options}
                         value={this.state.currentLang ? getByValue(options, this.state.currentLang) : undefined} />
                     </Box>
+                    }
                   </Columns>
                 </Box>
               </Header>
@@ -272,5 +273,6 @@ Layout.propTypes = {
 }
 
 Layout.defaultProps = {
-  menu: true
+  menu: true,
+  langSelector: true
 }

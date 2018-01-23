@@ -19,7 +19,8 @@ export default class Category extends Component {
       description: `${json[0].category_id.Title} Blog`,
       image: `${imagesUrl}/${json[0].image}`,
       total: json[0].id,
-      menu: true
+      menu: true,
+      langSelector: false
     }
   }
 

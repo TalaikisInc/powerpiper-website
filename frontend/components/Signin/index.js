@@ -36,15 +36,14 @@ export default class Signin extends Component {
     })
   }
 
-  handleSubmit(event) {
+  async handleSubmit(event) {
     event.preventDefault()
-    Session.signin(this.state.email)
+    await Session.signin(this.state.email)
       .then(() => {
         Router.push('/auth/check-email')
       })
       .catch(err => {
-        // @FIXME Handle error
-        console.log(err)
+        console.error(err)
       })
   }
 

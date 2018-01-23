@@ -10,6 +10,7 @@ export default class Session {
           return response
         } else {
           return Promise.reject(Error('Unexpected response when trying to get CSRF token'))
+            .catch(error => { console.log('Caught', error.message) })
         }
       })
       .then(response => response.json())
@@ -18,11 +19,12 @@ export default class Session {
   }
 
   // We can't do async requests in the constructor so access is via asyc method
-  static async getSession({ req = null, force = false} = {}) {
+  static async getSession({ req = null, force = false } = {}) {
     let session = {}
     if (req) {
       session.csrfToken = req.connection._httpMessage.locals._csrf
       session.expires = req.session.cookie._expires
+
       if (req.user) {
         session.user = req.user
       }
@@ -39,12 +41,14 @@ export default class Session {
       return new Promise(resolve => {
         resolve(session)
       })
+        .catch(error => { console.log('Caught', error.message) })
     } else if (typeof window === 'undefined') {
       // If running on server, but session has expired return empty object
       // (no valid session)
       return new Promise(resolve => {
         resolve({})
       })
+        .catch(error => { console.log('Caught', error.message) })
     }
 
     // If we don't have session data, or it's expired, or force is set
@@ -57,6 +61,7 @@ export default class Session {
           return response
         } else {
           return Promise.reject(Error('HTTP error when tryinng to get session'))
+            .catch(error => { console.log('Caught', error.message) })
         }
       })
       .then(response => response.json())
@@ -76,7 +81,7 @@ export default class Session {
       .catch(() => Error('Unable to get session'))
   }
 
-  static async signin (email) {
+  static async signin(email) {
     const session = await this.getSession()
     session.csrfToken = await this.getCsrfToken()
 
@@ -103,10 +108,13 @@ export default class Session {
           return response
         } else {
           return Promise.reject(Error('HTTP error while attempting to sign in'))
+            .catch(error => { console.log('Caught', error.message) })
         }
       })
       .then(() => true)
-      .catch(() => Error('Unable to sign in'))
+      .catch((err) => {
+        Error(`Error while attempting to sign in'\n\n${err}`)
+      })
   }
 
   static async signout () {

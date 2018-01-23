@@ -10,7 +10,7 @@ import Session from '../../components/Session'
 class CallBack extends Component {
   static async getInitialProps({ req }) {
     const session = await Session.getSession({ force: true, req: req })
-    let redirectTo = '/dashboard/'
+    let redirectTo = ''
     if (session.user) {
       if (req) {
         // Read cookie redirect path - if one is set
@@ -46,15 +46,17 @@ class CallBack extends Component {
     })
 
     if (session.user) {
-      Router.push(this.props.redirectTo)
+      console.log('session user found')
+      console.log(session.user)
+      //Router.push(this.props.redirectTo)
     }
   }
 
   render() {
     return (
       <Fragment>
-        <Box align='center' justify='center'>
-          <Spinning size='medium' />
+        <Box align='center' justify='center' pad='large'>
+          <Spinning size='small' />
         </Box>
       </Fragment>
     )

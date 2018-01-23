@@ -1,17 +1,9 @@
-import PropTypes from 'prop-types'
-
-const siteTitle = process.env.SITE_TITLE
+const siteTitle = process.env.SITE_TITLE // || 'PowerPiper'
 
 const Title = (props) => {
-  const title = `${props.title} | ${siteTitle}`
-
   return (
-    <title>{ title }</title>
+    <title>{ props.title } | { siteTitle }</title>
   )
-}
-
-Title.propTypes = {
-  title: PropTypes.string.isRequired
 }
 
 export default Title

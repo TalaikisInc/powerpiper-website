@@ -21,6 +21,7 @@ const Meta = (props) => {
       <meta property='og:url' content={baseUrl} />
       <meta property='og:image' content={props.image} />
       <meta name='twitter:site' content='@ThePowerPiper' />
+      <script src='https://cdn.polyfill.io/v2/polyfill.min.js'></script>
     </div>
   )
 }

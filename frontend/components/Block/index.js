@@ -11,16 +11,17 @@ import Box from 'grommet/components/Box'
 import FormNextIcon from 'grommet/components/icons/base/FormNext'
 
 import Date from '../../utils/helpers'
+const imagesUrl = process.env.IMAGES_URL
 
 export default class Block extends Component {
   render () {
-    const serverUrl = process.env.SERVER_URL
-    const baseUrl = process.env.BASE_URL
-    const image = baseUrl + this.props.post.image
-    const authorUrl = serverUrl + '/author/' + this.props.post.author_id.Username + '/0/'
-    const categoryUrl = serverUrl + '/category/' + this.props.post.category_id.Slug + '/0/'
-    const articleUrl = serverUrl + '/post/' + this.props.post.slug + '/'
+    const image = `${imagesUrl}/${this.props.post.image}`
+    const authorUrl = `/author/${this.props.post.author_id.Username}/0/`
+    const categoryUrl = `/category/${this.props.post.category_id.Slug}/0/`
+    const articleUrl = `/post/${this.props.post.slug}/`
     const visibility = this.props.post.id === this.props.total ? undefined : 'scroll'
+    const excerpt = this.props.post.content.split('</p>', 1)[0] || this.props.post.content
+    const authorName = this.props.post.author_id.FirstName ? `${this.props.post.author_id.FirstName} ${this.props.post.author_id.LastName}` : 'Anonymous'
 
     return (
       <Section full={false} pad='medium' justify='center'>
@@ -35,16 +36,16 @@ export default class Block extends Component {
               </a>
             </Heading>
             <Paragraph>
-              By <a href={authorUrl} 
-                className='grommetux-anchor' 
+              By <a href={authorUrl}
+                className='grommetux-anchor'
                 onMouseEnter={() => {Router.prefetch(authorUrl)}}>
-                {this.props.post.author_id.FirstName} {this.props.post.author_id.LastName}
+                { authorName }
               </a>
               &nbsp;|&nbsp;
               {Date(this.props.post.date)}
             </Paragraph>
             <Image alt={this.props.post.title} src={image} size='large' />
-            <div dangerouslySetInnerHTML={{ __html: this.props.post.content.split('</p>', 1)}} />
+            <div dangerouslySetInnerHTML={{ __html: excerpt }} />
           </Box>
         </Animate>
       </Section>
