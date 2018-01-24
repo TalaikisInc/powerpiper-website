@@ -107,7 +107,7 @@ exports.configure = ({
 
   if (process.env.LINKEDIN_APP_ID && process.env.LINKEDIN_APP_SECRET) {
     providers.push({
-      providerName: 'linkedin',
+      providerName: 'linkedIn',
       providerOptions: {
         scope: ['r_emailaddress', 'r_basicprofile']
       },

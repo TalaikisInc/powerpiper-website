@@ -10,16 +10,12 @@ import nprogress from '../assets/css/progress.css'
 import App from 'grommet/components/App'
 import Select from 'grommet/components/Select'
 import Article from 'grommet/components/Article'
-import Layer from 'grommet/components/Layer'
 import Box from 'grommet/components/Box'
 import Label from 'grommet/components/Label'
 import Header from 'grommet/components/Header'
 // import SVGIcon from 'grommet/components/SVGIcon'
 import Columns from 'grommet/components/Columns'
-import Heading from 'grommet/components/Heading'
 import BlogIcon from 'grommet/components/icons/base/Blog'
-import ContactInfoIcon from 'grommet/components/icons/base/ContactInfo'
-import LoginIcon from 'grommet/components/icons/base/Login'
 import Button from 'grommet/components/Button'
 import Animate from 'grommet/components/Animate'
 import Section from 'grommet/components/Section'
@@ -37,7 +33,9 @@ import _Footer from '../components/Footer'
 import Meta from '../components/Meta'
 import Title from '../components/Title'
 import { initGA, logPageView } from '../components/GA'
-import Signin from '../components/Signin'
+import UserMenu from '../components/UserMenu'
+import MainBody from '../components/MainBody'
+import SigninModal from '../components/SigninModal'
 
 Router.onRouteChangeStart = () => {
   NProgress.start()
@@ -173,8 +171,8 @@ export default class Layout extends Component {
                     <Box align={align} alignContent={alignC} responsive={true} direction={direction} basis ='xsmall' size='auto'>
                       {
                         this.props.menu && <div>
-                          <UserMenu session={this.state.session} onOpenModal={this.onOpenModal} />
-                          <SigninModal modal={this.state.modal} onCloseModal={this.onCloseModal} onOpenModal={this.onOpenModal} session={this.state.session} />
+                          <UserMenu session={this.props.session} onOpenModal={this.onOpenModal} />
+                          <SigninModal modal={this.state.modal} onCloseModal={this.onCloseModal} session={this.state.session} />
                         </div>
                       }
                     </Box>
@@ -212,54 +210,6 @@ export default class Layout extends Component {
           </Article>
         </App>
       </Fragment>
-    )
-  }
-}
-
-// eslint-disable-next-line
-export class MainBody extends Component {
-  render() {
-    return (
-      <Fragment>
-        { this.props.children }
-      </Fragment>
-    )
-  }
-}
-
-// eslint-disable-next-line
-export class UserMenu extends Component {
-  render() {
-    if (this.props.session && this.props.session.user) {
-      const session = this.props.session
-      return (
-        <Link href="/account/">
-          <Anchor href='/account/' icon={<ContactInfoIcon />} label={session.user.name || session.user.email} />
-        </Link>
-      )
-    } else {
-      return (
-        <Anchor icon={<LoginIcon />} label='Sign In' onClick={this.props.onOpenModal} />
-      )
-    }
-  }
-}
-
-// eslint-disable-next-line
-export class SigninModal extends Component {
-  render() {
-    return (
-      <div>
-        { this.props.modal && <Layer flush={true} closer={true} onClose={this.props.onCloseModal} align='center'>
-          <Box pad='medium' responsive={true}>
-            <Heading>
-              Sign In / Sign Up
-            </Heading>
-            <Signin session={this.props.session} />
-          </Box>
-        </Layer>
-        }
-      </div>
     )
   }
 }

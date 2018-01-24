@@ -14,13 +14,13 @@ const i18n = require('./i18n')
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
 const MongoClient = require('mongodb').MongoClient
-const MongoServer = require('mongodb').Server
 const MongoStore = require('connect-mongo')(session)
 const NeDB = require('nedb')
 const compression = require('compression')
 const LRUCache = require('lru-cache')
 const cors = require('cors')
 const fs = require('fs')
+const morgan = require('morgan')
 
 const routes = require('./routes/index')
 const auth = require('./routes/auth')
@@ -100,18 +100,6 @@ if (emailHost && emailUser && emailPassword) {
 
 let sessionStore, userdb
 
-const server = express()
-
-server.use(cookieParser())
-server.use(compression({ threshold: 0 }))
-server.use(
-  cors({
-    origin:
-      prettyHost.indexOf('http') !== -1 ? prettyHost : `http://${prettyHost}`,
-    credentials: true
-  })
-)
-
 i18n.use(Backend).use(i18nextMiddleware.LanguageDetector).init({
   preload: ['en', 'de', 'es', 'fr', 'ru', 'ko'],
   ns: ['common'],
@@ -131,7 +119,7 @@ i18n.use(Backend).use(i18nextMiddleware.LanguageDetector).init({
             ssl: false, // @ TODO
             autoReconnect: true
           }, (err, client) => {
-            assert.equal(null, err, '- Error conencting to MongoDB')
+            assert.equal(null, err, 'Error conencting to MongoDB')
             userdb = client.db('users').collection('users')
             resolve(true)
           })
@@ -169,6 +157,18 @@ i18n.use(Backend).use(i18nextMiddleware.LanguageDetector).init({
         .catch(error => { console.log('Caught', error.message) })
     })
     .then(() => {
+      const server = express()
+
+      server.use(cookieParser())
+
+      if (prod) {
+        server.use(compression({ threshold: 0 }))
+      }
+
+      server.use(morgan('dev'))
+
+      server.use(cors({ origin: true, credentials: true }))
+
       auth.configure({
         nextApp: app,
         expressApp: server,

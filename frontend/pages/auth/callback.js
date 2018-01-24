@@ -1,5 +1,6 @@
 import { Fragment, Component } from 'react'
 import Router from 'next/router'
+import Head from 'next/head'
 import cookie from 'react-cookies'
 
 import Spinning from 'grommet/components/icons/Spinning'
@@ -10,7 +11,11 @@ import Session from '../../components/Session'
 class CallBack extends Component {
   static async getInitialProps({ req }) {
     const session = await Session.getSession({ force: true, req: req })
-    let redirectTo = ''
+    // If the user is signed in, we look for a redirect URL cookie and send 
+    // them to that page (so people signing in end up back on the page they
+    // were on before signing in / signing up).
+    // default is '/'
+    let redirectTo = '/'
     if (session.user) {
       if (req) {
         // Read cookie redirect path - if one is set
@@ -46,15 +51,16 @@ class CallBack extends Component {
     })
 
     if (session.user) {
-      console.log('session user found')
-      console.log(session.user)
-      //Router.push(this.props.redirectTo)
+      Router.push(this.props.redirectTo)
     }
   }
 
   render() {
     return (
       <Fragment>
+        <Head>
+          <meta httpEquiv="refresh" content={`1; url=${+this.props.redirectTo}`} />
+        </Head>
         <Box align='center' justify='center' pad='large'>
           <Spinning size='small' />
         </Box>

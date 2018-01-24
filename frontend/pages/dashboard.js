@@ -58,20 +58,23 @@ class DashBoard extends Component {
       isSignedIn: (session &&session.user) ? true : false
     })
 
+    // If the user bounces off to link/unlink their account we want them to
+    // land back here after signing in with the other service / unlinking.
     cookie.save('redirect_url', '/dashboard/', { path: '/' })
 
     this.getProfile()
   }
 
-  getProfile() {
+  getProfile = () => {
     fetch('/dashboard/user', {
       credentials: 'include'
     })
       .then(r => r.json())
       .then(user => {
-        /*if (!user.name || !user.email) {
+        // + !user.emailVerified // don't allow login if email not confimed
+        if (!user.name || !user.email) {
           return
-        }*/
+        }
         this.setState({
           name: user.name,
           email: user.email,
@@ -84,13 +87,15 @@ class DashBoard extends Component {
       })
   }
 
-  handleChange(event) {
-    this.setState({
-      [event.target.name]: event.target.value
-    })
+  _handleChangeName = e => {
+    this.setState({ name: e.target.value })
   }
 
-  onSubmit(e) {
+  _handleChangeEmail = e => {
+    this.setState({ email: e.target.value })
+  }
+
+  onSubmit = e => {
     // Submits the URL encoded form without causing a page reload
     e.preventDefault()
 
@@ -169,11 +174,11 @@ class DashBoard extends Component {
                 <input name="_csrf" type="hidden" value={this.state.session.csrfToken} onChange={() => {}} />
                 <Box pad='medium'>
                   <Label>Name: </Label>
-                  <input name="name" value={this.state.name} onChange={this.handleChange} className="grommetux-text-input grommetux-input" />
+                  <input name="name" value={this.state.name} onChange={this._handleChangeName} className="grommetux-text-input grommetux-input" />
                 </Box>
                 <Box pad='medium'>
                   <Label>Email:</Label>
-                  <input name="email" value={(this.state.email.match(/.*@localhost\.localdomain$/)) ? '' : this.state.email} onChange={this.handleChange} className="grommetux-text-input grommetux-input" />
+                  <input name="email" value={(this.state.email.match(/.*@localhost\.localdomain$/)) ? '' : this.state.email} onChange={this._handleChangeEmail} className="grommetux-text-input grommetux-input" />
                 </Box>
                 <button type="submit" className="grommetux-button grommetux-button-invert"><SaveIcon /> Save Changes</button>
               </form>
@@ -195,6 +200,7 @@ class DashBoard extends Component {
                   linkedWithFacebook={this.state.linkedWithFacebook}
                   linkedWithGoogle={this.state.linkedWithGoogle}
                   linkedWithTwitter={this.state.linkedWithTwitter}
+                  linkedWithLinkedIn={this.state.linkedWithLinkedIn}
                   gotProfile={this.state.gotProfile} />
               </Box>
             </Box>
@@ -266,22 +272,26 @@ export class LinkAccount extends Component {
   render() {
     if (this.props.linked === true) {
       return (
-        <form action={`/auth/oauth/${this.props.provider.toLowerCase()}/unlink`} method="post">
-          <input name="_csrf" type="hidden" value={this.props.session.csrfToken}/>
-          <Paragraph>
-            <button type="submit">
-              <UnlinkIcon /> Unlink from {this.props.provider}
-            </button>
-          </Paragraph>
-        </form>
+        <Box>
+          <form action={`/auth/oauth/${this.props.provider.toLowerCase()}/unlink`} method="post">
+            <input name="_csrf" type="hidden" value={this.props.session.csrfToken}/>
+            <Paragraph>
+              <button type="submit">
+                <UnlinkIcon /> Unlink from {this.props.provider}
+              </button>
+            </Paragraph>
+          </form>
+        </Box>
       )
     } else if (this.props.linked === false) {
       return (
-        <button type="submit">
-          <a href={`/auth/oauth/${this.props.provider.toLowerCase()}`}>
-            <LinkIcon /> Link with {this.props.provider}
-          </a>
-        </button>
+        <Box>
+          <button type="submit">
+            <a href={`/auth/oauth/${this.props.provider.toLowerCase()}`}>
+              <LinkIcon /> Link with {this.props.provider}
+            </a>
+          </button>
+        </Box>
       )
     } else {
       return (<Paragraph />)

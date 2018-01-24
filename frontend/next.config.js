@@ -2,7 +2,6 @@ const path = require('path')
 const glob = require('glob')
 const webpack = require('webpack')
 const OfflinePlugin = require('offline-plugin')
-const Dotenv = require('dotenv-webpack')
 const offlineSupport = process.env.OFFLINE_SUPPORT
 const prod = process.env.NODE_ENV === 'production'
 const offline = offlineSupport.match(/true/i) ? true : false
@@ -12,7 +11,6 @@ const initExport = {
   poweredByHeader: false,
   webpack: (config) => {
     config.plugins.push(new webpack.IgnorePlugin(/^raven$/))
-    config.plugins.push(new Dotenv({ path: './public.env' }))
 
     config.module.rules.push({
       test: /\.(css|scss)/,
