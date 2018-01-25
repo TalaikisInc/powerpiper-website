@@ -1,5 +1,0 @@
-postgres:
-  adapter: postgresql
-  database: test_db
-  username: postgres
-  password: test_password

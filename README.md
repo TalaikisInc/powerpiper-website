@@ -5,12 +5,21 @@
 
 ## Status
 
-In development.
+*** In development ***
 
-## Technologies used:
+## Tech
 
-- Python 3.6
-- Golang
-- ReactJS/ NextJS
+- ReactJS
+- NextJS
 - Grommet UI
+- Passport
+- Express
+
+### Run it
+
+    $ // Create database, set environments
+    $ npm run install
+    $ npm run installdev
+    $ sequelize db:migrate
+    $ npm run dev
 
