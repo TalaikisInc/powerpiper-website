@@ -67,7 +67,7 @@
     "redux-devtools-extension": "^2.13.2",
     "redux-thunk": "^2.2.0",
     "rimraf": "^2.6.2",
-    "sequelize": "^4.32.1",
+    "sequelize": "^5.8.11",
     "ssacl-attribute-roles": "^1.0.0",
     "styled-components": "^2.3.0",
     "uglifyjs-webpack-plugin": "^1.1.6",
