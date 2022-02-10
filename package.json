@@ -117,7 +117,7 @@
     "jest": "^22.1.4",
     "jest-css-modules": "^1.1.0",
     "ngrok": "^2.2.25",
-    "node-sass": "^4.7.2",
+    "node-sass": "^7.0.0",
     "normalize.css": "^7.0.0",
     "now": "^8.5.4",
     "npm-sass": "^2.2.1",
